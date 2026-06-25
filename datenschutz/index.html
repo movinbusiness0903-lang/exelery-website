@@ -1,170 +1,345 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datenschutzerklärung – Exelery</title>
-  <style>
-    body { font-family: Arial, Helvetica, sans-serif; max-width: 860px; margin: 0 auto; padding: 32px 24px 64px; color: #1a1a1a; line-height: 1.7; font-size: 16px; }
-    h1 { font-size: 2em; margin-bottom: 0.25em; }
-    h2 { font-size: 1.35em; margin-top: 2.5em; border-bottom: 2px solid #eee; padding-bottom: 6px; }
-    h3 { font-size: 1.1em; margin-top: 1.8em; }
-    h4 { font-size: 1em; margin-top: 1.2em; }
-    p  { margin: 0.75em 0; }
-    ul { margin: 0.75em 0; padding-left: 1.6em; }
-    li { margin: 0.3em 0; }
-    a  { color: #0055cc; }
-    .uppercase { text-transform: uppercase; font-weight: bold; display: block; margin: 0.75em 0; }
-    .source { color: #777; font-size: 0.9em; margin-top: 3em; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutzerklärung – Exelery</title>
+<meta name="robots" content="index, follow">
+<style>
+  :root{
+    --text:#1a1a1a;
+    --muted:#5b6770;
+    --accent:#0e7c66;
+    --accent-soft:#e6f3ef;
+    --link:#0b66c2;
+    --rule:#e8e8e8;
+    --box:#f6f8f9;
+    --code:#eef2f1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Arial,Helvetica,sans-serif;
+    max-width:840px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+    color:var(--text);
+    line-height:1.7;
+    font-size:16px;
+  }
+  header.doc{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:8px;}
+  h1{font-size:2.1em;margin:0 0 .15em;letter-spacing:-.01em;}
+  .stand{color:var(--muted);font-size:.92em;margin:0;}
+  h2{font-size:1.32em;margin-top:2.6em;border-bottom:2px solid var(--rule);padding-bottom:6px;scroll-margin-top:16px;}
+  h3{font-size:1.08em;margin-top:1.8em;}
+  h4{font-size:1em;margin-top:1.2em;}
+  p{margin:.75em 0;}
+  ul,ol{margin:.75em 0;padding-left:1.5em;}
+  li{margin:.35em 0;}
+  a{color:var(--link);}
+  a:hover{text-decoration:none;}
+  code{background:var(--code);padding:1px 6px;border-radius:5px;font-size:.88em;}
+  .lead{color:var(--muted);font-size:1.02em;}
+  nav.toc{background:var(--box);border:1px solid var(--rule);border-radius:10px;padding:18px 22px;margin:28px 0 8px;}
+  nav.toc h2{border:none;margin:0 0 .4em;padding:0;font-size:1.05em;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  nav.toc ol{margin:0;padding-left:1.3em;columns:2;column-gap:32px;}
+  nav.toc li{margin:.25em 0;break-inside:avoid;}
+  nav.toc a{color:var(--text);text-decoration:none;}
+  nav.toc a:hover{color:var(--accent);text-decoration:underline;}
+  .callout{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 18px;margin:1.1em 0;}
+  .callout strong{color:var(--accent);}
+  .processors{list-style:none;padding:0;margin:1em 0;}
+  .processors>li{border:1px solid var(--rule);border-radius:8px;padding:12px 16px;margin:.55em 0;}
+  .processors .who{font-weight:bold;}
+  .processors .meta{color:var(--muted);font-size:.9em;display:block;margin-top:2px;}
+  .uppercase{text-transform:uppercase;font-weight:bold;display:block;margin:.75em 0;}
+  .source{color:var(--muted);font-size:.9em;margin-top:2.5em;border-top:1px solid var(--rule);padding-top:14px;}
+  @media (max-width:560px){nav.toc ol{columns:1;}body{padding:28px 18px 64px;}h1{font-size:1.7em;}}
+</style>
 </head>
 <body>
-<h1>Datenschutzerklärung</h1>
-<h2>1. Datenschutz auf einen Blick</h2>
+
+<header class="doc">
+  <h1>Datenschutzerklärung</h1>
+  <p class="stand">Stand: 24. Juni 2026 &nbsp;·&nbsp; Gilt für die Exelery-App sowie die Website unter exelery.de</p>
+</header>
+
+<p class="lead">Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten wir verarbeiten, wenn Sie die Exelery-App oder unsere Website nutzen, auf welcher Rechtsgrundlage dies geschieht und welche Rechte Ihnen zustehen. Exelery verarbeitet auch Gesundheits- und Fitnessdaten sowie – nach Ihrer Freigabe – Daten aus dem Wearable WHOOP und setzt Künstliche Intelligenz zur Auswertung von Mahlzeiten und zur Plan­erstellung ein. Diese besonders schützenswerten Verarbeitungen sind nachfolgend ausführlich beschrieben.</p>
+
+<nav class="toc" aria-label="Inhaltsverzeichnis">
+  <h2>Inhalt</h2>
+  <ol>
+    <li><a href="#a1">Datenschutz auf einen Blick</a></li>
+    <li><a href="#a2">Hosting und Backend</a></li>
+    <li><a href="#a3">Allgemeine Hinweise und Pflichtinformationen</a></li>
+    <li><a href="#a4">Registrierung und Anmeldung</a></li>
+    <li><a href="#a5">Profil-, Onboarding-, Ziel- und Tagebuchdaten</a></li>
+    <li><a href="#a6">Ernährungsdaten und Mahlzeiten-Tracking</a></li>
+    <li><a href="#a7">Trainingsdaten und Trainingspläne</a></li>
+    <li><a href="#a8">Körpermaße und Profilbild</a></li>
+    <li><a href="#a9">Anbindung von WHOOP (Wearable)</a></li>
+    <li><a href="#a10">Einsatz von Künstlicher Intelligenz</a></li>
+    <li><a href="#a11">Technische Daten und Protokolle</a></li>
+    <li><a href="#a12">App-Bereitstellung, Berechtigungen und Benachrichtigungen</a></li>
+    <li><a href="#a13">Kontolöschung und Datenlöschung</a></li>
+    <li><a href="#a14">Änderungen dieser Datenschutzerklärung</a></li>
+  </ol>
+</nav>
+
+<h2 id="a1">1. Datenschutz auf einen Blick</h2>
+
 <h3>Allgemeine Hinweise</h3>
-<p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen oder unsere App nutzen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.</p>
-<h3>Datenerfassung auf dieser Website und in unserer App</h3>
-<h4>Wer ist verantwortlich für die Datenerfassung?</h4>
-<p>Die Datenverarbeitung auf dieser Website und in der Exelery-App erfolgt durch den Betreiber. Dessen Kontaktdaten können Sie dem Abschnitt „Hinweis zur verantwortlichen Stelle" in dieser Datenschutzerklärung entnehmen.</p>
-<h4>Wie erfassen wir Ihre Daten?</h4>
-<p>Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen – zum Beispiel bei der Registrierung, im Rahmen des Onboarding-Fragebogens oder beim Hochladen von Körper-Scan-Fotos.</p>
-<p>Andere Daten werden automatisch oder nach Ihrer Einwilligung beim Besuch der Website bzw. der Nutzung der App durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.&nbsp;B. Betriebssystem, Gerätekennungen oder Uhrzeit des Zugriffs). Die Erfassung dieser Daten erfolgt automatisch, sobald Sie unsere App öffnen oder diese Website betreten.</p>
-<h4>Wofür nutzen wir Ihre Daten?</h4>
-<p>Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der App und Website zu gewährleisten. Andere Daten werden genutzt, um Ihnen individuell angepasste Fitness- und Ernährungspläne zu erstellen, Ihren Fortschritt zu verfolgen und KI-gestützte Empfehlungen zu generieren.</p>
-<h4>Welche Rechte haben Sie bezüglich Ihrer Daten?</h4>
-<p>Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht auf Berichtigung oder Löschung dieser Daten. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese Einwilligung jederzeit für die Zukunft widerrufen. Außerdem haben Sie das Recht, unter bestimmten Umständen die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
-<p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit an uns wenden.</p>
-<h3>Analyse-Tools und Tools von Drittanbietern</h3>
-<p>Beim Besuch dieser Website und bei der Nutzung unserer App kann Ihr Nutzungsverhalten statistisch ausgewertet werden. Detaillierte Informationen dazu finden Sie in der folgenden Datenschutzerklärung.</p>
-<h2>2. Hosting</h2>
-<p>Wir hosten die Inhalte unserer Website und App bei folgenden Anbietern:</p>
-<h3>Amazon Web Services (AWS) / Supabase</h3>
-<p>Unsere Anwendung nutzt Supabase als Backend-Plattform (Authentifizierung, Datenbank, Datei-Speicherung). Supabase betreibt seine Infrastruktur auf Amazon Web Services (AWS). Anbieter ist die Amazon Web Services EMEA SARL, 38 Avenue John F. Kennedy, 1855 Luxemburg.</p>
-<p>Wenn Sie unsere App oder Website nutzen, werden Ihre personenbezogenen Daten auf Servern von AWS verarbeitet. Hierbei können auch personenbezogene Daten an das Mutterunternehmen von AWS in die USA übermittelt werden. Die Datenübertragung in die USA wird auf die EU-Standardvertragsklauseln gestützt. Details finden Sie hier: <a href="https://aws.amazon.com/de/blogs/security/aws-gdpr-data-processing-addendum/" target="_blank" rel="noopener">https://aws.amazon.com/de/blogs/security/aws-gdpr-data-processing-addendum/</a>.</p>
-<p>Weitere Informationen entnehmen Sie der Datenschutzerklärung von Supabase: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">https://supabase.com/privacy</a> sowie von AWS: <a href="https://aws.amazon.com/de/privacy/" target="_blank" rel="noopener">https://aws.amazon.com/de/privacy/</a>.</p>
-<p>Die Verwendung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO. Das Unternehmen AWS verfügt über eine Zertifizierung nach dem „EU-US Data Privacy Framework" (DPF).</p>
-<h4>Auftragsverarbeitung</h4>
-<p>Wir haben einen Vertrag über Auftragsverarbeitung (AVV) zur Nutzung der oben genannten Dienste geschlossen. Dieser gewährleistet, dass personenbezogene Daten unserer Nutzer nur nach unseren Weisungen und unter Einhaltung der DSGVO verarbeitet werden.</p>
-<h3>IONOS</h3>
-<p>Anbieter ist die IONOS SE, Elgendorfer Str.&nbsp;57, 56410 Montabaur. Wenn Sie unsere Website besuchen, erfasst IONOS verschiedene Logfiles inklusive Ihrer IP-Adressen. Details entnehmen Sie der Datenschutzerklärung von IONOS: <a href="https://www.ionos.de/terms-gtc/terms-privacy" target="_blank" rel="noopener">https://www.ionos.de/terms-gtc/terms-privacy</a>.</p>
-<p>Die Verwendung von IONOS erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.</p>
-<h4>Auftragsverarbeitung</h4>
-<p>Wir haben einen Vertrag über Auftragsverarbeitung (AVV) zur Nutzung von IONOS geschlossen.</p>
-<h2>3. Allgemeine Hinweise und Pflichtinformationen</h2>
+<p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere App nutzen oder unsere Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen entnehmen Sie der nachfolgenden Datenschutzerklärung.</p>
+
+<h3>Wer ist verantwortlich für die Datenerfassung?</h3>
+<p>Die Datenverarbeitung in der Exelery-App und auf dieser Website erfolgt durch den Betreiber. Dessen Kontaktdaten finden Sie im Abschnitt „Hinweis zur verantwortlichen Stelle".</p>
+
+<h3>Wie erfassen wir Ihre Daten?</h3>
+<p>Ihre Daten werden zum einen dadurch erhoben, dass Sie sie uns mitteilen – etwa bei der Registrierung, im Onboarding-Fragebogen, beim Erfassen von Mahlzeiten, beim Eintragen von Körpermaßen oder im Tagebuch. Andere Daten werden beim Betrieb der App automatisch durch unsere IT-Systeme erfasst (insbesondere technische Protokoll- und Nutzungsdaten). Daten aus Ihrem WHOOP-Konto werden nur nach Ihrer ausdrücklichen Freigabe (OAuth) über die WHOOP-Schnittstelle abgerufen.</p>
+
+<h3>Wofür nutzen wir Ihre Daten?</h3>
+<p>Ein Teil der Daten dient der fehlerfreien Bereitstellung von App und Website. Andere Daten nutzen wir, um Ihnen individuell angepasste Fitness- und Ernährungspläne zu erstellen, Ihre Mahlzeiten auszuwerten, Ihren Fortschritt zu verfolgen und KI-gestützte Empfehlungen zu generieren.</p>
+
+<h3>Welche Rechte haben Sie bezüglich Ihrer Daten?</h3>
+<p>Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht auf Berichtigung oder Löschung dieser Daten. Wenn Sie eine Einwilligung erteilt haben, können Sie diese jederzeit für die Zukunft widerrufen. Ferner haben Sie unter bestimmten Umständen das Recht auf Einschränkung der Verarbeitung sowie ein Beschwerderecht bei der zuständigen Aufsichtsbehörde. Hierzu können Sie sich jederzeit an uns wenden.</p>
+
+<div class="callout">
+  <p style="margin:.3em 0;"><strong>Besonders sensible Daten.</strong> Exelery verarbeitet Gesundheits- und Fitnessdaten (z.&nbsp;B. Gewicht und Körpermaße, Mahlzeiten, Trainings- und WHOOP-Daten). Dabei handelt es sich um besondere Kategorien personenbezogener Daten nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO. Wir verarbeiten diese ausschließlich auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> (Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO), die Sie jederzeit widerrufen können.</p>
+</div>
+
+<h2 id="a2">2. Hosting und Backend</h2>
+
+<h3>Supabase / Amazon Web Services (AWS)</h3>
+<p>Unsere Anwendung nutzt Supabase als Backend-Plattform (Authentifizierung, Datenbank, Datei-Speicher). Anbieter ist die Supabase, Inc., 970 Toa Payoh North #07-04, 318992 Singapur. Supabase betreibt die für Exelery genutzte Infrastruktur auf Amazon Web Services (AWS) in einer Rechenzentrumsregion innerhalb der Europäischen Union. Für AWS ist die Amazon Web Services EMEA SARL, 38 Avenue John F. Kennedy, 1855 Luxemburg zuständig.</p>
+<p>Wenn Sie unsere App oder Website nutzen, werden Ihre personenbezogenen Daten auf Servern von AWS in der EU verarbeitet. Soweit es in Einzelfällen zu einer Übermittlung an das US-Mutterunternehmen kommt, wird diese auf die EU-Standardvertragsklauseln gestützt; AWS ist zudem nach dem „EU-US Data Privacy Framework" (DPF) zertifiziert. Details: <a href="https://aws.amazon.com/de/blogs/security/aws-gdpr-data-processing-addendum/" target="_blank" rel="noopener">AWS-DSGVO-Zusatz</a>. Datenschutzerklärungen: <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase</a> und <a href="https://aws.amazon.com/de/privacy/" target="_blank" rel="noopener">AWS</a>.</p>
+<p>Die Nutzung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO. Wir haben mit Supabase einen Vertrag über Auftragsverarbeitung (AVV) geschlossen, der sicherstellt, dass personenbezogene Daten nur nach unseren Weisungen und unter Einhaltung der DSGVO verarbeitet werden.</p>
+
+<h3>GitHub Pages (Website)</h3>
+<p>Unsere Website unter exelery.de – einschließlich dieser Datenschutzerklärung – wird über GitHub Pages bereitgestellt. Anbieter ist die GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA&nbsp;94107, USA, ein Unternehmen der Microsoft-Gruppe. Beim Aufruf der Website verarbeitet GitHub technisch notwendige Zugriffsdaten – insbesondere Ihre IP-Adresse –, um die Seiten auszuliefern und die Sicherheit und Stabilität des Dienstes zu gewährleisten. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an einer sicheren und zuverlässigen Bereitstellung der Website).</p>
+<p>Da GitHub Daten auch in den USA verarbeitet, kann es zu einer Übermittlung in ein Drittland kommen. GitHub bzw. die Microsoft Corporation ist nach dem „EU-US Data Privacy Framework" (DPF) zertifiziert; ergänzend werden die EU-Standardvertragsklauseln (Art.&nbsp;46 Abs.&nbsp;2 lit.&nbsp;c DSGVO) herangezogen. Details: <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a>.</p>
+
+<h2 id="a3">3. Allgemeine Hinweise und Pflichtinformationen</h2>
+
 <h3>Datenschutz</h3>
-<p>Die Betreiber dieser Seiten und der Exelery-App nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>
-<p>Wir weisen darauf hin, dass die Datenübertragung im Internet Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.</p>
+<p>Die Betreiber dieser Seiten und der Exelery-App nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung. Wir weisen darauf hin, dass die Datenübertragung im Internet Sicherheitslücken aufweisen kann; ein lückenloser Schutz vor dem Zugriff durch Dritte ist nicht möglich.</p>
+
 <h3>Hinweis zur verantwortlichen Stelle</h3>
-<p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website und in der Exelery-App ist:</p>
-<p>KevsKryptoAcademy GbR<br />Kevin Baron &amp; Moritz Euler<br />Dalenaer Straße 18<br />06193 Wettin-Löbejün<br /><br />Telefon: +49 17664800709<br />E-Mail: <a href="mailto:support@exelery.de">support@exelery.de</a></p>
+<p>Verantwortliche Stelle für die Datenverarbeitung in der Exelery-App und auf dieser Website ist:</p>
+<p>KevsKryptoAcademy GbR<br>Kevin Baron &amp; Moritz Euler<br>Dalenaer Straße 18<br>06193 Wettin-Löbejün<br><br>Telefon: +49 17664800709<br>E-Mail: <a href="mailto:support@exelery.de">support@exelery.de</a></p>
+<p>Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.</p>
+
 <h3>Speicherdauer</h3>
-<p>Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gelöscht, sofern wir keine anderen rechtlich zulässigen Gründe für die Speicherung haben.</p>
-<h3>Allgemeine Hinweise zu den Rechtsgrundlagen der Datenverarbeitung</h3>
-<p>Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir Ihre personenbezogenen Daten auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO bzw. Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO, sofern besondere Datenkategorien nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO verarbeitet werden. Sind Ihre Daten zur Vertragserfüllung erforderlich, verarbeiten wir Ihre Daten auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Die Datenverarbeitung kann ferner auf Grundlage unseres berechtigten Interesses nach Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO erfolgen.</p>
-<h3>Empfänger von personenbezogenen Daten</h3>
-<p>Wir geben personenbezogene Daten nur dann an externe Stellen weiter, wenn dies im Rahmen einer Vertragserfüllung erforderlich ist, wenn wir gesetzlich hierzu verpflichtet sind, wenn wir ein berechtigtes Interesse nach Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO an der Weitergabe haben oder wenn eine sonstige Rechtsgrundlage die Datenweitergabe erlaubt.</p>
+<p>Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder eine Einwilligung widerrufen, werden Ihre Daten gelöscht, sofern keine anderen rechtlich zulässigen Gründe für die Speicherung bestehen. Konkrete Hinweise finden Sie in den jeweiligen Abschnitten sowie unter „Kontolöschung und Datenlöschung".</p>
+
+<h3>Rechtsgrundlagen der Datenverarbeitung</h3>
+<p>Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir Ihre personenbezogenen Daten auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO bzw. – bei besonderen Datenkategorien nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO (Gesundheitsdaten) – auf Grundlage von Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (ausdrückliche Einwilligung). Sind Ihre Daten zur Vertragserfüllung oder für vorvertragliche Maßnahmen erforderlich, verarbeiten wir sie auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Daneben kann die Verarbeitung auf unserem berechtigten Interesse nach Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO beruhen.</p>
+
+<h3>Empfänger Ihrer Daten / eingesetzte Dienstleister</h3>
+<p>Wir geben personenbezogene Daten nur weiter, wenn dies zur Vertragserfüllung erforderlich ist, wir gesetzlich verpflichtet sind, ein berechtigtes Interesse besteht oder eine sonstige Rechtsgrundlage dies erlaubt. Folgende Dienstleister können dabei in Ihrem Auftrag bzw. zur Bereitstellung der Dienste tätig werden:</p>
+<ul class="processors">
+  <li><span class="who">Supabase, Inc. / Amazon Web Services</span> – Backend, Authentifizierung, Datenbank und Datei-Speicher (Hosting in der EU). <span class="meta">Singapur / EU · <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Anthropic, PBC (Claude API)</span> – KI-Analyse von Mahlzeiten sowie Erstellung von Plänen, Einkaufslisten und Motivationstexten. <span class="meta">USA (Standardvertragsklauseln) · <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Whoop, Inc.</span> – Datenquelle für Wearable-Daten (nur bei aktiver Verbindung Ihres WHOOP-Kontos). <span class="meta">USA · <a href="https://www.whoop.com/us/en/full-privacy-policy/" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Open Food Facts (Association loi 1901)</span> – Lebensmittel- und Barcode-Datenbank für die Produktsuche. <span class="meta">Frankreich (EU) · <a href="https://world.openfoodfacts.org/privacy" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">650 Industries, Inc. (Expo / EAS)</span> – App-Erstellung, Auslieferung und Updates. <span class="meta">USA · <a href="https://expo.dev/privacy" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Google Ireland Ltd.</span> – Anmeldung per Google-Konto (sofern von Ihnen genutzt). <span class="meta">Irland · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Apple Distribution International Ltd.</span> – Anmeldung mit Apple (sofern von Ihnen genutzt). <span class="meta">Irland · <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">Meta Platforms Ireland Ltd.</span> – Anmeldung per Facebook-Konto (sofern von Ihnen genutzt). <span class="meta">Irland · <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">Datenschutz</a></span></li>
+  <li><span class="who">GitHub, Inc. (GitHub Pages)</span> – Hosting der Website exelery.de. <span class="meta">USA (DPF / Standardvertragsklauseln) · <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutz</a></span></li>
+</ul>
+
+<h3>Übermittlung in Drittländer (insbesondere USA)</h3>
+<p>Einzelne der oben genannten Dienste verarbeiten Daten in den USA (insbesondere Anthropic, WHOOP, Expo und GitHub). Die USA gelten datenschutzrechtlich als Drittland ohne generell angemessenes Schutzniveau. Eine Übermittlung erfolgt daher nur, wenn geeignete Garantien im Sinne von Art.&nbsp;44&nbsp;ff. DSGVO bestehen – in der Regel auf Grundlage der von der EU-Kommission erlassenen <strong>Standardvertragsklauseln</strong> (Art.&nbsp;46 Abs.&nbsp;2 lit.&nbsp;c DSGVO) und/oder einer Zertifizierung nach dem „EU-US Data Privacy Framework", ergänzt um zusätzliche technische und organisatorische Maßnahmen. Soweit Gesundheitsdaten betroffen sind, stützen wir die Übermittlung zusätzlich auf Ihre ausdrückliche Einwilligung nach Art.&nbsp;49 Abs.&nbsp;1 lit.&nbsp;a bzw. Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO.</p>
+
 <h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3>
 <p>Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>
+
 <h3>Widerspruchsrecht gegen die Datenerhebung in besonderen Fällen sowie gegen Direktwerbung (Art.&nbsp;21 DSGVO)</h3>
 <p class="uppercase">Wenn die Datenverarbeitung auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;e oder f DSGVO erfolgt, haben Sie jederzeit das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, gegen die Verarbeitung Ihrer personenbezogenen Daten Widerspruch einzulegen; dies gilt auch für ein auf diese Bestimmungen gestütztes Profiling. Wenn Sie Widerspruch einlegen, werden wir Ihre betroffenen personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen (Widerspruch nach Art.&nbsp;21 Abs.&nbsp;1 DSGVO).</p>
 <p class="uppercase">Werden Ihre personenbezogenen Daten verarbeitet, um Direktwerbung zu betreiben, so haben Sie das Recht, jederzeit Widerspruch gegen die Verarbeitung einzulegen. Wenn Sie widersprechen, werden Ihre personenbezogenen Daten anschließend nicht mehr zum Zwecke der Direktwerbung verwendet (Widerspruch nach Art.&nbsp;21 Abs.&nbsp;2 DSGVO).</p>
+
 <h3>Beschwerderecht bei der zuständigen Aufsichtsbehörde</h3>
-<p>Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes zu.</p>
+<p>Im Falle von Verstößen gegen die DSGVO steht Ihnen ein Beschwerderecht bei einer Aufsichtsbehörde zu, insbesondere im Mitgliedstaat Ihres gewöhnlichen Aufenthalts, Ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes.</p>
+
 <h3>Recht auf Datenübertragbarkeit</h3>
 <p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem gängigen, maschinenlesbaren Format aushändigen zu lassen.</p>
+
 <h3>Auskunft, Berichtigung und Löschung</h3>
-<p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder Löschung dieser Daten.</p>
+<p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ggf. ein Recht auf Berichtigung oder Löschung dieser Daten.</p>
+
 <h3>Recht auf Einschränkung der Verarbeitung</h3>
-<p>Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu können Sie sich jederzeit an uns wenden. Das Recht auf Einschränkung der Verarbeitung besteht in folgenden Fällen:</p>
+<p>Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Das Recht besteht in folgenden Fällen:</p>
 <ul>
-  <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, benötigen wir in der Regel Zeit, um dies zu überprüfen.</li>
-  <li>Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtmäßig geschah/geschieht, können Sie statt der Löschung die Einschränkung der Datenverarbeitung verlangen.</li>
-  <li>Wenn wir Ihre personenbezogenen Daten nicht mehr benötigen, Sie sie jedoch zur Ausübung, Verteidigung oder Geltendmachung von Rechtsansprüchen benötigen.</li>
-  <li>Wenn Sie einen Widerspruch nach Art.&nbsp;21 Abs.&nbsp;1 DSGVO eingelegt haben und noch nicht feststeht, wessen Interessen überwiegen.</li>
+  <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten Daten bestreiten, benötigen wir in der Regel Zeit zur Überprüfung.</li>
+  <li>Wenn die Verarbeitung unrechtmäßig geschah/geschieht, können Sie statt der Löschung die Einschränkung verlangen.</li>
+  <li>Wenn wir Ihre Daten nicht mehr benötigen, Sie sie jedoch zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen benötigen.</li>
+  <li>Wenn Sie Widerspruch nach Art.&nbsp;21 Abs.&nbsp;1 DSGVO eingelegt haben und noch nicht feststeht, wessen Interessen überwiegen.</li>
 </ul>
+
 <h3>SSL- bzw. TLS-Verschlüsselung</h3>
-<p>Diese Seite und unsere App nutzen aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt.</p>
-<h3>Widerspruch gegen Werbe-E-Mails</h3>
-<p>Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten zur Übersendung von nicht ausdrücklich angeforderter Werbung wird hiermit widersprochen.</p>
-<h2>4. Datenerfassung in unserer App und auf dieser Website</h2>
-<h3>Anfrage per E-Mail, Telefon oder Telefax</h3>
-<p>Wenn Sie uns per E-Mail, Telefon oder Telefax kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
-<p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt. In allen übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO).</p>
-<h2>5. Registrierung in der App</h2>
+<p>Diese Seite und unsere App nutzen aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung. Auf dem Gerät werden sicherheitsrelevante Daten (z.&nbsp;B. die Anmelde-Sitzung) verschlüsselt im geschützten Speicher des Betriebssystems (Keystore/Keychain) abgelegt.</p>
+
+<h3>Mindestalter</h3>
+<p>Die Exelery-App richtet sich nicht an Kinder. Eine Nutzung ist erst ab einem Alter von 16&nbsp;Jahren zulässig. Personen unter 16&nbsp;Jahren dürfen die App nur mit Einwilligung der Erziehungsberechtigten nutzen. Sollten wir Kenntnis davon erlangen, dass wir ohne entsprechende Einwilligung Daten von Minderjährigen verarbeiten, werden diese Daten gelöscht.</p>
+
+<h2 id="a4">4. Registrierung und Anmeldung</h2>
+
 <h3>Registrierung mit E-Mail und Passwort</h3>
-<p>Sie können sich in der Exelery-App mit einer E-Mail-Adresse und einem Passwort registrieren. Bei der Registrierung erheben wir folgende Daten:</p>
+<p>Sie können sich in der Exelery-App mit E-Mail-Adresse und Passwort registrieren. Dabei erheben wir:</p>
 <ul>
   <li>E-Mail-Adresse</li>
-  <li>Passwort (verschlüsselt gespeichert, kein Klartext)</li>
+  <li>Passwort (ausschließlich als kryptografischer Hash gespeichert, kein Klartext)</li>
 </ul>
-<p>Diese Daten werden ausschließlich zur Bereitstellung Ihres Nutzerkontos verwendet. Die Verarbeitung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Vertragserfüllung).</p>
-<p>Die Authentifizierung erfolgt über den Dienst Supabase (Supabase Inc., 970 Toa Payoh North #07-04, 318992, Singapur). Supabase speichert Ihre Anmeldedaten auf Servern in der EU (Amazon Web Services, Irland-Region). Es besteht ein Auftragsverarbeitungsvertrag (AVV) mit Supabase.</p>
-<p>Nach der Registrierung erhalten Sie eine Bestätigungs-E-Mail. Ihr Konto wird erst nach Bestätigung der E-Mail-Adresse vollständig aktiviert.</p>
-<h3>Registrierung mit Google (Google Sign-In)</h3>
-<p>Sie haben die Möglichkeit, sich mit Ihrem Google-Konto in der Exelery-App anzumelden. Wir erhalten dabei von Google folgende Daten:</p>
+<p>Diese Daten dienen der Bereitstellung Ihres Nutzerkontos. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Vertragserfüllung). Die Authentifizierung erfolgt über Supabase Auth; die Anmeldedaten werden auf Servern in der EU gespeichert (siehe Abschnitt&nbsp;2). Nach der Registrierung erhalten Sie eine Bestätigungs-E-Mail; Ihr Konto wird erst nach Bestätigung vollständig aktiviert.</p>
+
+<h3>Anmeldung mit Drittanbietern (Google, Apple, Facebook)</h3>
+<p>Alternativ können Sie sich über einen externen Anbieter anmelden. Die Anmeldung erfolgt über ein sicheres Autorisierungsverfahren (OAuth); wir erhalten dabei je nach Anbieter insbesondere Ihren Namen, Ihre E-Mail-Adresse, ggf. ein Profilbild sowie eine anbieterseitige Nutzerkennung. Diese Daten dienen ausschließlich der Erstellung und Verwaltung Ihres Nutzerkontos. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung). Verfügbar sind:</p>
 <ul>
-  <li>Name</li>
-  <li>E-Mail-Adresse</li>
-  <li>Profilbild (optional)</li>
-  <li>Google-Nutzer-ID</li>
+  <li><strong>Google</strong> – Google Ireland Ltd., Gordon House, Barrow Street, Dublin&nbsp;4, Irland (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutz</a>).</li>
+  <li><strong>Apple („Mit Apple anmelden")</strong> – Apple Distribution International Ltd., Hollyhill Industrial Estate, Cork, Irland (<a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Datenschutz</a>). Apple bietet die Möglichkeit, Ihre E-Mail-Adresse zu verbergen („Hide My Email").</li>
+  <li><strong>Facebook</strong> – Meta Platforms Ireland Ltd., 4 Grand Canal Square, Dublin&nbsp;2, Irland (<a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">Datenschutz</a>).</li>
 </ul>
-<p>Diese Daten werden ausschließlich zur Erstellung und Verwaltung Ihres Nutzerkontos verwendet. Die Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung). Google ist nach dem EU-US Data Privacy Framework (DPF) zertifiziert. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a>.</p>
-<h3>Registrierung mit Facebook (Facebook Login)</h3>
-<p>Sie haben die Möglichkeit, sich mit Ihrem Facebook-Konto in der Exelery-App anzumelden. Wir erhalten dabei von Facebook folgende Daten:</p>
-<ul>
-  <li>Name</li>
-  <li>E-Mail-Adresse (sofern von Ihnen bei Facebook hinterlegt und freigegeben)</li>
-  <li>Facebook-Nutzer-ID</li>
-</ul>
-<p>Die Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung). Anbieter ist Meta Platforms Ireland Ltd., 4 Grand Canal Square, Dublin 2, Irland. Meta verfügt über eine Zertifizierung nach dem EU-US Data Privacy Framework (DPF). Weitere Informationen: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">https://www.facebook.com/privacy/policy/</a>.</p>
-<p>Für die Löschung Ihrer bei uns gespeicherten Facebook-Anmeldedaten können Sie uns unter <a href="mailto:support@exelery.de">support@exelery.de</a> kontaktieren.</p>
-<h2>6. Gesundheits- und Fitnessdaten</h2>
+<p>Google, Apple und Meta sind nach dem EU-US Data Privacy Framework zertifiziert. Es werden nur die Anbieter angeboten, die in der App aktiviert sind.</p>
+
+<h2 id="a5">5. Profil-, Onboarding-, Ziel- und Tagebuchdaten</h2>
+
 <h3>Onboarding-Fragebogen und Nutzerprofil</h3>
-<p>Im Rahmen des Onboardings erheben wir Angaben zu Ihrer Person und Ihren Fitnesszielen. Diese Daten werden in Ihrem Nutzerprofil gespeichert und umfassen insbesondere:</p>
+<p>Im Onboarding (mehrteiliger Fragebogen zu Ernährung, Training und Motivation) und in Ihrem Profil erheben wir Angaben zu Ihrer Person und Ihren Fitnesszielen, insbesondere:</p>
 <ul>
   <li>Name</li>
-  <li>Aktuelles Körpergewicht</li>
-  <li>Fitnessziel (z.&nbsp;B. Abnehmen, Muskelaufbau)</li>
+  <li>Geschlecht</li>
+  <li>Geburtsdatum bzw. Alter</li>
+  <li>Größe und Gewicht</li>
+  <li>Ziel (z.&nbsp;B. Abnehmen, Muskelaufbau)</li>
+  <li>Aktivitätslevel</li>
   <li>Ernährungstyp / Diätpräferenzen</li>
-  <li>Verletzungen oder gesundheitliche Einschränkungen</li>
+  <li>Verletzungen oder gesundheitliche Einschränkungen (sofern angegeben)</li>
   <li>Motivationsstil</li>
 </ul>
-<p>Soweit es sich dabei um Gesundheitsdaten im Sinne von Art.&nbsp;9 Abs.&nbsp;1 DSGVO handelt, erfolgt die Verarbeitung auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO. Sie können diese Einwilligung jederzeit widerrufen.</p>
-<h3>Körper-Scan-Fotos</h3>
-<p>Sie haben die Möglichkeit, optional Fotos Ihres Körpers (Körper-Scans) in der App hochzuladen, um Ihren Fortschritt visuell zu dokumentieren. Die Verarbeitung erfolgt ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO.</p>
-<p>Die Fotos werden verschlüsselt und in einem privaten Speicherbereich bei Supabase Storage (AWS, EU-Region) abgelegt. Kein anderer Nutzer hat Zugriff auf Ihre Fotos. Sie können Ihre Fotos jederzeit in der App löschen oder uns unter <a href="mailto:support@exelery.de">support@exelery.de</a> zur Löschung auffordern.</p>
-<h2>7. Einsatz von Künstlicher Intelligenz (KI)</h2>
-<h3>Erstellung personalisierter Pläne mittels KI</h3>
-<p>Exelery nutzt Dienste auf Basis Künstlicher Intelligenz (KI), um Ihnen individuell angepasste Fitness- und Ernährungspläne sowie tägliche Motivationszitate zu erstellen. Hierzu werden Ihre Profildaten an einen KI-Dienstleister übermittelt. Eingesetzte Dienste können sein:</p>
+<p>Diese Daten benötigen wir, um Ihnen personalisierte Pläne und Auswertungen bereitzustellen, und speichern sie in unserer Datenbank bei Supabase (EU). Rechtsgrundlage für die Bereitstellung dieser Funktionen ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Soweit es sich um Gesundheitsdaten im Sinne von Art.&nbsp;9 Abs.&nbsp;1 DSGVO handelt (z.&nbsp;B. Gewicht, Verletzungen, gesundheitliche Einschränkungen), erfolgt die Verarbeitung auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO. Sie können diese Einwilligung jederzeit widerrufen.</p>
+
+<h3>Ziele und Tagebuch</h3>
+<p>Sie können in der App persönliche Ziele anlegen (z.&nbsp;B. mit Zieldatum) und Tagebucheinträge verfassen. Diese Daten dienen der Bereitstellung der Ziel- und Tagebuchfunktionen; Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Soweit Sie in Tagebucheinträgen freiwillig gesundheitsbezogene Angaben machen, erfolgt die Verarbeitung auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO. Anhand eines Zieldatums können – sofern von Ihnen aktiviert – lokale Erinnerungen auf Ihrem Gerät geplant werden (siehe Abschnitt&nbsp;12).</p>
+
+<h2 id="a6">6. Ernährungsdaten und Mahlzeiten-Tracking</h2>
+
+<h3>Erfassung von Mahlzeiten</h3>
+<p>In der App können Sie Mahlzeiten erfassen. Dabei verarbeiten wir die von Ihnen eingegebenen bzw. erzeugten Daten, insbesondere:</p>
 <ul>
-  <li><strong>Anthropic Claude API</strong> – Anthropic, PBC, 548 Market St, PMB 90375, San Francisco, CA 94104, USA (<a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Datenschutz</a>)</li>
-  <li><strong>OpenAI API</strong> – OpenAI, LLC, 3180 18th Street, San Francisco, CA 94110, USA (<a href="https://openai.com/privacy" target="_blank" rel="noopener">Datenschutz</a>)</li>
+  <li>Bezeichnung und Beschreibung der Mahlzeiten</li>
+  <li>Kalorien und Nährwerte (Makronährstoffe: Eiweiß, Kohlenhydrate, Fett)</li>
+  <li>Zeitpunkt der Erfassung sowie ggf. als „Cheat-Day" markierte Tage</li>
 </ul>
-<p>Die Übermittlung von Daten in die USA erfolgt auf Grundlage der EU-Standardvertragsklauseln gemäß Art.&nbsp;46 Abs.&nbsp;2 lit.&nbsp;c DSGVO. Soweit Gesundheitsdaten verarbeitet werden, erfolgt dies ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO.</p>
-<h3>KI-gestützte Kommunikation und Kundenservice</h3>
-<p>Sofern in der App KI-gestützte Kommunikationsfunktionen eingesetzt werden, werden Ihre eingegebenen Texte zur Bearbeitung Ihrer Anfrage an den jeweiligen KI-Dienstleister übermittelt. Die Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO.</p>
-<h2>8. Zahlungsabwicklung</h2>
-<h3>Stripe</h3>
-<p>Für die Abwicklung von Zahlungen (z.&nbsp;B. Premium-Abonnements) setzen wir den Dienst Stripe ein. Anbieter ist die Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland.</p>
-<p>Wenn Sie eine Zahlung vornehmen, werden die dafür notwendigen Daten direkt an Stripe übermittelt. Wir selbst speichern keine vollständigen Zahlungsdaten. Die Verarbeitung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Weitere Informationen: <a href="https://stripe.com/de/privacy" target="_blank" rel="noopener">https://stripe.com/de/privacy</a>.</p>
-<h2>9. Datenübermittlung bei Vertragsschluss für digitale Inhalte und Dienstleistungen</h2>
-<p>Beim Abschluss eines kostenpflichtigen Abonnements werden folgende Daten verarbeitet:</p>
+<p>Diese Daten dienen der Bereitstellung der Tracking- und Auswertungsfunktionen und werden in unserer Datenbank bei Supabase (EU) gespeichert. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO; soweit Rückschlüsse auf Gesundheitsdaten möglich sind, zusätzlich Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (ausdrückliche Einwilligung).</p>
+
+<h3>Nährwert-Schätzung per Foto und Texteingabe (KI)</h3>
+<p>Sie können Mahlzeiten per Texteingabe oder per Foto erfassen. Zur Schätzung der Nährwerte werden die Texteingabe bzw. das Foto an unseren KI-Dienstleister übermittelt (siehe Abschnitt&nbsp;10). <strong>Mahlzeiten-Fotos werden dabei ausschließlich zur Analyse übertragen und von uns nicht dauerhaft gespeichert</strong> – gespeichert wird lediglich das Ergebnis der Schätzung (z.&nbsp;B. Bezeichnung, Kalorien und Nährwerte). Für diese Verarbeitung gilt zusätzlich Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (ausdrückliche Einwilligung).</p>
+
+<h3>Lebensmittel- und Barcode-Suche (Open Food Facts)</h3>
+<p>Für die Suche nach Lebensmitteln und das Scannen von Barcodes nutzen wir die öffentliche Datenbank von Open Food Facts. Bei einer Suchanfrage wird die jeweilige Anfrage (z.&nbsp;B. Suchbegriff oder Barcode) an die Server von Open Food Facts übermittelt; dabei kann technisch Ihre IP-Adresse verarbeitet werden. Open Food Facts wird von einer gemeinnützigen Vereinigung in Frankreich betrieben (Open Food Facts, 21 rue des Îles, 94100 Saint-Maur-des-Fossés, Frankreich); die Daten werden innerhalb der EU verarbeitet, es findet insoweit <strong>keine Drittlandübermittlung</strong> statt. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Bereitstellung der von Ihnen genutzten Suchfunktion) bzw. Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO. Weitere Informationen: <a href="https://world.openfoodfacts.org/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Open Food Facts</a>.</p>
+
+<h3>Einkaufsliste</h3>
+<p>Auf Wunsch erstellen wir aus Ihrem Ernährungsplan eine Einkaufsliste. Die zugehörigen Einträge werden in Ihrer Datenbank gespeichert; zur Erstellung kann der KI-Dienst genutzt werden (siehe Abschnitt&nbsp;10). Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO.</p>
+
+<h2 id="a7">7. Trainingsdaten und Trainingspläne</h2>
+<p>Im Rahmen der Trainingsfunktionen verarbeiten wir Ihre Trainingsdaten und die für Sie erstellten Trainingspläne. Dazu gehören insbesondere:</p>
 <ul>
-  <li>Name</li>
-  <li>E-Mail-Adresse</li>
-  <li>Zahlungsdaten (verarbeitet durch Stripe, nicht direkt bei uns gespeichert)</li>
-  <li>Kaufzeitpunkt und Abonnementtyp</li>
+  <li>absolvierte bzw. abgehakte Trainingseinheiten (Datum, Bezeichnung/Fokus, Notizen),</li>
+  <li>geloggte Arbeitssätze (Übung, Satz, Wiederholungen, Gewicht),</li>
+  <li>die durch die KI generierten Trainings- und Ernährungspläne.</li>
 </ul>
-<p>Die Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Die Daten werden für die Dauer des Vertragsverhältnisses zuzüglich der gesetzlichen Aufbewahrungsfristen gespeichert.</p>
-<h2>10. Kontolöschung und Datenlöschung</h2>
-<p>Sie können die Löschung Ihres Nutzerkontos und aller damit verbundenen personenbezogenen Daten jederzeit beantragen, indem Sie uns eine E-Mail an <a href="mailto:support@exelery.de">support@exelery.de</a> senden. Nach Eingang Ihres Löschantrags werden Ihre Daten innerhalb von 30 Tagen gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
-<p>Dies umfasst insbesondere:</p>
+<p>Diese Daten dienen der Bereitstellung und Personalisierung der Trainingsfunktionen und werden in unserer Datenbank bei Supabase (EU) gespeichert. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO; soweit Gesundheits- bzw. Fitnessdaten betroffen sind, zusätzlich Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (ausdrückliche Einwilligung). Zur Plan­erstellung durch KI siehe Abschnitt&nbsp;10.</p>
+
+<h2 id="a8">8. Körpermaße und Profilbild</h2>
+
+<h3>Körpermaße und Gewichtsverlauf</h3>
+<p>Sie können in der App Körpermaße erfassen, um Ihren Fortschritt zu dokumentieren. Dazu zählen insbesondere Gewicht, Körperfettanteil sowie Umfangsmaße (z.&nbsp;B. Taille, Brust, Hüfte, Arm, Oberschenkel) nebst optionalen Notizen. Diese Angaben sind Gesundheitsdaten im Sinne von Art.&nbsp;9 Abs.&nbsp;1 DSGVO; die Verarbeitung erfolgt ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO. Die Daten werden in unserer Datenbank bei Supabase (EU) gespeichert und für Ihre Fortschritts-Diagramme sowie zur Anpassung Ihrer Pläne genutzt.</p>
+
+<h3>Profilbild</h3>
+<p>Sie können optional ein Profilbild aufnehmen oder aus Ihrer Galerie auswählen. Das Bild wird in unserem Datei-Speicher (Supabase Storage, EU) abgelegt und in der App über eine Bild-URL eingebunden. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung) bzw. Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Sie können Ihr Profilbild jederzeit in der App ändern oder entfernen.</p>
+
+<h2 id="a9">9. Anbindung von WHOOP (Wearable-Integration)</h2>
+<p>Sie können in der App optional Ihr WHOOP-Konto verbinden, um Mess- und Trainingsdaten Ihres WHOOP-Geräts in Exelery zu nutzen. Die Verbindung erfolgt über das Autorisierungsverfahren OAuth: Sie melden sich bei WHOOP an und geben gezielt einzelne Datenbereiche („Scopes") frei. Erst nach dieser ausdrücklichen Freigabe rufen wir die entsprechenden Daten über die WHOOP-Schnittstelle (API) ab.</p>
+
+<div class="callout">
+  <p style="margin:.3em 0;"><strong>Freigegebene Datenbereiche (Scopes) und abgerufene Daten:</strong></p>
+  <ul style="margin:.4em 0;">
+    <li><strong>read:cycles</strong> – tägliche Zyklusdaten, insbesondere Ihr täglicher Energie-/Kalorienverbrauch sowie der Belastungswert („Strain").</li>
+    <li><strong>read:workout</strong> – Trainingseinheiten, insbesondere Sportart, Beginn/Ende (Dauer), Belastung (Strain) und verbrauchte Kalorien.</li>
+    <li><strong>offline</strong> – ein Aktualisierungs-Token, damit die Synchronisierung automatisch im Hintergrund erfolgen kann.</li>
+  </ul>
+  <p style="margin:.3em 0;">Diese physiologischen Werte (Energieverbrauch, Belastung, Trainingsdaten) sind <strong>Gesundheitsdaten</strong> und damit besondere Kategorien personenbezogener Daten nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO.</p>
+</div>
+
+<p>Die Verarbeitung dieser WHOOP-Daten erfolgt ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (in Verbindung mit Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO), die Sie mit der Freigabe in der App erteilen. Wir nutzen die Daten, um sie Ihnen in der App darzustellen und in Ihre Auswertungen sowie Pläne einfließen zu lassen.</p>
+
+<p>Zur Bereitstellung der Verbindung speichern wir die im Rahmen von OAuth ausgestellten Zugriffs- und Aktualisierungs-Token, den Verbindungsstatus sowie – sofern verfügbar – Ihre WHOOP-Nutzerkennung (zur Anzeige/Diagnose) in unserer Datenbank bei Supabase (EU). Die Speicherung erfolgt in den Tabellen <code>user_integrations</code> (Verbindungs- und Token-Daten), <code>whoop_daily</code> (tägliche Verbrauchs-/Belastungsdaten) und <code>whoop_workouts</code> (Trainingseinheiten). Der Austausch und die Erneuerung der Token erfolgen ausschließlich serverseitig; das WHOOP-Client-Secret verlässt unsere Server nicht.</p>
+
+<p><strong>WHOOP als eigenständiger Anbieter.</strong> Anbieter des WHOOP-Dienstes ist die Whoop, Inc., 1325 Boylston St. #401, Boston, MA&nbsp;02215, USA. WHOOP verarbeitet die Daten auf der eigenen Plattform in eigener Verantwortung; es gilt die <a href="https://www.whoop.com/us/en/full-privacy-policy/" target="_blank" rel="noopener">Datenschutzerklärung von WHOOP</a>. Da WHOOP in den USA sitzt, handelt es sich beim Abruf um eine Übermittlung aus einem Drittland; hierfür gelten die im Abschnitt „Übermittlung in Drittländer" beschriebenen Garantien sowie Ihre ausdrückliche Einwilligung.</p>
+
+<p><strong>Verbindung trennen / Widerruf.</strong> Sie können die WHOOP-Verbindung jederzeit in der App trennen. Dabei werden die gespeicherten Token <strong>sowie die bereits synchronisierten WHOOP-Daten</strong> (<code>whoop_daily</code> und <code>whoop_workouts</code>) gelöscht und es werden keine weiteren Daten mehr von WHOOP abgerufen. Den Zugriff können Sie zusätzlich direkt in Ihrem WHOOP-Konto widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung.</p>
+
+<h2 id="a10">10. Einsatz von Künstlicher Intelligenz (KI)</h2>
+
+<h3>Wozu wir KI einsetzen und welche Daten übermittelt werden</h3>
+<p>Exelery nutzt einen KI-Dienst, um Ihre Mahlzeiten auszuwerten und um individuell angepasste Inhalte zu erstellen. Im Einzelnen:</p>
+<ul>
+  <li><strong>Mahlzeiten-Schätzung</strong> – Ihre Texteingabe bzw. Ihr Mahlzeiten-Foto wird zur Schätzung von Portionsgröße und Nährwerten analysiert.</li>
+  <li><strong>Plan-Erstellung</strong> – zur Erstellung von Ernährungs- und Trainingsplänen werden relevante Profil-, Ziel- und (sofern vorhanden) Verlaufsdaten übermittelt.</li>
+  <li><strong>Einkaufsliste und wöchentliche Auswertung</strong> – zur Erstellung der Einkaufsliste sowie einer kurzen wöchentlichen Ernährungs-Auswertung.</li>
+</ul>
+
+<h3>Eingesetzter Dienstleister und Drittlandtransfer</h3>
+<p>Eingesetzt wird ausschließlich der Dienst <strong>Claude API</strong> der Anthropic, PBC, 548 Market St, PMB 90375, San Francisco, CA&nbsp;94104, USA (<a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Datenschutz</a>). Da Anthropic seine Server in den USA betreibt, werden die genannten Daten in ein Drittland übermittelt. Die Übermittlung erfolgt auf Grundlage der EU-Standardvertragsklauseln gemäß Art.&nbsp;46 Abs.&nbsp;2 lit.&nbsp;c DSGVO; mit Anthropic besteht ein Vertrag über Auftragsverarbeitung (Data Processing Addendum). Die Übermittlung erfolgt serverseitig über unser Backend; der API-Schlüssel wird nicht an die App ausgegeben.</p>
+
+<p>Soweit dabei Gesundheitsdaten verarbeitet werden (z.&nbsp;B. weil Mahlzeiten-Fotos oder Profil-/Verlaufsdaten Rückschlüsse auf Ihre Gesundheit zulassen), erfolgt dies ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO. Im Übrigen ist Rechtsgrundlage Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Bereitstellung der von Ihnen genutzten Funktion).</p>
+
+<h3>Keine Nutzung Ihrer Daten zum KI-Training</h3>
+<p>Nach Angaben von Anthropic werden Inhalte, die über die kommerzielle API übermittelt werden, <strong>nicht zum Training der KI-Modelle</strong> verwendet. Die übermittelten Inhalte werden nur für einen kurzen Zeitraum (standardmäßig sieben Tage) zu Zwecken der Sicherheit und Missbrauchserkennung gespeichert und anschließend gelöscht.</p>
+
+<h3>Keine automatisierte Entscheidung im Einzelfall</h3>
+<p>Eine ausschließlich automatisierte Entscheidung im Einzelfall einschließlich Profiling, die Ihnen gegenüber rechtliche Wirkung entfaltet oder Sie in ähnlicher Weise erheblich beeinträchtigt (Art.&nbsp;22 DSGVO), findet nicht statt. Die KI-gestützten Auswertungen und Empfehlungen dienen ausschließlich Informations- und Unterstützungszwecken und ersetzen keine ärztliche, ernährungsmedizinische oder sonstige fachliche Beratung.</p>
+
+<h2 id="a11">11. Technische Daten und Protokolle</h2>
+<p>Zur Gewährleistung eines stabilen, sicheren und fehlerfreien Betriebs sowie zur Produktverbesserung verarbeiten wir technische Daten und Protokolle in unserer eigenen Datenbank bei Supabase (EU). Ein gesonderter Analyse-Dienstleister (Drittanbieter) kommt hierfür nicht zum Einsatz. Erfasst werden insbesondere:</p>
+<ul>
+  <li><strong>Fehlerprotokolle</strong> (<code>error_logs</code>): Fehlermeldung, technische Fehlerdetails (Stack-Trace), betroffener App-Bereich/Bildschirm, Zeitpunkt sowie – sofern Sie angemeldet sind – ein Bezug zu Ihrem Konto.</li>
+  <li><strong>Ereignisprotokolle</strong> (<code>event_logs</code>): Bezeichnung des Ereignisses, technische Zusatzangaben zum Ereignis, betroffener Bildschirm, Zeitpunkt sowie – sofern Sie angemeldet sind – ein Bezug zu Ihrem Konto.</li>
+</ul>
+<p>Diese Daten können technisch auch bereits vor einer Anmeldung erfasst werden, damit Fehler frühzeitig erkannt werden. Sie dienen der Fehleranalyse, der Stabilität und Sicherheit sowie der Verbesserung der App. Rechtsgrundlage ist unser berechtigtes Interesse an einem funktionsfähigen, sicheren und nutzerfreundlichen Dienst gemäß Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO. Bei einer Kontolöschung wird ein etwaiger Bezug dieser Protokolle zu Ihrem Konto entfernt; die Einträge verbleiben anschließend nur noch in anonymisierter Form (ohne Personenbezug).</p>
+
+<h2 id="a12">12. App-Bereitstellung, Berechtigungen und Benachrichtigungen</h2>
+
+<h3>App-Erstellung und Updates (Expo / EAS)</h3>
+<p>Die Exelery-App wird mit der Plattform Expo erstellt und ausgeliefert; hierfür nutzen wir die Expo Application Services (EAS) der 650 Industries, Inc. (Expo), San Francisco, CA, USA. Über diese Dienste werden App-Builds erstellt, verteilt und – sofern eingesetzt – Aktualisierungen bereitgestellt. Dabei können technische Daten verarbeitet werden, etwa zur Auslieferung der App oder zur Prüfung auf verfügbare Updates. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an einer sicheren Bereitstellung und Aktualisierung der App). Soweit Daten in den USA verarbeitet werden, gelten die im Abschnitt „Übermittlung in Drittländer" beschriebenen Garantien. Weitere Informationen: <a href="https://expo.dev/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Expo</a>.</p>
+
+<h3>Geräteberechtigungen (Kamera und Fotos)</h3>
+<p>Für bestimmte Funktionen fragt die App Berechtigungen ab: den Zugriff auf die <strong>Kamera</strong> (zum Aufnehmen von Mahlzeiten-Fotos und zum Scannen von Barcodes) sowie den Zugriff auf Ihre <strong>Fotogalerie</strong> (zum Auswählen eines Profilbilds). Sie können diese Berechtigungen jederzeit in den Geräteeinstellungen erteilen oder entziehen. Die Verarbeitung der so erfassten Inhalte ist in den Abschnitten&nbsp;6 und&nbsp;8 beschrieben.</p>
+
+<h3>Lokale Benachrichtigungen</h3>
+<p>Die App kann Ihnen Erinnerungen senden (z.&nbsp;B. zu Zielen oder als Geburtstagsgruß). Diese Benachrichtigungen werden – sofern Sie die Benachrichtigungsberechtigung erteilen – ausschließlich <strong>lokal auf Ihrem Gerät</strong> geplant und ausgelöst. Ein Push-Token wird hierfür nicht erzeugt und es werden hierfür keine zusätzlichen personenbezogenen Daten an uns oder Dritte übertragen. Sie können Benachrichtigungen jederzeit in den Geräteeinstellungen deaktivieren.</p>
+
+<h2 id="a13">13. Kontolöschung und Datenlöschung</h2>
+<p>Sie können Ihr Nutzerkonto und die damit verbundenen personenbezogenen Daten jederzeit löschen. Hierfür stehen Ihnen zwei Wege zur Verfügung:</p>
+<ul>
+  <li><strong>In der App:</strong> Über die integrierte Funktion „Konto löschen" wird Ihr Konto unmittelbar und unwiderruflich gelöscht. Alle zugehörigen Daten werden dabei automatisch mitgelöscht.</li>
+  <li><strong>Per E-Mail:</strong> Alternativ können Sie Ihren Löschwunsch an <a href="mailto:support@exelery.de">support@exelery.de</a> richten; wir setzen die Löschung dann zeitnah, spätestens innerhalb von 30&nbsp;Tagen um, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+</ul>
+<p>Die Löschung umfasst insbesondere:</p>
 <ul>
   <li>Ihr Nutzerkonto (Authentifizierungsdaten)</li>
-  <li>Ihr Nutzerprofil (Fitnessdaten, Ziele etc.)</li>
-  <li>Ihre generierten Pläne (Ernährungs- und Trainingspläne)</li>
-  <li>Ihre hochgeladenen Körper-Scan-Fotos</li>
+  <li>Ihr Nutzerprofil sowie Ihre Onboarding-Angaben (Ernährung, Training, Motivation)</li>
+  <li>Ihre Ziele und Tagebucheinträge</li>
+  <li>Ihre Ernährungs- und Mahlzeiten­daten sowie Einkaufslisten</li>
+  <li>Ihre Trainingsdaten (Trainings-Logbuch, geloggte Sätze) und generierten Pläne</li>
+  <li>Ihre Körpermaße und Ihr Profilbild</li>
+  <li>Ihre WHOOP-Verbindungs- und Token-Daten sowie synchronisierte WHOOP-Daten</li>
 </ul>
-<p class="source">Quellen: <a href="https://www.e-recht24.de" target="_blank" rel="noopener">https://www.e-recht24.de</a> (Basistext), ergänzt durch eigene Abschnitte gemäß DSGVO / TDDDG.</p>
+<p>Technische Protokolle (Fehler-/Ereignisprotokolle) werden nicht gelöscht, sondern – wie in Abschnitt&nbsp;11 beschrieben – um den Personenbezug bereinigt und verbleiben nur noch anonymisiert. Möchten Sie ausschließlich die WHOOP-Verbindung beenden, ohne Ihr Konto zu löschen, können Sie die Verbindung in der App trennen (siehe Abschnitt&nbsp;9).</p>
+
+<h2 id="a14">14. Änderungen dieser Datenschutzerklärung</h2>
+<p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen, z.&nbsp;B. bei der Einführung neuer Funktionen. Für Ihren erneuten Besuch bzw. die weitere Nutzung gilt dann die jeweils aktuelle Fassung. Den Stand erkennen Sie am Datum oben auf dieser Seite.</p>
+
+<p class="source">Basistext erstellt mit Unterstützung von <a href="https://www.e-recht24.de/" target="_blank" rel="noopener">e-recht24.de</a>, ergänzt und überarbeitet durch eigene, auf die Exelery-App abgestimmte Abschnitte gemäß DSGVO (u.&nbsp;a. zu WHOOP-Integration, KI-Verarbeitung, Mahlzeiten-Tracking, Körpermaßen und technischen Protokollen).</p>
+
 </body>
 </html>
