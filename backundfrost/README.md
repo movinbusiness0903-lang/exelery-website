@@ -1,13 +1,47 @@
-# Back & Frost — Webseiten-Konzepte (Layout-Entwürfe)
+# Back & Frost — Webseite (Layout-Entwurf)
 
-Drei luxuriöse Layout-Entwürfe für den neuen Webauftritt von **Back & Frost Leipzig GmbH & Co. KG**.
-Reines HTML + Inline-CSS, keine Build-Tools — einfach im Browser öffnen.
+Webauftritt für **Back & Frost Leipzig GmbH & Co. KG**. Reines HTML/CSS/JS, keine
+Build-Tools — einfach im Browser öffnen.
 
 > **Wichtig:** Dieser Ordner ist ein eigenständiges Projekt und hat **nichts mit Exelery** zu tun.
 > Die Exelery-Dateien (`/index.html`, `/impressum`, `/datenschutz` im Repo-Root) wurden **nicht** verändert.
 
-## Öffnen
-Starte mit **`index.html`** — dort sind die drei Konzepte verlinkt. Oder direkt:
+## 👉 Die fertige Website: Ordner `website/`
+
+Der Nutzer hat sich für **Konzept A (Dark & Edel)** entschieden. Daraus ist eine
+**vollwertige, klickbare Mehrseiten-Website** entstanden — das ist der eigentliche
+Liefergegenstand:
+
+```
+website/
+├─ index.html         Startseite
+├─ sortiment.html     Alle Kategorien mit Beispielprodukten
+├─ ueber-uns.html     Über uns + Qualität (IFS)
+├─ liefergebiete.html Liefergebiete
+├─ kontakt.html       Kontaktformular (mailto) + Kontaktdaten
+├─ impressum.html     Impressum (Vorlage mit Platzhaltern)
+├─ datenschutz.html   Datenschutz (DSGVO-Vorlage)
+└─ assets/  styles.css · app.js · logo.png · img/
+```
+
+**Öffnen:** `website/index.html` im Browser. Navigation, Mobil-Menü, interne Links und
+das mailto-Kontaktformular funktionieren. Gemeinsames Design über `assets/styles.css`,
+Verhalten über `assets/app.js`.
+
+### Vor dem Go-Live ersetzen
+- **Kontaktdaten:** `info@backundfrost.de`, Telefon, Adresse, Öffnungszeiten
+  (Platzhalter sind im UI gelb markiert). Das mailto-Ziel steht im `<form>`-Attribut
+  `data-mailto` in `kontakt.html`.
+- **Impressum & Datenschutz:** Platzhalter `[…]` ausfüllen und **rechtlich prüfen lassen**.
+- **Produktnamen/Texte** in `sortiment.html` und den Teasern anpassen.
+- **`<meta name="robots" content="noindex">`** in jeder Seite entfernen, damit Suchmaschinen
+  die Seite indexieren (aktuell als Entwurf gesperrt).
+- Den orangefarbenen **„Layout-Entwurf"-Banner** (`.draft-banner`) entfernen.
+
+---
+
+## Die drei ursprünglichen Konzept-Entwürfe (Referenz)
+Starte mit **`index.html`** (im Wurzelordner `backundfrost/`) — dort sind die drei Konzepte verlinkt. Oder direkt:
 
 | Datei | Konzept | Stil |
 |-------|---------|------|
