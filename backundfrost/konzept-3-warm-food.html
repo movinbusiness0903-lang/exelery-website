@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back &amp; Frost — Aus Liebe zum Backen | Konzept C · Warm &amp; Food</title>
+<meta name="description" content="Back & Frost – hochwertige Tiefkühl-Backwaren: Blechkuchen, Plunder, Brötchen, Brote, Snacks und Desserts. Aus Liebe zum Backen.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2A1A12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFBF5;          /* warmes Off-White */
+    --cream:#F6EADB;
+    --caramel:#C98A4B;
+    --brown:#3A2418;       /* dunkle Schokolade */
+    --brown-2:#5E3B27;
+    --ink:#2A1A12;
+    --muted:#7A6657;
+    --red:#E11B22;
+    --ice:#4FB6C7;
+    --ice-2:#7FD4E0;
+    --ice-soft:#E6F6F8;
+    --line:rgba(42,26,18,.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;background:var(--bg);}
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.1;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 30px;}
+  .eyebrow{color:var(--caramel);font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:.74rem;font-family:'Inter';}
+  .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:15px 30px;font-weight:600;font-size:.96rem;
+    transition:transform .25s,box-shadow .25s,background .25s,color .25s;font-family:'Inter';}
+  .btn-primary{background:var(--red);color:#fff;box-shadow:0 10px 24px rgba(225,27,34,.26);}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(225,27,34,.36);}
+  .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--caramel);transform:translateY(-3px);}
+
+  /* Nav */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,251,245,.86);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:82px;gap:22px;}
+  .nav-inner img.logo{height:42px;width:auto;display:block;}
+  .nav-links{display:flex;align-items:center;gap:30px;font-size:.93rem;font-weight:500;color:var(--brown-2);}
+  .nav-links a:hover{color:var(--red);}
+  .burger{display:none;background:none;border:0;font-size:1.5rem;cursor:pointer;color:var(--ink);}
+
+  /* Hero - big warm image with overlay card */
+  .hero{position:relative;min-height:86vh;display:flex;align-items:flex-end;
+    background:linear-gradient(180deg,rgba(42,26,18,.05),rgba(42,26,18,.42)),url('assets/img/hero-warm.svg') center/cover no-repeat;}
+  .hero .wrap{width:100%;padding-bottom:64px;padding-top:64px;}
+  .hero-card{max-width:680px;background:rgba(255,251,245,.92);border-radius:26px;padding:46px 48px;
+    box-shadow:0 30px 70px rgba(42,26,18,.28);backdrop-filter:blur(4px);}
+  .hero-card .eyebrow{color:var(--red);}
+  .hero h1{font-size:clamp(2.7rem,6.4vw,4.8rem);margin:14px 0 0;}
+  .hero h1 em{color:var(--caramel);}
+  .hero p.lead{color:var(--muted);font-size:1.12rem;margin:20px 0 0;max-width:52ch;}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px;}
+
+  section{padding:96px 0;}
+  .sec-head{text-align:center;max-width:660px;margin:0 auto 56px;}
+  .sec-head h2{font-size:clamp(2.1rem,4.8vw,3.3rem);margin:12px 0 14px;}
+  .sec-head p{color:var(--muted);margin:0;font-size:1.08rem;}
+
+  /* Sortiment - warm cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .card{border-radius:22px;overflow:hidden;background:#fff;border:1px solid var(--line);
+    box-shadow:0 10px 30px rgba(42,26,18,.06);transition:transform .35s,box-shadow .35s;}
+  .card:hover{transform:translateY(-8px);box-shadow:0 26px 56px rgba(42,26,18,.16);}
+  .card .thumb{aspect-ratio:3/2;background-size:cover;background-position:center;position:relative;}
+  .card .pill{position:absolute;left:16px;top:16px;background:rgba(255,251,245,.92);color:var(--brown);
+    font-family:'Inter';font-size:.72rem;font-weight:600;letter-spacing:.08em;padding:6px 12px;border-radius:999px;text-transform:uppercase;}
+  .card .body{padding:24px 26px 28px;}
+  .card h3{font-size:1.6rem;margin:0 0 8px;}
+  .card p{margin:0;color:var(--muted);font-size:.96rem;}
+
+  /* Frost-Kontrast band */
+  .frost{background:linear-gradient(180deg,var(--ice-soft),#fff);}
+  .frost .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .frost .media{aspect-ratio:4/3;border-radius:24px;background:url('assets/img/cat-broetchen.svg') center/cover no-repeat;
+    box-shadow:0 24px 50px rgba(42,26,18,.16);}
+  .frost h2{font-size:clamp(2rem,4.4vw,3rem);margin:12px 0 16px;}
+  .frost h2 em{color:var(--ice);font-style:normal;}
+  .frost p{color:var(--muted);font-size:1.06rem;}
+  .frost .points{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:14px;}
+  .frost .points li{display:flex;align-items:flex-start;gap:12px;font-size:1rem;}
+  .frost .points .ic{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ice);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-top:2px;}
+
+  /* Video - full warm */
+  .video-band{position:relative;}
+  .video-frame{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:16/9;
+    background:url('assets/img/video-poster.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 30px 70px rgba(42,26,18,.26);}
+  .video-frame .play{width:100px;height:100px;border-radius:50%;background:rgba(255,251,245,.9);
+    display:flex;align-items:center;justify-content:center;transition:transform .3s,background .3s;cursor:pointer;}
+  .video-frame .play:hover{transform:scale(1.07);background:var(--red);}
+  .video-frame .play:hover svg path{fill:#fff;}
+  .placeholder-note{position:absolute;left:16px;bottom:14px;background:rgba(42,26,18,.72);color:#fff;
+    font-size:.72rem;letter-spacing:.04em;padding:6px 11px;border-radius:8px;font-family:'Inter';}
+
+  /* Liefergebiete */
+  .liefer{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .liefer .it{background:#fff;border:1px solid var(--line);border-radius:20px;padding:34px 30px;text-align:center;
+    box-shadow:0 10px 30px rgba(42,26,18,.05);}
+  .liefer .it .ic{width:58px;height:58px;border-radius:16px;background:var(--cream);margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+  .liefer .it h3{font-size:1.4rem;margin:0 0 8px;}
+  .liefer .it p{margin:0;color:var(--muted);font-size:.95rem;}
+
+  /* Kontakt - warm dark */
+  .contact{position:relative;border-radius:30px;overflow:hidden;text-align:center;padding:80px 30px;color:#fff;
+    background:linear-gradient(135deg,var(--brown),var(--brown-2));}
+  .contact::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 80% 20%,rgba(127,212,224,.2),transparent 60%);}
+  .contact>*{position:relative;}
+  .contact .eyebrow{color:var(--ice-2);}
+  .contact h2{color:#fff;font-size:clamp(2.2rem,5vw,3.4rem);margin:14px 0 14px;}
+  .contact p{color:rgba(255,251,245,.78);max-width:50ch;margin:0 auto 30px;}
+  .contact .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .contact .btn-ghost{background:transparent;border-color:rgba(255,255,255,.45);color:#fff;}
+  .contact .btn-ghost:hover{background:#fff;color:var(--brown);}
+
+  /* Footer */
+  footer{background:var(--brown);color:#fff;padding:64px 0 56px;margin-top:96px;}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:34px;}
+  .foot-grid img.logo{height:40px;margin-bottom:16px;}
+  .foot-grid p{color:rgba(255,251,245,.62);font-size:.92rem;margin:0;max-width:32ch;}
+  .foot-grid h4{font-family:'Inter';font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ice-2);margin:0 0 14px;}
+  .foot-grid a{display:block;padding:5px 0;font-size:.95rem;color:rgba(255,251,245,.85);}
+  .foot-grid a:hover{color:#fff;}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.14);margin-top:40px;padding-top:24px;display:flex;
+    justify-content:space-between;gap:14px;flex-wrap:wrap;color:rgba(255,251,245,.55);font-size:.84rem;}
+
+  @media(max-width:920px){
+    .cards{grid-template-columns:1fr 1fr;}
+    .frost .split{grid-template-columns:1fr;}
+    .frost .media{order:-1;}
+    .liefer{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:640px){
+    .nav-links{display:none;}.burger{display:block;}
+    .cards{grid-template-columns:1fr;}
+    .hero-card{padding:34px 28px;}
+    .foot-grid{grid-template-columns:1fr;}
+    section{padding:66px 0;}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" aria-label="Back & Frost Startseite"><img class="logo" src="assets/logo.png" alt="Back & Frost"></a>
+    <nav class="nav-links">
+      <a href="#sortiment">Sortiment</a>
+      <a href="#qualitaet">Qualität</a>
+      <a href="#liefer">Liefergebiete</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <a class="btn btn-primary" href="#kontakt">Jetzt anfragen</a>
+      <button class="burger" aria-label="Menü">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" role="img" aria-label="Beispielbild warme Backwaren (Platzhalter)">
+    <div class="wrap">
+      <div class="hero-card">
+        <span class="eyebrow">Tiefkühl-Backwaren · Manufaktur</span>
+        <h1>Aus Liebe<br>zum <em>Backen</em>.</h1>
+        <p class="lead">Goldbraune Krusten, zarte Krumen, feiner Genuss — schonend tiefgekühlt und deutschlandweit geliefert. Damit jeder Moment so gut wie frisch gebacken schmeckt.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#sortiment">Sortiment entdecken</a>
+          <a class="btn btn-ghost" href="#kontakt">Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SORTIMENT -->
+  <section id="sortiment">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Unser Sortiment</span>
+        <h2>Für jeden Anlass das Richtige</h2>
+        <p>Über 100 Artikel — eine Auswahl unserer beliebtesten Spezialitäten.</p>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-blechkuchen.svg')"><span class="pill">Klassiker</span></div><div class="body"><h3>Blechkuchen</h3><p>Butterstreusel, Käse-Mohn, Schmandkuchen &amp; mehr.</p></div></div>
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-plunder.svg')"><span class="pill">Beliebt</span></div><div class="body"><h3>Plunder &amp; Feingebäck</h3><p>Croissants, Schnecken, Nougatzungen, Plunderteilchen.</p></div></div>
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-broetchen.svg')"><span class="pill">Täglich frisch</span></div><div class="body"><h3>Brötchen</h3><p>Knusprige Brötchen, Laugengebäck, Baguettes.</p></div></div>
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-brot.svg')"><span class="pill">Herzhaft</span></div><div class="body"><h3>Brote</h3><p>Dinkel-Vollkorn bis Schwarzwälder Brot.</p></div></div>
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-snack.svg')"><span class="pill">To go</span></div><div class="body"><h3>Snacks</h3><p>Fladenbrote, Wraps, Knusper-Sticks mit Füllung.</p></div></div>
+        <div class="card"><div class="thumb" style="background-image:url('assets/img/cat-dessert.svg')"><span class="pill">Süß</span></div><div class="body"><h3>Desserts</h3><p>Schokoschnitten, Profiteroles &amp; süße Klassiker.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FROST / QUALITÄT -->
+  <section id="qualitaet" class="frost">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Frisch trifft Frost</span>
+        <h2>Der <em>Frost</em>, der Frische bewahrt</h2>
+        <p>Unsere Backwaren werden auf dem Höhepunkt ihrer Frische schonend tiefgekühlt. So bleiben Aroma, Krume und Kruste erhalten — bis sie bei Ihnen in den Ofen kommen.</p>
+        <ul class="points">
+          <li><span class="ic">✓</span> Lückenlose Kühlkette von der Produktion bis zur Lieferung</li>
+          <li><span class="ic">✓</span> IFS Progress Food zertifizierte Qualität</li>
+          <li><span class="ic">✓</span> Ofenfrische auf Abruf — ohne Verschwendung</li>
+        </ul>
+      </div>
+      <div class="media" role="img" aria-label="Beispielbild Brötchen (Platzhalter)"></div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="video-band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Bewegtbild</span>
+        <h2>Genuss in Bewegung</h2>
+        <p>Hier entstehen demnächst unsere Produktvideos.</p>
+      </div>
+      <div class="video-frame" role="img" aria-label="Platzhalter für Produktvideo">
+        <div class="play" aria-hidden="true"><svg width="32" height="36" viewBox="0 0 32 36"><path d="M0 0 L32 18 L0 36 Z" fill="#2A1A12"/></svg></div>
+        <span class="placeholder-note">Beispiel · wird durch eigenes Produktvideo ersetzt</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIEFERGEBIETE -->
+  <section id="liefer" style="background:var(--cream);">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Liefergebiete</span>
+        <h2>Frisch zu Ihnen geliefert</h2>
+        <p>Regional ofenfrisch, deutschlandweit tiefgekühlt.</p>
+      </div>
+      <div class="liefer">
+        <div class="it"><div class="ic">🚚</div><h3>Region · 24h</h3><p>Frische Backwaren in der Region, in der Regel innerhalb eines Tages.</p></div>
+        <div class="it"><div class="ic">❄️</div><h3>Deutschlandweit</h3><p>TK-Backwaren schnell und sicher in ganz Deutschland geliefert.</p></div>
+        <div class="it"><div class="ic">🏪</div><h3>Handel &amp; Gastro</h3><p>Zuverlässige Belieferung von Bäckereien, LEH und Gastronomie.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="contact">
+        <span class="eyebrow">Kontakt</span>
+        <h2>Lust auf Zusammenarbeit?</h2>
+        <p>Fordern Sie unser Sortiment an oder stellen Sie Ihre Anfrage — wir melden uns persönlich bei Ihnen.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="mailto:info@backundfrost.de">info@backundfrost.de</a>
+          <a class="btn btn-ghost" href="tel:+49000000000">+49 (0) 000 000000</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img class="logo" src="assets/logo.png" alt="Back & Frost">
+        <p>Hochwertige Tiefkühl-Backwaren. Aus Liebe zum Backen — für Handel, Gastronomie und Bäckerei.</p>
+      </div>
+      <div><h4>Entdecken</h4><a href="#sortiment">Sortiment</a><a href="#qualitaet">Qualität</a><a href="#liefer">Liefergebiete</a></div>
+      <div><h4>Service</h4><a href="#kontakt">Kontakt</a><a href="mailto:info@backundfrost.de">E-Mail</a><a href="tel:+49000000000">Telefon</a></div>
+      <div><h4>Rechtliches</h4><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Back &amp; Frost Leipzig GmbH &amp; Co. KG</span>
+      <span>Konzept C · Warm &amp; Food — Layout-Entwurf</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
