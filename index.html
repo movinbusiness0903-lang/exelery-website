@@ -75,10 +75,9 @@
   .nav-links{display:flex;align-items:center;gap:26px;font-size:.92em;color:var(--muted);}
   .nav-links a{transition:color .2s;}
   .nav-links a:hover{color:var(--mint);}
-  @media(max-width:680px){.nav-links{gap:18px;}}
 
   /* ===== Hero ===== */
-  .hero{text-align:center;padding:74px 0 92px;}
+  .hero{text-align:center;padding:74px 28px 92px;}
   .hero .logo-mark{width:84px;height:84px;margin:0 auto 26px;display:block;filter:drop-shadow(0 0 18px var(--mint-glow));}
   .blade{stroke-dasharray:120;stroke-dashoffset:120;animation:draw 1.2s ease forwards .2s;}
   .blade.b2{animation-delay:.5s;}
@@ -145,7 +144,19 @@
   .foot-links a:hover{color:var(--mint);}
   .copy{color:var(--muted);opacity:.7;font-size:.86em;}
 
-  @media(max-width:760px){.grid{grid-template-columns:1fr;}.hero{padding:54px 0 64px;}}
+  @media(max-width:760px){
+    .grid{grid-template-columns:1fr;}
+    .hero{padding:56px 28px 64px;}
+  }
+  @media(max-width:560px){
+    .nav-inner{height:58px;}
+    .brand{letter-spacing:.1em;font-size:.86em;gap:8px;}
+    .brand .mark{width:22px;height:22px;}
+    .nav-links{gap:16px;font-size:.88em;}
+    .hero{padding-top:48px;}
+    .hero .logo-mark{width:74px;height:74px;margin-bottom:22px;}
+    .subline{font-size:1.02em;}
+  }
   @media(prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important;}
     .reveal,.claim,.subline,.cta{opacity:1;transform:none;}
@@ -180,7 +191,6 @@
       <span>EXELERY</span>
     </a>
     <nav class="nav-links">
-      <a href="#features">Features</a>
       <a href="datenschutz/">Datenschutz</a>
       <a href="impressum/">Impressum</a>
     </nav>
