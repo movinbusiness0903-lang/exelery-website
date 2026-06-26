@@ -7,18 +7,22 @@
 <meta name="robots" content="index, follow">
 <style>
   :root{
-    --text:#1a1a1a;
-    --muted:#5b6770;
-    --accent:#0e7c66;
-    --accent-soft:#e6f3ef;
-    --link:#0b66c2;
-    --rule:#e8e8e8;
-    --box:#f6f8f9;
-    --code:#eef2f1;
+    --bg:#0B0F17;
+    --text:#F8FAFC;
+    --muted:#94A3B8;
+    --accent:#0DF2A3;
+    --accent-soft:rgba(13,242,163,.12);
+    --link:#0DF2A3;
+    --rule:rgba(255,255,255,.10);
+    --box:#141B2A;
+    --code:#172030;
   }
   *{box-sizing:border-box;}
+  html{background:var(--bg);}
   body{
     font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    min-height:100vh;
     max-width:840px;
     margin:0 auto;
     padding:40px 24px 80px;
