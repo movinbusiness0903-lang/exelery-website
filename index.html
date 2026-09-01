@@ -249,11 +249,27 @@
   .waitlist-inner{position:relative;max-width:620px;margin:0 auto;text-align:center;padding:0 var(--rand);}
   /* Das echte Abzeichen aus der App statt eines nachgebauten Kreises. Der
      Schein bleibt, aber in Diamantblau statt Mint — sonst haette der Halo dem
-     Stein seine Farbe genommen. */
+     Stein seine Farbe genommen.
+
+     WARUM KEIN drop-shadow MEHR: Das <img> trug frueher `.badge-visual` UND
+     `.reveal` gleichzeitig. Waehrend die Einblendung lief (opacity + transform),
+     legte Safari das Element auf eine eigene GPU-Ebene und rasterte den Filter
+     als RECHTECK statt entlang des Kreises — in exakt der Filterfarbe. Das war
+     der blaue Kasten, den man beim ersten Scrollen sah und der sich danach
+     „von selbst" aufloeste. Ein radial-gradient kann per Definition kein
+     Rechteck werden, und der Traeger der Einblendung ist jetzt der Wrapper,
+     nicht das gefilterte Element. */
   .badge-visual{
-    width:128px;height:128px;margin:0 auto 26px;display:block;
-    filter:drop-shadow(0 0 30px rgba(79,168,232,.45));
+    position:relative;width:128px;height:128px;margin:0 auto 26px;display:block;
   }
+  .badge-visual::before{
+    content:"";position:absolute;inset:-32px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle,
+      rgba(79,168,232,.42) 0%,
+      rgba(79,168,232,.16) 46%,
+      rgba(79,168,232,0)   70%);
+  }
+  .badge-visual img{position:relative;display:block;width:100%;height:100%;}
   .waitlist h2{font-size:clamp(2em,5vw,3.2em);font-weight:800;margin:0 0 16px;letter-spacing:-.015em;}
   .waitlist .wl-sub{color:var(--muted);font-size:1.1em;margin:0 0 34px;}
   .waitlist .wl-sub b{color:var(--text);}
@@ -538,10 +554,12 @@
   <section class="waitlist" id="warteliste">
     <div class="glow" aria-hidden="true"></div>
     <div class="waitlist-inner">
-      <img class="badge-visual reveal" src="media/web/dayone-abzeichen.webp"
-           alt="Das Day-One-Abzeichen: ein blauer Brillant mit einer Eins" width="128" height="128">
+      <span class="badge-visual reveal">
+        <img src="media/web/dayone-abzeichen.webp"
+             alt="Das Day-One-Abzeichen: ein blauer Brillant mit einer Eins" width="128" height="128">
+      </span>
       <h2 class="reveal">Sei Day&nbsp;One.</h2>
-      <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>3&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
+      <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>2&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
       <div class="reveal">
         <form class="wl-form" data-wl-form novalidate>
           <label class="wl-hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="firma" tabindex="-1" autocomplete="off"></label>
