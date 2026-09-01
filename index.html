@@ -31,7 +31,11 @@
     --line-strong:rgba(255,255,255,.15);
     --font-head:'Manrope','Inter',-apple-system,sans-serif;
     --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    /* Seitenabstand der ganzen Seite an EINER Stelle. Auf schmalen Geraeten
+       groesser, damit der Text nicht an der Displaykante klebt. */
+    --rand:24px;
   }
+  @media(max-width:560px){ :root{ --rand:26px; } }
   *{box-sizing:border-box;}
   html{background:var(--bg);scroll-behavior:smooth;}
   body{
@@ -40,7 +44,7 @@
   }
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
-  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 var(--rand);}
   h1,h2,h3,.num-big{font-family:var(--font-head);}
   .mint-text{
     background:linear-gradient(90deg,var(--mint-bright),var(--mint));
@@ -53,6 +57,14 @@
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     background:rgba(11,15,23,.55);
     border-bottom:1px solid var(--line);
+    /* Beim Runterscrollen schiebt sich der Balken weg. Auf dem Handy verdeckte
+       er sonst dauerhaft die Kapitel-Ueberschriften. */
+    transition:transform .28s ease;
+    will-change:transform;
+  }
+  header.nav.nav-weg{transform:translateY(-100%);}
+  @media(prefers-reduced-motion:reduce){
+    header.nav{transition:none;}
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.18em;font-size:.92em;font-family:var(--font-head);}
@@ -83,7 +95,7 @@
   }
   .hero-content{
     position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:0 24px;
+    align-items:center;justify-content:center;text-align:center;padding:0 var(--rand);
   }
   .hero-content .logo-mark{width:72px;height:72px;margin-bottom:20px;filter:drop-shadow(0 0 18px var(--mint-glow));}
   .blade{stroke-dasharray:120;stroke-dashoffset:120;animation:draw 1.2s ease forwards .2s;}
@@ -148,7 +160,7 @@
     mask-image:radial-gradient(ellipse 60% 60% at 68% 50%,#000,transparent 78%);
   }
   .phone-inner{
-    position:relative;width:100%;max-width:1160px;margin:0 auto;padding:0 24px;
+    position:relative;width:100%;max-width:1160px;margin:0 auto;padding:0 var(--rand);
     display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
   }
   .phone-copy{position:relative;min-height:300px;}
@@ -199,7 +211,12 @@
   .chapter-head{position:relative;z-index:2;width:100%;padding-top:120px;padding-bottom:60px;}
   .chapter-head .eyebrow{color:var(--mint);font-family:var(--font-head);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.8em;margin:0 0 12px;}
   .chapter-head h2{font-size:clamp(2em,5.4vw,3.6em);font-weight:800;margin:0;line-height:1.08;letter-spacing:-.015em;max-width:640px;}
-  .chapter-body{position:relative;z-index:2;padding:40px 0 90px;}
+  /* ⚠️ Die Kurzschreibweise `padding: 40px 0 90px` hat hier die 24px von .wrap
+     ueberschrieben — beide sind Ein-Klassen-Regeln, .chapter-body steht spaeter
+     und gewinnt. Am Rechner faellt das nicht auf, weil der Inhalt ohnehin
+     mittig in einem breiten Fenster sitzt; auf dem Handy klebte der Text am
+     Rand. Deshalb die Seitenabstaende hier ausdruecklich mitgeben. */
+  .chapter-body{position:relative;z-index:2;padding:40px var(--rand) 90px;}
   .chapter-cols{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;}
   .chapter-cols.flip{grid-template-columns:.95fr 1.05fr;}
   .chapter-cols .shot{position:relative;}
@@ -229,15 +246,14 @@
     background:radial-gradient(ellipse at center,rgba(13,242,163,.16),transparent 62%);
     filter:blur(20px);
   }
-  .waitlist-inner{position:relative;max-width:620px;margin:0 auto;text-align:center;padding:0 24px;}
+  .waitlist-inner{position:relative;max-width:620px;margin:0 auto;text-align:center;padding:0 var(--rand);}
+  /* Das echte Abzeichen aus der App statt eines nachgebauten Kreises. Der
+     Schein bleibt, aber in Diamantblau statt Mint — sonst haette der Halo dem
+     Stein seine Farbe genommen. */
   .badge-visual{
-    width:110px;height:110px;margin:0 auto 26px;border-radius:50%;
-    background:radial-gradient(circle at 32% 28%,#1d2740,#141B2A);
-    border:2px solid var(--mint);box-shadow:0 0 44px var(--mint-glow),inset 0 0 22px rgba(13,242,163,.15);
-    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;
+    width:128px;height:128px;margin:0 auto 26px;display:block;
+    filter:drop-shadow(0 0 30px rgba(79,168,232,.45));
   }
-  .badge-visual .b-num{font-family:var(--font-head);font-weight:800;font-size:1.7em;line-height:1;color:var(--mint);}
-  .badge-visual .b-lbl{font-size:.6em;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
   .waitlist h2{font-size:clamp(2em,5vw,3.2em);font-weight:800;margin:0 0 16px;letter-spacing:-.015em;}
   .waitlist .wl-sub{color:var(--muted);font-size:1.1em;margin:0 0 34px;}
   .waitlist .wl-sub b{color:var(--text);}
@@ -522,10 +538,8 @@
   <section class="waitlist" id="warteliste">
     <div class="glow" aria-hidden="true"></div>
     <div class="waitlist-inner">
-      <div class="badge-visual reveal" aria-hidden="true">
-        <span class="b-num">1</span>
-        <span class="b-lbl">Day One</span>
-      </div>
+      <img class="badge-visual reveal" src="media/web/dayone-abzeichen.webp"
+           alt="Das Day-One-Abzeichen: ein blauer Brillant mit einer Eins" width="128" height="128">
       <h2 class="reveal">Sei Day&nbsp;One.</h2>
       <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>3&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
       <div class="reveal">
@@ -633,6 +647,27 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
   }
+
+  /* Kopfbalken: beim Runterscrollen weg, beim Hochscrollen zurueck.
+     Ganz oben ist er immer da. Die 6px-Schwelle verhindert Flackern bei
+     winzigen Scroll-Zuckungen (Trackpad, Gummiband auf iOS). */
+  (function () {
+    var nav = document.querySelector('header.nav');
+    if (!nav) return;
+    var letzte = window.scrollY || window.pageYOffset || 0;
+    var wartet = false;
+    function pruefe() {
+      var y = window.scrollY || window.pageYOffset || 0;
+      if (y < 80) nav.classList.remove('nav-weg');
+      else if (y > letzte + 6) nav.classList.add('nav-weg');
+      else if (y < letzte - 6) nav.classList.remove('nav-weg');
+      letzte = y;
+      wartet = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!wartet) { wartet = true; requestAnimationFrame(pruefe); }
+    }, { passive: true });
+  })();
 
   /* Fortschritt 0..1 einer sticky-Szene */
   function progressOf(el, y) {
