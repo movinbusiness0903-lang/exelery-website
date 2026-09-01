@@ -93,7 +93,12 @@
   .wordmark span{display:inline-block;opacity:0;transform:translateY(16px);animation:rise .6s ease forwards;animation-delay:calc(.35s + var(--i)*.05s);}
   @keyframes rise{to{opacity:1;transform:none;}}
   .claim{font-size:clamp(1.02em,2.6vw,1.4em);font-weight:600;margin:12px 0 0;opacity:0;animation:fadeUp .7s ease forwards .9s;}
-  .subline{max-width:520px;margin:16px auto 0;color:var(--muted);font-size:1.05em;opacity:0;animation:fadeUp .7s ease forwards 1.05s;}
+  /* Der Untertitel stand in --muted (#94A3B8) direkt auf dem hellen, unruhigen
+     Hero-Bild und war auf dem Handy praktisch nicht zu lesen. Heller Ton plus
+     ein weicher Schatten loesen das, ohne Bild oder Animation anzufassen — der
+     Schatten traegt auch dort, wo der Bildinhalt gerade hell ist. */
+  .subline{max-width:520px;margin:16px auto 0;color:rgba(248,250,252,.9);font-size:1.05em;opacity:0;animation:fadeUp .7s ease forwards 1.05s;text-shadow:0 1px 16px rgba(11,15,23,.9),0 1px 3px rgba(11,15,23,.8);}
+  .claim,.wordmark{text-shadow:0 2px 20px rgba(11,15,23,.75);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .hero-form-slot{margin-top:34px;width:100%;max-width:460px;opacity:0;animation:fadeUp .7s ease forwards 1.2s;}
   .scroll-hint{
@@ -251,16 +256,29 @@
 
   /* ===== Mobil ===== */
   @media(max-width:900px){
-    .phone-inner{grid-template-columns:1fr;gap:18px;justify-items:center;text-align:center;}
+    /* minmax(0,1fr) statt 1fr: „1fr" heisst in Wirklichkeit minmax(auto,1fr),
+       und „auto" als Minimum ist min-content — die Spalte darf dann NICHT
+       schmaler werden als ihr Inhalt. Genau daran hing die Seite: die zwei
+       Telefonbilder in .shot-duo ergaben zusammen 580px, die Spalte konnte
+       nicht schrumpfen, und die ganze Seite wurde 605px breit statt 375px.
+       Das war der Grund, warum sich auf dem Handy alles seitlich schieben
+       liess und Bilder rechts aus dem Bild standen. */
+    .phone-inner{grid-template-columns:minmax(0,1fr);gap:18px;justify-items:center;text-align:center;}
     .phone-copy{order:2;min-height:190px;width:100%;}
     .phone-step{align-items:center;}
     .phone-step p{max-width:100%;}
     .phone-stage{justify-self:center;order:1;}
     .phone-device{width:min(230px,58vw);}
     .phone-scene{height:460vh;}
-    .chapter-cols,.chapter-cols.flip{grid-template-columns:1fr;gap:34px;}
+    .chapter-cols,.chapter-cols.flip{grid-template-columns:minmax(0,1fr);gap:34px;}
     .chapter-cols .shot{order:1;}
     .chapter-cols .chapter-text{order:2;}
+    /* Die zwei Telefonbilder bleiben nebeneinander wie am Rechner, sie werden
+       nur an die Fensterbreite gebunden. Feste Pixelbreiten passen auf einem
+       375px-Bildschirm schlicht nicht nebeneinander. */
+    .shot-duo{gap:4vw;}
+    .shot-duo .shot-frame{width:min(300px,40vw);}
+    .shot-duo .shot-frame.small{width:min(260px,35vw);}
     .shot-duo .shot-frame:last-child{margin-top:30px;}
     .nums{gap:28px;justify-content:flex-start;}
     .hero-scrub{height:220vh;}
