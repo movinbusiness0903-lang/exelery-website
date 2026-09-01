@@ -524,15 +524,15 @@
     <div class="waitlist-inner">
       <div class="badge-visual reveal" aria-hidden="true">
         <span class="b-num">1</span>
-        <span class="b-lbl">Tag</span>
+        <span class="b-lbl">Day One</span>
       </div>
-      <h2 class="reveal">Sei Tag&nbsp;1.</h2>
-      <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>3&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Tag&nbsp;1“</b>. Das bleibt. Für immer in deinem Profil.</p>
+      <h2 class="reveal">Sei Day&nbsp;One.</h2>
+      <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>3&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
       <div class="reveal">
         <form class="wl-form" data-wl-form novalidate>
           <label class="wl-hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="firma" tabindex="-1" autocomplete="off"></label>
           <input type="email" name="email" required placeholder="deine@email.de" aria-label="E-Mail-Adresse für die Warteliste" autocomplete="email" inputmode="email">
-          <button type="submit">Tag-1-Platz sichern</button>
+          <button type="submit">Day-One-Platz sichern</button>
         </form>
         <p class="wl-msg" data-wl-msg aria-live="polite"></p>
         <p class="wl-note">Nur eine E-Mail zum Start, kein Newsletter. Details in der <a href="datenschutz/">Datenschutzerklärung</a>.</p>
@@ -596,7 +596,7 @@
         body: JSON.stringify({ email: email, source: 'website' })
       }).then(function (res) {
         if (res.ok) {
-          show(msg, 'ok', 'Du bist dabei! Wir melden uns, sobald es losgeht – dein Tag-1-Vorteil ist notiert.');
+          show(msg, 'ok', 'Du bist dabei! Wir melden uns, sobald es losgeht – dein Day-One-Vorteil ist notiert.');
           form.reset();
         } else if (res.status === 409) {
           show(msg, 'ok', 'Diese Adresse ist schon eingetragen – du bist längst dabei.');
