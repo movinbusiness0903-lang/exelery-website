@@ -610,6 +610,30 @@
   var SUPA_URL = 'https://jedsuqylwgbyuuvyypdm.supabase.co';
   var SUPA_KEY = 'sb_publishable_SHls8JQwn6HWvP4r7tIRIA_VF370pMa';
 
+  /* Woher kommt der Besucher?
+     In den Social-Profilen steht nicht "exelery.de", sondern zum Beispiel
+     "exelery.de/?utm_source=instagram". Diesen Anhang lesen wir hier aus und
+     schreiben ihn in die Spalte `source` der Warteliste — sonst stuende bei
+     jeder Eintragung dasselbe und man saehe nie, welcher Kanal etwas bringt.
+
+     Die feste Liste ist Absicht: `source` ist freier Text in der Datenbank,
+     ohne sie koennte jeder Fremde einen beliebigen Wert hineinschreiben,
+     indem er einfach einen Parameter an die Adresse haengt. Alles Unbekannte
+     faellt auf "website" zurueck, so wie bisher. */
+  var KANAELE = ['instagram', 'tiktok', 'x', 'facebook', 'youtube', 'reddit'];
+  var HERKUNFT = (function () {
+    try {
+      var roh = new URLSearchParams(window.location.search).get('utm_source');
+      if (!roh) { return 'website'; }
+      roh = roh.trim().toLowerCase();
+      return KANAELE.indexOf(roh) === -1 ? 'website' : roh;
+    } catch (e) {
+      /* Sehr alte Browser kennen URLSearchParams nicht. Dann eben "website" —
+         eine fehlende Kampagnen-Angabe darf die Eintragung nie verhindern. */
+      return 'website';
+    }
+  })();
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-wl-form]'), function (form) {
     var msg = form.parentElement.querySelector('[data-wl-msg]');
     form.addEventListener('submit', function (ev) {
@@ -632,7 +656,7 @@
           'Content-Type': 'application/json',
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({ email: email, source: 'website' })
+        body: JSON.stringify({ email: email, source: HERKUNFT })
       }).then(function (res) {
         if (res.ok) {
           show(msg, 'ok', 'Du bist dabei! Wir melden uns, sobald es losgeht – dein Day-One-Vorteil ist notiert.');
