@@ -113,8 +113,15 @@
   .claim,.wordmark{text-shadow:0 2px 20px rgba(11,15,23,.75);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
   .hero-form-slot{margin-top:34px;width:100%;max-width:460px;opacity:0;animation:fadeUp .7s ease forwards 1.2s;}
+  /* Waagerecht mittig ueber left/right, NICHT ueber transform. Grund: die
+     fadeUp-Animation unten endet auf `transform:none` und haelt das mit
+     `forwards` fest — ein translateX(-50%) wurde dadurch geloescht, und der
+     Hinweis stand um seine halbe Breite zu weit rechts. Dasselbe passierte
+     bei `prefers-reduced-motion`. Die Flex-Spalte mittet ihre beiden Kinder
+     selbst, die Animation bleibt unangetastet. `pointer-events:none`, weil
+     der Kasten jetzt ueber die volle Breite geht und rein schmueckend ist. */
   .scroll-hint{
-    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;
+    position:absolute;bottom:26px;left:0;right:0;z-index:2;pointer-events:none;
     color:var(--muted);font-size:.78em;letter-spacing:.14em;text-transform:uppercase;
     display:flex;flex-direction:column;align-items:center;gap:8px;
     opacity:0;animation:fadeUp .7s ease forwards 1.6s;
