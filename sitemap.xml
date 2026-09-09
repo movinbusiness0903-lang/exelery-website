@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sechs Seiten. Bis zum 09.09.2026 standen hier nur drei — die
+  Nutzungsbedingungen fehlten, obwohl es sie seit Juli gibt.
+
+  <lastmod> ist neu. Ohne dieses Feld hat eine Suchmaschine keinen Anhaltspunkt,
+  was sich geaendert hat, und schaut entsprechend selten nach.
+
+  Eingereicht wird die Datei in der Google Search Console und in den Bing
+  Webmaster Tools — siehe planung/auffindbarkeit.md im App-Ordner.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://exelery.de/</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://exelery.de/faq/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://exelery.de/wissen/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://exelery.de/datenschutz/</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://exelery.de/nutzungsbedingungen/</loc>
+    <lastmod>2026-09-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://exelery.de/impressum/</loc>
+    <lastmod>2026-09-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
