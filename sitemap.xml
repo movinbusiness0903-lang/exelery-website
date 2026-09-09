@@ -23,12 +23,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://exelery.de/wissen/</loc>
-    <lastmod>2026-09-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://exelery.de/datenschutz/</loc>
     <lastmod>2026-09-09</lastmod>
     <changefreq>yearly</changefreq>
