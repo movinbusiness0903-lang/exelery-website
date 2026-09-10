@@ -61,6 +61,20 @@ for (const s of seiten) {
   const html = readFileSync(s.datei, 'utf8');
   console.log(s.pfad);
 
+  // Seiten, die BEWUSST nicht in den Index sollen, brauchen keine
+  // Index-Metadaten. /bestaetigt/ ist eine Zwischenstation im Anmeldeweg
+  // und traegt Anmeldedaten im Adressfragment -- ein og:image waere dort
+  // sinnlos und ein Sitemap-Eintrag falsch.
+  //
+  // Die Ausnahme wird NICHT verschenkt: Wer noindex setzt, muss es auch
+  // meinen. Unten wird geprueft, dass eine solche Seite wirklich NICHT in
+  // der Sitemap steht.
+  s.noindex = /<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html);
+  if (s.noindex) {
+    console.log('  noindex — Pflichtangaben entfallen');
+    continue;
+  }
+
   for (const [muster, name] of PFLICHT) {
     if (!html.includes(muster)) meckern(`${s.pfad}: ${name} fehlt`);
   }
@@ -99,7 +113,14 @@ console.log('\nsitemap.xml');
 const sitemap = readFileSync(join(HIER, 'sitemap.xml'), 'utf8');
 const gelistet = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 for (const s of seiten) {
-  if (!gelistet.includes(BASIS + s.pfad)) meckern(`${s.pfad} fehlt in der Sitemap`);
+  const drin = gelistet.includes(BASIS + s.pfad);
+  if (s.noindex) {
+    // Andersherum falsch: Eine Seite auf noindex zu setzen und sie
+    // trotzdem einzureichen, ist ein Widerspruch, den Google meldet.
+    if (drin) meckern(`${s.pfad} ist noindex, steht aber in der Sitemap`);
+    continue;
+  }
+  if (!drin) meckern(`${s.pfad} fehlt in der Sitemap`);
 }
 for (const l of gelistet) {
   if (!seiten.some((s) => BASIS + s.pfad === l)) meckern(`${l} steht in der Sitemap, aber die Seite gibt es nicht`);
