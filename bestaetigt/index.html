@@ -110,33 +110,59 @@
 </main>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// Die Anmeldedaten stehen im Fragment der Adresse, also hinter dem #.
+// ────────────────────────────────────────────────────────────────────────────────
+// Supabase haengt seine Antwort an EINE VON ZWEI STELLEN — je nachdem, wie
+// der Client beim Registrieren gebaut ist:
 //
-// Das ist wichtig: Alles hinter dem # wird vom Browser NIE an einen Server
-// geschickt. Die Zeichenkette bleibt auf dem Geraet. Deshalb duerfen die
-// Werte auch nicht in einen Link mit ?-Parametern wandern.
+//   PKCE      →  ?code=…            im Query
+//   Implicit  →  #access_token=…    im Fragment
 //
-// Der Weg: Mail -> Supabase prueft den Einmal-Schluessel -> leitet hierher
-// weiter, mit access_token und refresh_token im Fragment -> diese Seite
-// reicht sie an exelery://auth/callback weiter -> die App ruft setSession()
-// und der Nutzer ist drin.
-// ─────────────────────────────────────────────────────────────────────────────
+// Exelery baut den Supabase-Client mit flowType 'pkce' (src/lib/supabase.ts),
+// es kommt also ein ?code=. Gemessen am 10.09.2026 in auth.flow_state:
+// authentication_method 'email/signup', auth_code_issued_at exakt zum
+// Bestaetigungszeitpunkt.
+//
+// ⚠️  Diese Seite las bis dahin NUR das Fragment. Der Code wurde verworfen,
+//     die Seite zeigte "Link abgelaufen", und der Nutzer musste sich von Hand
+//     anmelden — obwohl die Bestaetigung laengst durch war (in auth.users:
+//     email_confirmed_at gesetzt, last_sign_in_at NULL).
+//
+// Deshalb liest sie jetzt BEIDE Stellen und reicht beide unveraendert weiter.
+//
+// Zur Sicherheit: Ein PKCE-Code im Query ist fuer sich genommen wertlos. Er
+// laesst sich nur mit dem code_verifier einloesen, und der liegt allein auf
+// dem Geraet, auf dem registriert wurde. Genau dafuer gibt es PKCE.
+// ────────────────────────────────────────────────────────────────────────────────
 (function () {
+  var query = window.location.search ? window.location.search.substring(1) : '';
   var fragment = window.location.hash ? window.location.hash.substring(1) : '';
-  var werte = new URLSearchParams(fragment);
 
-  var hatAnmeldung = !!werte.get('access_token') && !!werte.get('refresh_token');
-  var fehler = werte.get('error') || werte.get('error_description');
+  var ausQuery = new URLSearchParams(query);
+  var ausFragment = new URLSearchParams(fragment);
 
-  if (fehler || !hatAnmeldung) {
+  // Fragment zuerst: liefert Supabase je einmal beides, sind die Tokens dort
+  // die vollstaendigere Angabe.
+  function wert(name) {
+    return ausFragment.get(name) || ausQuery.get(name);
+  }
+
+  var hatCode = !!wert('code');
+  var hatTokens = !!wert('access_token') && !!wert('refresh_token');
+  var fehler = wert('error') || wert('error_description');
+
+  if (fehler || (!hatCode && !hatTokens)) {
     document.getElementById('gut').classList.add('verborgen');
     document.getElementById('schlecht').classList.remove('verborgen');
   }
 
-  // Ohne Anmeldedaten oeffnet der Knopf die App trotzdem -- nur eben ohne
+  // Beide Teile unveraendert weiterreichen, jeder an seiner Stelle. Die App
+  // sucht in beiden (src/hooks/useAuth.ts → completeOAuthFromUrl).
+  //
+  // Ohne Anmeldedaten oeffnet der Knopf die App trotzdem — nur eben ohne
   // Sitzung. Besser als eine Sackgasse.
-  var ziel = 'exelery://auth/callback' + (fragment ? '#' + fragment : '');
+  var ziel = 'exelery://auth/callback'
+    + (query ? '?' + query : '')
+    + (fragment ? '#' + fragment : '');
 
   function oeffnen() {
     window.location.href = ziel;
@@ -156,7 +182,7 @@
   if (b2) b2.addEventListener('click', oeffnen);
 
   // Kein automatischer Sprung. iOS zeigt sonst einen Systemdialog, bevor der
-  // Nutzer gelesen hat, dass es geklappt hat -- und wer ihn wegtippt, steht
+  // Nutzer gelesen hat, dass es geklappt hat — und wer ihn wegtippt, steht
   // ratlos da. Ein Knopf, den man bewusst drueckt, ist verlaesslicher.
 })();
 </script>
