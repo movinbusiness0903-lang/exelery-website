@@ -89,15 +89,15 @@
   </svg>
 
   <div id="gut">
-    <h1>Geschafft.</h1>
-    <p>Deine E-Mail-Adresse ist bestätigt. Zurück in der App bist du direkt
+    <h1 id="gutTitel">Geschafft.</h1>
+    <p id="gutText">Deine E-Mail-Adresse ist bestätigt. Zurück in der App bist du direkt
        angemeldet – ohne noch einmal ein Passwort einzutippen.</p>
     <button class="knopf" id="zurueck" type="button">Zurück zu Exelery</button>
   </div>
 
   <div id="schlecht" class="verborgen">
     <h1>Der Link ist abgelaufen.</h1>
-    <p>Bestätigungslinks gelten 24&nbsp;Stunden. Öffne Exelery und fordere
+    <p id="schlechtText">Bestätigungslinks gelten 24&nbsp;Stunden. Öffne Exelery und fordere
        einen neuen an – dein Konto ist noch da.</p>
     <button class="knopf" id="zurueck2" type="button">Exelery öffnen</button>
   </div>
@@ -149,6 +149,25 @@
   var hatCode = !!wert('code');
   var hatTokens = !!wert('access_token') && !!wert('refresh_token');
   var fehler = wert('error') || wert('error_description');
+
+  // Zwei Anlaesse fuehren hierher: eine Registrierung bestaetigen und ein
+  // Passwort zuruecksetzen. Der Unterschied kommt ueber `modus`, den die App
+  // selbst an die Redirect-Adresse haengt (`sendPasswordReset` in
+  // src/hooks/useAuth.ts) -- verlaesslicher als Supabase' `type`, das je nach
+  // Flow mitkommt oder eben nicht. Beides wird gelesen.
+  var zuruecksetzen =
+    wert('modus') === 'neues-passwort' || wert('type') === 'recovery';
+
+  if (zuruecksetzen) {
+    document.getElementById('gutTitel').textContent = 'Fast geschafft.';
+    document.getElementById('gutText').textContent =
+      'Zur\u00fcck in der App w\u00e4hlst du dein neues Passwort. Danach meldest '
+      + 'du dich einmal damit an.';
+    document.getElementById('zurueck').textContent = 'Neues Passwort w\u00e4hlen';
+    document.getElementById('schlechtText').textContent =
+      'Links zum Zur\u00fccksetzen gelten 24 Stunden. \u00d6ffne Exelery, tippe auf '
+      + '\u201ePasswort vergessen?\u201c und fordere einen neuen an.';
+  }
 
   if (fehler || (!hatCode && !hatTokens)) {
     document.getElementById('gut').classList.add('verborgen');

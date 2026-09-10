@@ -61,7 +61,10 @@ function seiteLaufenLassen(skript, adresse) {
     },
     addEventListener(_typ, fn) { elemente[id].handler.push(fn); },
   });
-  for (const id of ['gut', 'schlecht', 'zurueck', 'zurueck2', 'hinweis']) {
+  for (const id of [
+    'gut', 'schlecht', 'zurueck', 'zurueck2', 'hinweis',
+    'gutTitel', 'gutText', 'schlechtText',
+  ]) {
     elemente[id] = macheElement(id);
   }
 
@@ -84,6 +87,10 @@ function seiteLaufenLassen(skript, adresse) {
   return {
     zeigtErfolg: !elemente.gut.klassen.has('verborgen'),
     ziel: fenster.location.href,
+    // Leer heisst: die Seite hat den Text im HTML gelassen, also nicht auf
+    // den Zuruecksetzen-Fall umgeschaltet.
+    knopfText: elemente.zurueck.textContent,
+    titel: elemente.gutTitel.textContent,
   };
 }
 
@@ -131,6 +138,39 @@ const FAELLE = [
     erfolg: true,
     zielEnthaelt: ['code=pkce123', '#access_token=aaa'],
   },
+  {
+    // ⚠️ Der Marker MUSS im Deep-Link landen. Die App entscheidet allein
+    // daran, ob sie den Bildschirm „Neues Passwort" zeigt oder einfach
+    // durchstartet — und beim Zuruecksetzen waere Durchstarten falsch:
+    // der Nutzer kennt sein Passwort ja gerade nicht.
+    name: 'Zuruecksetzen (unser eigener Marker)',
+    adresse: 'https://exelery.de/bestaetigt/?modus=neues-passwort&code=pkce123',
+    erfolg: true,
+    zielEnthaelt: ['modus=neues-passwort', 'code=pkce123'],
+    umgestellt: true,
+  },
+  {
+    name: 'Zuruecksetzen (Supabase-Marker type=recovery)',
+    adresse: 'https://exelery.de/bestaetigt/?code=pkce123&type=recovery',
+    erfolg: true,
+    zielEnthaelt: ['type=recovery'],
+    umgestellt: true,
+  },
+  {
+    name: 'Zuruecksetzen im Fragment',
+    adresse: 'https://exelery.de/bestaetigt/#access_token=aaa&refresh_token=bbb&type=recovery',
+    erfolg: true,
+    umgestellt: true,
+  },
+  {
+    // Gegenstueck: eine normale Bestaetigung darf NICHT nach Passwort
+    // aussehen. Sonst stuende dort „Neues Passwort waehlen" bei jemandem,
+    // der sich gerade erst registriert hat.
+    name: 'Normale Bestaetigung bleibt normale Bestaetigung',
+    adresse: 'https://exelery.de/bestaetigt/?code=pkce123',
+    erfolg: true,
+    umgestellt: false,
+  },
 ];
 
 function alleFaellePruefen(skript, still = false) {
@@ -163,6 +203,21 @@ function alleFaellePruefen(skript, still = false) {
       }
     }
 
+    // Beim Zuruecksetzen muss die Seite ihre Texte umstellen. „Geschafft,
+    // du bist angemeldet" waere dort schlicht gelogen.
+    if (typeof fall.umgestellt === 'boolean') {
+      const istUmgestellt = ergebnis.titel === 'Fast geschafft.';
+      if (istUmgestellt !== fall.umgestellt) {
+        if (!still) {
+          meckern(
+            `${fall.name}: Text ${istUmgestellt ? 'umgestellt' : 'nicht umgestellt'}, ` +
+              `erwartet war ${fall.umgestellt ? 'umgestellt' : 'unveraendert'}`,
+          );
+        }
+        schlecht++;
+      }
+    }
+
     if (!still && schlecht === 0) console.log(`  ok  ${fall.name}`);
   }
   return schlecht;
@@ -180,17 +235,30 @@ fehler += alleFaellePruefen(skript);
 // Fehler von 10.09.2026 absichtlich wieder ein — die Seite liest dann nur
 // noch das Fragment — und verlangen, dass es auffaellt. Wird die Sabotage
 // NICHT bemerkt, ist dieses Skript wertlos und sagt das auch.
-console.log('\nGegenprobe (Query-Auswertung absichtlich zurueckgebaut)');
-const sabotiert = skript.replace(
-  'window.location.search ? window.location.search.substring(1) : \'\'',
-  "''",
-);
-if (sabotiert === skript) {
-  meckern('Sabotage griff nicht — die erwartete Zeile steht nicht mehr so in der Datei');
-} else if (alleFaellePruefen(sabotiert, true) === 0) {
-  meckern('Sabotage blieb unbemerkt — diese Pruefung prueft nichts');
-} else {
-  console.log('  ok  wird erkannt');
+console.log('\nGegenprobe');
+const SABOTAGEN = [
+  {
+    name: 'Query wird nicht mehr gelesen (der Fehler vom 10.09.2026)',
+    von: "window.location.search ? window.location.search.substring(1) : ''",
+    zu: "''",
+  },
+  {
+    name: 'Zuruecksetzen wird nicht mehr erkannt',
+    von: "wert('modus') === 'neues-passwort' || wert('type') === 'recovery'",
+    zu: 'false',
+  },
+];
+
+for (const s of SABOTAGEN) {
+  if (!skript.includes(s.von)) {
+    meckern(`Sabotage „${s.name}" griff nicht — die Zeile steht nicht mehr so in der Datei`);
+    continue;
+  }
+  if (alleFaellePruefen(skript.replace(s.von, s.zu), true) === 0) {
+    meckern(`Sabotage „${s.name}" blieb unbemerkt — kein Fall deckt das ab`);
+  } else {
+    console.log(`  ok  „${s.name}" wird erkannt`);
+  }
 }
 
 console.log(fehler === 0 ? '\nAlles gruen.' : `\n${fehler} Fehler.`);
