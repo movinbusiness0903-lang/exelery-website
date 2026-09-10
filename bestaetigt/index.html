@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Mail bestätigt – Exelery</title>
+
+<!-- Diese Seite darf NICHT in den Suchindex: Sie ist eine Zwischenstation im
+     Anmeldeweg und trägt Anmeldedaten im Adressfragment. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<style>
+  :root{
+    --bg:#0B0F17;
+    --card:#141B2A;
+    --text:#F8FAFC;
+    --muted:#94A3B8;
+    --mint:#0DF2A3;
+    --rule:rgba(255,255,255,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    line-height:1.65;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .karte{
+    width:100%;
+    max-width:440px;
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:18px;
+    padding:38px 30px 32px;
+    text-align:center;
+  }
+  .zeichen{width:64px;height:64px;margin:0 auto 22px;display:block;}
+
+  /* Der Haken zeichnet sich einmal. Kein Dauerloop -- die Bewegung soll
+     bestaetigen, nicht beschaeftigen. */
+  .ring{stroke-dasharray:170;stroke-dashoffset:170;animation:mal .5s ease-out forwards;}
+  .haken{stroke-dasharray:40;stroke-dashoffset:40;animation:mal .3s .4s ease-out forwards;}
+  @keyframes mal{to{stroke-dashoffset:0;}}
+  @media (prefers-reduced-motion:reduce){
+    .ring,.haken{animation:none;stroke-dashoffset:0;}
+  }
+
+  h1{font-size:1.55em;margin:0 0 .35em;letter-spacing:-.01em;}
+  p{margin:.6em 0;color:var(--muted);font-size:.98em;}
+  .knopf{
+    display:block;
+    margin:26px 0 0;
+    padding:15px 22px;
+    background:var(--mint);
+    color:#04231A;
+    font-size:1.02em;
+    font-weight:700;
+    text-decoration:none;
+    border:0;
+    border-radius:12px;
+    cursor:pointer;
+    width:100%;
+    font-family:inherit;
+  }
+  .knopf:active{opacity:.85;}
+  .fuss{margin-top:22px;padding-top:18px;border-top:1px solid var(--rule);}
+  .fuss p{font-size:.86em;margin:.35em 0;}
+  a{color:var(--mint);}
+  .verborgen{display:none;}
+</style>
+</head>
+<body>
+
+<main class="karte">
+  <svg class="zeichen" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <circle class="ring" cx="32" cy="32" r="27" stroke="#0DF2A3" stroke-width="4"
+            stroke-linecap="round" transform="rotate(-90 32 32)"/>
+    <path class="haken" d="M20 33.5 L28.5 42 L44 24" stroke="#0DF2A3" stroke-width="5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div id="gut">
+    <h1>Geschafft.</h1>
+    <p>Deine E-Mail-Adresse ist bestätigt. Zurück in der App bist du direkt
+       angemeldet – ohne noch einmal ein Passwort einzutippen.</p>
+    <button class="knopf" id="zurueck" type="button">Zurück zu Exelery</button>
+  </div>
+
+  <div id="schlecht" class="verborgen">
+    <h1>Der Link ist abgelaufen.</h1>
+    <p>Bestätigungslinks gelten 24&nbsp;Stunden. Öffne Exelery und fordere
+       einen neuen an – dein Konto ist noch da.</p>
+    <button class="knopf" id="zurueck2" type="button">Exelery öffnen</button>
+  </div>
+
+  <div class="fuss">
+    <p id="hinweis">Öffnet sich die App nicht? Starte Exelery von Hand – die
+       Bestätigung gilt trotzdem.</p>
+    <p><a href="/">exelery.de</a></p>
+  </div>
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// Die Anmeldedaten stehen im Fragment der Adresse, also hinter dem #.
+//
+// Das ist wichtig: Alles hinter dem # wird vom Browser NIE an einen Server
+// geschickt. Die Zeichenkette bleibt auf dem Geraet. Deshalb duerfen die
+// Werte auch nicht in einen Link mit ?-Parametern wandern.
+//
+// Der Weg: Mail -> Supabase prueft den Einmal-Schluessel -> leitet hierher
+// weiter, mit access_token und refresh_token im Fragment -> diese Seite
+// reicht sie an exelery://auth/callback weiter -> die App ruft setSession()
+// und der Nutzer ist drin.
+// ─────────────────────────────────────────────────────────────────────────────
+(function () {
+  var fragment = window.location.hash ? window.location.hash.substring(1) : '';
+  var werte = new URLSearchParams(fragment);
+
+  var hatAnmeldung = !!werte.get('access_token') && !!werte.get('refresh_token');
+  var fehler = werte.get('error') || werte.get('error_description');
+
+  if (fehler || !hatAnmeldung) {
+    document.getElementById('gut').classList.add('verborgen');
+    document.getElementById('schlecht').classList.remove('verborgen');
+  }
+
+  // Ohne Anmeldedaten oeffnet der Knopf die App trotzdem -- nur eben ohne
+  // Sitzung. Besser als eine Sackgasse.
+  var ziel = 'exelery://auth/callback' + (fragment ? '#' + fragment : '');
+
+  function oeffnen() {
+    window.location.href = ziel;
+    // Passiert nach 1,5 s nichts, ist die App nicht installiert oder das
+    // Schema nicht registriert. Dann bekommt der Nutzer einen ehrlichen
+    // Hinweis statt einer weissen Seite.
+    setTimeout(function () {
+      document.getElementById('hinweis').textContent =
+        'Nichts passiert? Dann ist Exelery auf diesem Gerät nicht installiert. '
+        + 'Öffne den Link auf dem Handy, auf dem die App liegt.';
+    }, 1500);
+  }
+
+  var b1 = document.getElementById('zurueck');
+  var b2 = document.getElementById('zurueck2');
+  if (b1) b1.addEventListener('click', oeffnen);
+  if (b2) b2.addEventListener('click', oeffnen);
+
+  // Kein automatischer Sprung. iOS zeigt sonst einen Systemdialog, bevor der
+  // Nutzer gelesen hat, dass es geklappt hat -- und wer ihn wegtippt, steht
+  // ratlos da. Ein Knopf, den man bewusst drueckt, ist verlaesslicher.
+})();
+</script>
+
+</body>
+</html>
