@@ -89,10 +89,10 @@
 
 <header class="doc">
   <h1>Datenschutzerklärung</h1>
-  <p class="stand">Stand: 9. September 2026 &nbsp;·&nbsp; Gilt für die Exelery-App sowie die Website unter exelery.de</p>
+  <p class="stand">Stand: 10. September 2026 &nbsp;·&nbsp; Gilt für die Exelery-App sowie die Website unter exelery.de</p>
 </header>
 
-<p class="lead">Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten wir verarbeiten, wenn Sie die Exelery-App oder unsere Website nutzen, auf welcher Rechtsgrundlage dies geschieht und welche Rechte Ihnen zustehen. Exelery verarbeitet auch Gesundheits- und Fitnessdaten sowie – nach Ihrer Freigabe – Daten aus dem Wearable WHOOP und setzt Künstliche Intelligenz zur Auswertung von Mahlzeiten und zur Plan­erstellung ein. Diese besonders schützenswerten Verarbeitungen sind nachfolgend ausführlich beschrieben.</p>
+<p class="lead">Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten wir verarbeiten, wenn Sie die Exelery-App oder unsere Website nutzen, auf welcher Rechtsgrundlage dies geschieht und welche Rechte Ihnen zustehen. Exelery verarbeitet auch Gesundheits- und Fitnessdaten sowie – nach Ihrer Freigabe – Daten aus Ihrer Uhr, Ihrem Fitness-Tracker oder der Gesundheits-App Ihres Geräts und setzt Künstliche Intelligenz zur Auswertung von Mahlzeiten und zur Plan­erstellung ein. Diese besonders schützenswerten Verarbeitungen sind nachfolgend ausführlich beschrieben.</p>
 
 <nav class="toc" aria-label="Inhaltsverzeichnis">
   <h2>Inhalt</h2>
@@ -105,7 +105,7 @@
     <li><a href="#a6">Ernährungsdaten und Mahlzeiten-Tracking</a></li>
     <li><a href="#a7">Trainingsdaten und Trainingspläne</a></li>
     <li><a href="#a8">Körpermaße und Profilbild</a></li>
-    <li><a href="#a9">Anbindung von WHOOP (Wearable)</a></li>
+    <li><a href="#a9">Anbindung von Wearables und Gesundheits-Apps</a></li>
     <li><a href="#a10">Einsatz von Künstlicher Intelligenz</a></li>
     <li><a href="#a11">Technische Daten und Protokolle</a></li>
     <li><a href="#a12">App-Bereitstellung, Berechtigungen und Benachrichtigungen</a></li>
@@ -123,7 +123,7 @@
 <p>Die Datenverarbeitung in der Exelery-App und auf dieser Website erfolgt durch den Betreiber. Dessen Kontaktdaten finden Sie im Abschnitt „Hinweis zur verantwortlichen Stelle".</p>
 
 <h3>Wie erfassen wir Ihre Daten?</h3>
-<p>Ihre Daten werden zum einen dadurch erhoben, dass Sie sie uns mitteilen – etwa bei der Registrierung, im Onboarding-Fragebogen, beim Erfassen von Mahlzeiten, beim Eintragen von Körpermaßen oder im Tagebuch. Andere Daten werden beim Betrieb der App automatisch durch unsere IT-Systeme erfasst (insbesondere technische Protokoll- und Nutzungsdaten). Daten aus Ihrem WHOOP-Konto werden nur nach Ihrer ausdrücklichen Freigabe (OAuth) über die WHOOP-Schnittstelle abgerufen.</p>
+<p>Ihre Daten werden zum einen dadurch erhoben, dass Sie sie uns mitteilen – etwa bei der Registrierung, im Onboarding-Fragebogen, beim Erfassen von Mahlzeiten, beim Eintragen von Körpermaßen oder im Tagebuch. Andere Daten werden beim Betrieb der App automatisch durch unsere IT-Systeme erfasst (insbesondere technische Protokoll- und Nutzungsdaten). Daten aus Apple Health, Health Connect oder Ihrem WHOOP-Konto werden nur nach Ihrer ausdrücklichen Freigabe abgerufen.</p>
 
 <h3>Wofür nutzen wir Ihre Daten?</h3>
 <p>Ein Teil der Daten dient der fehlerfreien Bereitstellung von App und Website. Andere Daten nutzen wir, um Ihnen individuell angepasste Fitness- und Ernährungspläne zu erstellen, Ihre Mahlzeiten auszuwerten, Ihren Fortschritt zu verfolgen und KI-gestützte Empfehlungen zu generieren.</p>
@@ -288,26 +288,41 @@
 <h3>Profilbild</h3>
 <p>Sie können optional ein Profilbild aufnehmen oder aus Ihrer Galerie auswählen. Das Bild wird in unserem Datei-Speicher (Supabase Storage, EU) abgelegt und in der App über eine Bild-URL eingebunden. Rechtsgrundlage ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung) bzw. Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Sie können Ihr Profilbild jederzeit in der App ändern oder entfernen.</p>
 
-<h2 id="a9">9. Anbindung von WHOOP (Wearable-Integration)</h2>
-<p>Sie können in der App optional Ihr WHOOP-Konto verbinden, um Mess- und Trainingsdaten Ihres WHOOP-Geräts in Exelery zu nutzen. Die Verbindung erfolgt über das Autorisierungsverfahren OAuth: Sie melden sich bei WHOOP an und geben gezielt einzelne Datenbereiche („Scopes") frei. Erst nach dieser ausdrücklichen Freigabe rufen wir die entsprechenden Daten über die WHOOP-Schnittstelle (API) ab.</p>
+<h2 id="a9">9. Anbindung von Wearables und Gesundheits-Apps</h2>
 
-<div class="callout">
-  <p style="margin:.3em 0;"><strong>Freigegebene Datenbereiche (Scopes) und abgerufene Daten:</strong></p>
-  <ul style="margin:.4em 0;">
-    <li><strong>read:cycles</strong> – tägliche Zyklusdaten, insbesondere Ihr täglicher Energie-/Kalorienverbrauch sowie der Belastungswert („Strain").</li>
-    <li><strong>read:workout</strong> – Trainingseinheiten, insbesondere Sportart, Beginn/Ende (Dauer), Belastung (Strain) und verbrauchte Kalorien.</li>
-    <li><strong>offline</strong> – ein Aktualisierungs-Token, damit die Synchronisierung automatisch im Hintergrund erfolgen kann.</li>
-  </ul>
-  <p style="margin:.3em 0;">Diese physiologischen Werte (Energieverbrauch, Belastung, Trainingsdaten) sind <strong>Gesundheitsdaten</strong> und damit besondere Kategorien personenbezogener Daten nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO.</p>
-</div>
+<p>Sie können in der App optional eine Uhr, einen Fitness-Tracker oder die Gesundheits-App Ihres Geräts verbinden, damit Ihr Tagesziel sich an Ihre tatsächliche Aktivität anpasst. Die Verbindung ist <strong>freiwillig</strong>; ohne sie funktioniert die App unverändert, das Kalorienziel wird dann rechnerisch bestimmt.</p>
 
-<p>Die Verarbeitung dieser WHOOP-Daten erfolgt ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO (in Verbindung mit Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO), die Sie mit der Freigabe in der App erteilen. Wir nutzen die Daten, um sie Ihnen in der App darzustellen und in Ihre Auswertungen sowie Pläne einfließen zu lassen.</p>
+<p>Diese physiologischen Werte (Energieverbrauch, Schritte, Belastung, Trainings- und Körperdaten) sind <strong>Gesundheitsdaten</strong> und damit besondere Kategorien personenbezogener Daten nach Art.&nbsp;9 Abs.&nbsp;1 DSGVO. Die Verarbeitung erfolgt ausschließlich auf Grundlage Ihrer <strong>ausdrücklichen Einwilligung</strong> gemäß Art.&nbsp;9 Abs.&nbsp;2 lit.&nbsp;a DSGVO, die Sie mit dem Herstellen der jeweiligen Verbindung erteilen und jederzeit widerrufen können.</p>
 
-<p>Zur Bereitstellung der Verbindung speichern wir die im Rahmen von OAuth ausgestellten Zugriffs- und Aktualisierungs-Token, den Verbindungsstatus sowie – sofern verfügbar – Ihre WHOOP-Nutzerkennung (zur Anzeige/Diagnose) in unserer Datenbank bei Supabase (EU). Die Speicherung erfolgt in den Tabellen <code>user_integrations</code> (Verbindungs- und Token-Daten), <code>whoop_daily</code> (tägliche Verbrauchs-/Belastungsdaten) und <code>whoop_workouts</code> (Trainingseinheiten). Der Austausch und die Erneuerung der Token erfolgen ausschließlich serverseitig; das WHOOP-Client-Secret verlässt unsere Server nicht.</p>
+<h3>Welche Quellen es gibt</h3>
 
-<p><strong>WHOOP als eigenständiger Anbieter.</strong> Anbieter des WHOOP-Dienstes ist die Whoop, Inc., 1325 Boylston St. #401, Boston, MA&nbsp;02215, USA. WHOOP verarbeitet die Daten auf der eigenen Plattform in eigener Verantwortung; es gilt die <a href="https://www.whoop.com/us/en/full-privacy-policy/" target="_blank" rel="noopener">Datenschutzerklärung von WHOOP</a>. Da WHOOP in den USA sitzt, handelt es sich beim Abruf um eine Übermittlung aus einem Drittland; hierfür gelten die im Abschnitt „Übermittlung in Drittländer" beschriebenen Garantien sowie Ihre ausdrückliche Einwilligung.</p>
+<p><strong>Apple Health (iOS).</strong> Auf dem iPhone können Sie Exelery den Zugriff auf Apple Health erlauben. Gelesen werden: Aktivitätskalorien, Grundumsatz, Schritte, Trainingseinheiten (Sportart, Beginn und Ende, Dauer, verbrauchte Kalorien) sowie Ihr Körpergewicht. Welche dieser Daten Sie freigeben, entscheiden Sie im Berechtigungsdialog von iOS einzeln. Apple Health ist eine Sammelstelle: Dort landen auch Daten von Apple&nbsp;Watch, Garmin, Polar, Oura, Fitbit, Withings und anderen Apps, sofern diese dorthin schreiben.</p>
 
-<p><strong>Verbindung trennen / Widerruf.</strong> Sie können die WHOOP-Verbindung jederzeit in der App trennen. Dabei werden die gespeicherten Token <strong>sowie die bereits synchronisierten WHOOP-Daten</strong> (<code>whoop_daily</code> und <code>whoop_workouts</code>) gelöscht und es werden keine weiteren Daten mehr von WHOOP abgerufen. Den Zugriff können Sie zusätzlich direkt in Ihrem WHOOP-Konto widerrufen. Der Widerruf berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung.</p>
+<p><strong>Health Connect (Android).</strong> Dasselbe auf Android-Geräten über Health Connect. Gelesen werden Aktivitäts- und Gesamtkalorien, Grundumsatz, Schritte, Trainingseinheiten und Körpergewicht. Auch hier wird jede Datenart einzeln freigegeben.</p>
+
+<p><strong>WHOOP.</strong> Alternativ können Sie Ihr WHOOP-Konto direkt verbinden. Die Verbindung erfolgt über OAuth&nbsp;2.0. Freigegebene Datenbereiche: <code>read:cycles</code> (täglicher Energieverbrauch und Belastungswert), <code>read:workout</code> (Trainingseinheiten) und <code>offline</code> (ein Aktualisierungs-Token für die automatische Synchronisierung).</p>
+
+<h3>Rückschreiben in die Gesundheits-App</h3>
+
+<p>Haben Sie Apple Health oder Health Connect verbunden, trägt Exelery die <strong>in der App erfassten Trainings</strong> dort ein, damit sie in Ihrer Gesundheitsübersicht mitzählen. Übermittelt werden dabei Beginn, Ende und die verbrauchten Kalorien der jeweiligen Einheit. Auch diese Berechtigung erteilen Sie gesondert und können sie jederzeit entziehen.</p>
+
+<h3>Wo die Daten gespeichert werden</h3>
+
+<p>Die von Ihrem Gerät gelesenen Werte werden in unserer Datenbank in den Tabellen <code>health_daily</code> (Tagesverbrauch, Schritte) und <code>health_workouts</code> (Trainingseinheiten) gespeichert, jeweils mit der Angabe, aus welcher Quelle sie stammen. Verbindungs- und Token-Daten liegen in <code>user_integrations</code>. Bei WHOOP erfolgen Austausch und Erneuerung der Token ausschließlich serverseitig; das Client-Secret verlässt unsere Server nicht.</p>
+
+<p>Sind mehrere Quellen verbunden, bestimmt genau eine davon – die von Ihnen gewählte <em>Hauptquelle</em> – Ihr Kalorienziel. Die übrigen dienen nur der Anzeige.</p>
+
+<h3>Die Anbieter</h3>
+
+<p><strong>Apple.</strong> Apple Health ist eine Funktion Ihres Geräts; die Daten liegen dort lokal, und Apple erhält durch die Nutzung in Exelery keine zusätzlichen Informationen. Nach Apples Vorgaben dürfen Daten aus Apple Health <strong>nicht für Werbung verwendet, nicht verkauft und nicht in iCloud abgelegt</strong> werden – daran halten wir uns.</p>
+
+<p><strong>Google.</strong> Health Connect ist ebenfalls eine Funktion Ihres Geräts. Auch hier verbleiben die Daten lokal, bis Sie eine App zum Lesen berechtigen.</p>
+
+<p><strong>WHOOP.</strong> Anbieter ist die Whoop, Inc., 1325 Boylston St. #401, Boston, MA&nbsp;02215, USA. WHOOP verarbeitet die Daten auf der eigenen Plattform in eigener Verantwortung; es gilt die <a href="https://www.whoop.com/us/en/full-privacy-policy/" target="_blank" rel="noopener">Datenschutzerklärung von WHOOP</a>. Da WHOOP in den USA sitzt, ist der Abruf eine Übermittlung aus einem Drittland; hierfür gelten die im Abschnitt „Übermittlung in Drittländer" beschriebenen Garantien sowie Ihre ausdrückliche Einwilligung.</p>
+
+<h3>Verbindung trennen / Widerruf</h3>
+
+<p>Sie können jede Verbindung jederzeit in der App trennen. Dabei werden die gespeicherten Token <strong>sowie die von dieser Quelle bereits übernommenen Daten</strong> gelöscht, und es werden keine weiteren Daten mehr abgerufen. Zusätzlich können Sie den Zugriff direkt dort entziehen, wo er erteilt wurde: in den iOS-Einstellungen unter „Datenschutz &amp; Sicherheit → Health", in den Health-Connect-Einstellungen Ihres Android-Geräts oder in Ihrem WHOOP-Konto. Der Widerruf berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung.</p>
 
 <h2 id="a10">10. Einsatz von Künstlicher Intelligenz (KI)</h2>
 
