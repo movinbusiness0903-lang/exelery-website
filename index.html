@@ -222,6 +222,18 @@
   .wl-msg{margin-top:12px;font-size:.95em;min-height:1.4em;}
   .wl-msg.ok{color:var(--mint);}
   .wl-msg.err{color:#FF7B7B;}
+  /* Hero: nur der Knopf, er fuehrt zur Warteliste. Gleiche Optik wie der
+     Formular-Knopf, damit beide als dieselbe Handlung erkennbar sind. */
+  .hero-cta-slot{display:flex;justify-content:center;}
+  .hero-cta{
+    display:inline-flex;align-items:center;justify-content:center;min-height:48px;
+    background:linear-gradient(90deg,var(--mint-bright),var(--mint));color:#04120c;
+    font-weight:800;font-family:var(--font-head);border-radius:14px;
+    padding:14px 34px;font-size:1.05em;text-decoration:none;white-space:nowrap;
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--mint-glow);color:#04120c;}
+  .hero-cta:focus-visible{outline:3px solid var(--mint-soft);outline-offset:3px;}
   .wl-note{margin-top:10px;color:var(--muted);font-size:.8em;}
   .wl-note a{color:var(--mint);text-decoration:underline;text-underline-offset:2px;}
 
@@ -481,13 +493,11 @@
         </h1>
         <p class="claim mint-text">Dein Ziel. Deine Reise. Dein Erfolg.</p>
         <p class="subline">Die Fitness-App, die mitdenkt: Training, Ernährung und Motivation – in einem.</p>
-        <div class="hero-form-slot">
-          <form class="wl-form" data-wl-form novalidate>
-            <label class="wl-hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="firma" tabindex="-1" autocomplete="off"></label>
-            <input type="email" name="email" required placeholder="deine@email.de" aria-label="E-Mail-Adresse für die Warteliste" autocomplete="email" inputmode="email">
-            <button type="submit">Früher Zugang</button>
-          </form>
-          <p class="wl-msg" data-wl-msg aria-live="polite"></p>
+        <!-- Oben nur ein Knopf, kein zweites E-Mail-Feld: Eingetragen wird
+             ausschliesslich unten in der Warteliste. Zwei Felder fuer dasselbe
+             haben verwirrt (Kevin, 14.09.2026). -->
+        <div class="hero-form-slot hero-cta-slot">
+          <a class="hero-cta" href="#warteliste">Früher Zugang</a>
         </div>
       </div>
       <div class="scroll-hint" aria-hidden="true">
