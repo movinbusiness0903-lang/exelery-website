@@ -670,7 +670,7 @@
           <button type="submit">Day-One-Platz sichern</button>
         </form>
         <p class="wl-msg" data-wl-msg aria-live="polite"></p>
-        <p class="wl-note">Nur eine E-Mail zum Start, kein Newsletter. Details in der <a href="datenschutz/">Datenschutzerklärung</a>.</p>
+        <p class="wl-note">Eine Mail zum Bestätigen, eine zum Start – kein Newsletter. Details in der <a href="datenschutz/">Datenschutzerklärung</a>.</p>
       </div>
     </div>
   </section>
@@ -755,21 +755,31 @@
       }
       var btn = form.querySelector('button');
       btn.disabled = true;
-      fetch(SUPA_URL + '/rest/v1/Waitlist', {
+      /* Seit 14.09.2026 mit Bestaetigungsmail (Double-Opt-in): Die Function
+         `warteliste` speichert die Adresse und schickt einen Link. Erst der
+         Klick darauf macht den Platz fest. Vorher schrieb diese Seite direkt
+         in die Tabelle, und jede ausgedachte Adresse zaehlte. */
+      fetch(SUPA_URL + '/functions/v1/warteliste', {
         method: 'POST',
         headers: {
           'apikey': SUPA_KEY,
-          'Authorization': 'Bearer ' + SUPA_KEY,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email, source: HERKUNFT })
+        body: JSON.stringify({ aktion: 'eintragen', email: email, source: HERKUNFT, firma: hp ? hp.value : '' })
       }).then(function (res) {
-        if (res.ok) {
-          show(msg, 'ok', 'Du bist dabei! Wir melden uns, sobald es losgeht – dein Day-One-Vorteil ist notiert.');
+        return res.json().catch(function () { return {}; }).then(function (d) { return { ok: res.ok, d: d }; });
+      }).then(function (r) {
+        var s = r.d && r.d.status;
+        if (r.ok && s === 'mail_gesendet') {
+          show(msg, 'ok', 'Fast geschafft: Schau in dein Postfach und klick auf den Link in unserer Mail. Erst dann ist dein Platz sicher.');
           form.reset();
-        } else if (res.status === 409) {
-          show(msg, 'ok', 'Diese Adresse ist schon eingetragen – du bist längst dabei.');
+        } else if (r.ok && s === 'mail_folgt') {
+          show(msg, 'ok', 'Du bist eingetragen. Die Mail zum Bestätigen kommt in Kürze – klick dann einmal auf den Link darin.');
+          form.reset();
+        } else if (r.ok && s === 'schon_bestaetigt') {
+          show(msg, 'ok', 'Diese Adresse ist schon bestätigt – du bist längst dabei.');
+        } else if (s === 'ungueltig') {
+          show(msg, 'err', 'Bitte gib eine gültige E-Mail-Adresse ein.');
         } else {
           show(msg, 'err', 'Das hat gerade nicht geklappt. Versuch es in ein paar Minuten noch einmal.');
         }

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abmelden – Exelery</title>
+
+<!-- Nicht in den Suchindex. Abgemeldet wird erst per Knopf: Manche Mailprogramme
+     rufen Links vorab auf, um sie zu pruefen — ein Link allein wuerde sonst
+     Leute abmelden, die nie geklickt haben. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<style>
+  :root{
+    --bg:#0B0F17;
+    --card:#141B2A;
+    --text:#F8FAFC;
+    --muted:#94A3B8;
+    --mint:#0DF2A3;
+    --rule:rgba(255,255,255,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    line-height:1.65;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .karte{
+    width:100%;
+    max-width:440px;
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:18px;
+    padding:38px 30px 32px;
+    text-align:center;
+  }
+  h1{font-size:1.55em;margin:0 0 .35em;letter-spacing:-.01em;text-wrap:balance;}
+  p{margin:.6em 0;color:var(--muted);font-size:.98em;}
+  .knopf{
+    display:block;
+    margin:26px 0 0;
+    padding:15px 22px;
+    background:var(--mint);
+    color:#04231A;
+    font-size:1.02em;
+    font-weight:700;
+    text-decoration:none;
+    border:0;
+    border-radius:12px;
+    cursor:pointer;
+    width:100%;
+    font-family:inherit;
+  }
+  .knopf:disabled{opacity:.6;cursor:wait;}
+  .knopf:focus-visible{outline:3px solid rgba(13,242,163,.45);outline-offset:3px;}
+  a{color:var(--mint);}
+  .verborgen{display:none;}
+</style>
+</head>
+<body>
+
+<main class="karte" aria-live="polite">
+  <div id="frage">
+    <h1>Keine Mails mehr von Exelery?</h1>
+    <p>Wir schicken dir dann auch keine Startmail. Dein Platz auf der Warteliste
+       und alles, was dazugehört, bleibt trotzdem erhalten.</p>
+    <button class="knopf" id="los" type="button">Abmelden</button>
+  </div>
+
+  <div id="gut" class="verborgen">
+    <h1>Erledigt.</h1>
+    <p>Du bekommst keine Mails mehr von uns. Registrierst du dich später mit
+       derselben Adresse in der App, gilt dein Platz weiter.</p>
+    <a class="knopf" href="/">Zu exelery.de</a>
+  </div>
+
+  <div id="unbekannt" class="verborgen">
+    <h1>Dieser Link passt zu keinem Eintrag.</h1>
+    <p>Schreib uns an <a href="mailto:support@exelery.de">support@exelery.de</a>,
+       dann tragen wir dich von Hand aus.</p>
+  </div>
+
+  <div id="fehler" class="verborgen">
+    <h1>Das hat gerade nicht geklappt.</h1>
+    <p>Die Verbindung ist abgebrochen. Versuch es gleich noch einmal oder schreib
+       an <a href="mailto:support@exelery.de">support@exelery.de</a>.</p>
+    <button class="knopf" id="nochmal" type="button">Noch einmal versuchen</button>
+  </div>
+</main>
+
+<script>
+(function () {
+  var FUNKTION = 'https://jedsuqylwgbyuuvyypdm.supabase.co/functions/v1/warteliste';
+  var token = new URLSearchParams(window.location.search).get('t') || '';
+
+  function zeige(id) {
+    ['frage', 'gut', 'unbekannt', 'fehler'].forEach(function (x) {
+      document.getElementById(x).classList.toggle('verborgen', x !== id);
+    });
+  }
+
+  function abmelden(knopf) {
+    if (!token) { zeige('unbekannt'); return; }
+    knopf.disabled = true;
+    fetch(FUNKTION, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'abmelden', token: token })
+    }).then(function (res) {
+      return res.json().then(function (d) { return { ok: res.ok, d: d }; });
+    }).then(function (r) {
+      if (!r.ok) { zeige('fehler'); return; }
+      zeige(r.d.status === 'abgemeldet' ? 'gut' : 'unbekannt');
+    }).catch(function () {
+      zeige('fehler');
+    }).then(function () { knopf.disabled = false; });
+  }
+
+  document.getElementById('los').addEventListener('click', function () { abmelden(this); });
+  document.getElementById('nochmal').addEventListener('click', function () { abmelden(this); });
+})();
+</script>
+
+</body>
+</html>
