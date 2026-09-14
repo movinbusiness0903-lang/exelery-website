@@ -74,6 +74,10 @@
   .fuss p{font-size:.86em;margin:.35em 0;}
   a{color:var(--mint);}
   .verborgen{display:none;}
+  .code{margin:22px 0 0;padding:16px 16px 14px;border:1px dashed rgba(13,242,163,.45);border-radius:12px;background:rgba(13,242,163,.06);}
+  .code-titel{margin:0;font-size:.78em;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .code-wert{margin:.3em 0 .4em;font-family:Menlo,Consolas,"Courier New",monospace;font-size:1.55em;font-weight:700;letter-spacing:.14em;color:var(--text);user-select:all;}
+  .code-hinweis{margin:0;font-size:.86em;}
 </style>
 </head>
 <body>
@@ -91,10 +95,21 @@
       <path class="haken" d="M20 33.5 L28.5 42 L44 24" stroke="#0DF2A3" stroke-width="5"
             stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <h1>Dein Platz ist sicher.</h1>
+    <h1 id="gutTitel">Dein Platz ist sicher.</h1>
     <p id="gutText">Wir schreiben dir, sobald Exelery startet.</p>
     <p>Registriere dich dann in der App mit <b>derselben E-Mail-Adresse</b> –
        Exelery erkennt dich, und du musst nichts noch einmal bestätigen.</p>
+    <!-- Der zweite Weg, falls die Adresse in der App eine andere ist (Apple
+         „E-Mail verbergen", anderes Google-Konto). Ohne ihn verloere ein
+         Gruender dort seinen Platz. Derselbe Code steht in der Startmail. -->
+    <div class="code verborgen" id="codeKasten">
+      <p class="code-titel">Dein persönlicher Code</p>
+      <p class="code-wert" id="codeWert"></p>
+      <p class="code-hinweis">Nur nötig, wenn du dich in der App mit einer <b>anderen Adresse</b>
+         anmeldest – zum Beispiel über Apple mit „E-Mail verbergen“. Dann in der App unter
+         <b>Profil → Code von der Warteliste einlösen</b> eintippen. Mach dir am besten
+         einen Screenshot.</p>
+    </div>
     <a class="knopf" href="/">Zurück zu exelery.de</a>
   </div>
 
@@ -141,14 +156,21 @@
       if (!r.ok) { zeige('fehler'); return; }
       if (r.d.status === 'unbekannt') { zeige('unbekannt'); return; }
       var text = document.getElementById('gutText');
-      if (r.d.gruender) {
-        text.textContent = 'Du hast einen der Gründerplätze: Exelery Pro für immer. '
-          + 'Wir schreiben dir, sobald Exelery startet.';
+      var nr = Math.floor(Number(r.d.platz));
+      var von = Math.floor(Number(r.d.plaetze));
+      if (r.d.gruender && nr > 0) {
+        document.getElementById('gutTitel').textContent = 'Gründerplatz Nr. ' + nr + (von > 0 ? ' von ' + von : '') + '.';
+        text.textContent = 'Du bekommst Exelery Pro für immer – solange es Exelery gibt – '
+          + 'und das Abzeichen „Day One“. Wir schreiben dir, sobald Exelery startet.';
       } else {
         var m = typeof r.d.monate === 'number' && r.d.monate > 0 ? r.d.monate : 2;
         text.textContent = 'Zum Start bekommst du ' + m + ' Monate Exelery Pro gratis – '
-          + 'sie beginnen nach deiner Testwoche – und das Abzeichen „Day One". '
+          + 'sie beginnen nach deiner Testwoche – und das Abzeichen „Day One“. '
           + 'Wir schreiben dir, sobald es losgeht.';
+      }
+      if (typeof r.d.code === 'string' && r.d.code) {
+        document.getElementById('codeWert').textContent = r.d.code;
+        document.getElementById('codeKasten').classList.remove('verborgen');
       }
       zeige('gut');
       // Den Code aus der Adresszeile nehmen, damit er nicht im Verlauf oder

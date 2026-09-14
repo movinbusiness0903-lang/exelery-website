@@ -318,6 +318,12 @@
     will-change:transform;
   }
   .shot-frame.small{width:min(260px,70vw);}
+  /* Hoehe aus width/height im HTML, BEVOR das Bild geladen ist. Ohne das waren
+     die Bilder mit loading="lazy" bis zum Laden 0 px hoch: der Sprung zu
+     #warteliste rechnete sein Ziel am Anfang aus, unterwegs luden die Bilder,
+     die Seite wurde laenger — und man landete beim Abzeichen-Bild statt bei
+     der Warteliste (Kevin, 14.09.2026, Handy und Rechner). */
+  .shot-frame img{width:100%;height:auto;}
   .shot-duo{display:flex;gap:20px;justify-content:center;align-items:flex-start;}
   .shot-duo .shot-frame{margin:0;}
   .shot-duo .shot-frame:last-child{margin-top:60px;}
@@ -364,6 +370,16 @@
   .waitlist h2{font-size:clamp(2em,5vw,3.2em);font-weight:800;margin:0 0 16px;letter-spacing:-.015em;}
   .waitlist .wl-sub{color:var(--muted);font-size:1.1em;margin:0 0 34px;}
   .waitlist .wl-sub b{color:var(--text);}
+  /* Echte Knappheit, live vom Server — kein ausgedachter Countdown. */
+  .waitlist .wl-plaetze{
+    display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+    margin:-16px 0 30px;padding:7px 16px;border-radius:999px;
+    border:1px solid rgba(13,242,163,.35);background:var(--mint-soft);
+    color:var(--text);font-size:.92em;font-variant-numeric:tabular-nums;
+  }
+  .waitlist .wl-plaetze[hidden]{display:none;}
+  .waitlist .wl-plaetze b{color:var(--mint);}
+  .waitlist .wl-plaetze a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;}
 
   /* ===== Footer ===== */
   footer{border-top:1px solid var(--line);padding:40px 0 56px;background:var(--bg);}
@@ -541,11 +557,11 @@
         </div>
         <div class="phone-stage">
           <div class="phone-device" id="phoneDevice">
-            <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros"></div>
-            <div class="phone-screen"><img src="media/web/gewicht.webp" alt="Gewichtsverlauf mit Kurve, minus 4,6 Kilogramm" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" alt="Einkaufsliste mit Zeitraum-Auswahl" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/training.webp" alt="Trainings-Screen mit Wochenplan" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" loading="lazy"></div>
+            <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1298"></div>
+            <div class="phone-screen"><img src="media/web/gewicht.webp" alt="Gewichtsverlauf mit Kurve, minus 4,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/training.webp" alt="Trainings-Screen mit Wochenplan" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1298" loading="lazy"></div>
           </div>
           <div class="phone-progress" id="phoneProgress" aria-hidden="true">
             <i class="on"></i><i></i><i></i><i></i><i></i>
@@ -581,8 +597,8 @@
         </div>
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame"><img src="media/web/ernaehrung.webp" alt="Ernährungs-Screen" loading="lazy"></div>
-            <div class="shot-frame small"><img src="media/web/gewicht.webp" alt="Gewichts-Screen" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/ernaehrung.webp" alt="Ernährungs-Screen" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/gewicht.webp" alt="Gewichts-Screen" width="640" height="1298" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -603,8 +619,8 @@
       <div class="chapter-cols flip">
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame small"><img src="media/web/logbuch.webp" alt="Logbuch mit Sätzen und Gewichten" loading="lazy"></div>
-            <div class="shot-frame"><img src="media/web/training.webp" alt="Trainings-Startseite" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/logbuch.webp" alt="Logbuch mit Sätzen und Gewichten" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/training.webp" alt="Trainings-Startseite" width="640" height="1298" loading="lazy"></div>
           </div>
         </div>
         <div class="chapter-text">
@@ -647,7 +663,7 @@
           </div>
         </div>
         <div class="shot">
-          <div class="shot-frame"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung" loading="lazy"></div>
+          <div class="shot-frame"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung" width="640" height="1298" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -662,7 +678,13 @@
              alt="Das Day-One-Abzeichen: ein blauer Brillant mit einer Eins" width="128" height="128">
       </span>
       <h2 class="reveal">Sei Day&nbsp;One.</h2>
-      <p class="wl-sub reveal">Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b><span data-bonus-monate>2&nbsp;Monate</span> Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
+      <!-- Dieser Text ist die SICHERE Fassung: Er verspricht nur, was immer gilt.
+           Solange noch Gruenderplaetze frei sind, tauscht das Skript unten ihn
+           gegen den Gruendertext aus (Zahlen live vom Server). Scheitert der
+           Abruf, bleibt dieser Text stehen — die Seite verspricht also nie einen
+           Platz, der schon weg ist. -->
+      <p class="wl-sub reveal" data-wl-sub>Exelery startet bald. Wer sich jetzt einträgt, bekommt zum Start <b>2&nbsp;Monate Exelery&nbsp;Pro gratis</b> – und das Abzeichen <b>„Day&nbsp;One“</b>. Das bleibt. Für immer in deinem Profil.</p>
+      <p class="wl-plaetze" data-wl-plaetze aria-live="polite" hidden></p>
       <div class="reveal">
         <form class="wl-form" data-wl-form novalidate>
           <label class="wl-hp" aria-hidden="true">Nicht ausfüllen<input type="text" name="firma" tabindex="-1" autocomplete="off"></label>
@@ -771,7 +793,7 @@
       }).then(function (r) {
         var s = r.d && r.d.status;
         if (r.ok && s === 'mail_gesendet') {
-          show(msg, 'ok', 'Fast geschafft: Schau in dein Postfach und klick auf den Link in unserer Mail. Erst dann ist dein Platz sicher.');
+          show(msg, 'ok', 'Fast geschafft: Schau in dein Postfach und klick auf den Link in unserer Mail. Erst dann ist dein Platz sicher. Keine Mail da? Schau auch im Spam-Ordner.');
           form.reset();
         } else if (r.ok && s === 'mail_folgt') {
           show(msg, 'ok', 'Du bist eingetragen. Die Mail zum Bestätigen kommt in Kürze – klick dann einmal auf den Link darin.');
@@ -793,6 +815,95 @@
     el.className = 'wl-msg ' + cls;
     el.textContent = text;
   }
+
+  /* ================= Gruenderplaetze, live ================= */
+  /* Kevin und Moritz, 14.09.2026: Die ersten 30 bestaetigten Anmeldungen
+     bekommen Pro fuer immer, alle danach 2 Monate. Sind die Plaetze weg,
+     stellt sich die Seite von selbst um — dafuer fragt sie den Server.
+     Im HTML steht die sichere Fassung; getauscht wird NUR bei einer klaren
+     Antwort „aktiv und noch frei". */
+  (function () {
+    var sub = document.querySelector('[data-wl-sub]');
+    var zeile = document.querySelector('[data-wl-plaetze]');
+    if (!sub || !zeile || !window.fetch) return;
+    fetch(SUPA_URL + '/functions/v1/warteliste', {
+      method: 'POST',
+      headers: { 'apikey': SUPA_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'stand' })
+    }).then(function (res) {
+      return res.ok ? res.json() : null;
+    }).then(function (d) {
+      if (!d || d.gruenderAktiv !== true) return;
+      var frei = Math.floor(Number(d.frei));
+      var plaetze = Math.floor(Number(d.plaetze));
+      var monate = Math.floor(Number(d.monate));
+      if (!(frei > 0) || !(plaetze > 0) || frei > plaetze) return;
+      if (!(monate > 0)) monate = 2;
+      sub.innerHTML = 'Die ersten <b>' + plaetze + ' bestätigten Anmeldungen</b> bekommen '
+        + '<b>Exelery&nbsp;Pro für immer</b> – solange es Exelery gibt. Alle danach bekommen '
+        + '<b>' + monate + '&nbsp;Monate Pro gratis</b>. Und jeder das Abzeichen <b>„Day&nbsp;One“</b>.';
+      zeile.innerHTML = 'Noch <b>' + frei + '</b> von ' + plaetze + ' Gründerplätzen frei'
+        + ' · <a href="faq/#gruender">Bedingungen</a>';
+      zeile.hidden = false;
+    }).catch(function () { /* Sichere Fassung bleibt stehen. */ });
+  })();
+
+  /* ================= Sprung zur Warteliste ================= */
+  /* Der sanfte Sprung des Browsers rechnet sein Ziel EINMAL am Anfang aus.
+     Aendert sich unterwegs die Seitenlaenge (Bilder laden nach, die Adress-
+     leiste am Handy faehrt ein), endet er zu frueh. Genau das hat Kevin am
+     14.09.2026 gesehen: Landung beim Abzeichen-Bild statt bei der Warteliste.
+     Deshalb: springen, warten bis die Seite ruht, nachmessen, nachspringen. */
+  (function () {
+    var ziel = document.getElementById('warteliste');
+    if (!ziel) return;
+    var abgebrochen = false;
+    function amEnde() {
+      var y = window.scrollY || window.pageYOffset || 0;
+      return y + window.innerHeight >= document.documentElement.scrollHeight - 1;
+    }
+    function wennRuhig(fertig) {
+      var letzte = -1, gleich = 0, start = Date.now();
+      (function pruefe() {
+        var y = window.scrollY || window.pageYOffset || 0;
+        if (y === letzte) { gleich++; } else { gleich = 0; letzte = y; }
+        if (gleich >= 3 || Date.now() - start > 4000) { fertig(); return; }
+        setTimeout(pruefe, 120);
+      })();
+    }
+    function springen(runde) {
+      if (abgebrochen) return;
+      var sanft = !reduceMotion && runde < 2;
+      try {
+        ziel.scrollIntoView({ behavior: sanft ? 'smooth' : 'auto', block: 'start' });
+      } catch (e) {
+        ziel.scrollIntoView(true);
+      }
+      wennRuhig(function () {
+        if (abgebrochen || runde >= 4 || amEnde()) return;
+        if (Math.abs(ziel.getBoundingClientRect().top) > 2) springen(runde + 1);
+      });
+    }
+    /* Wer waehrenddessen selbst scrollt, bekommt die Seite nicht mehr
+       weggezogen. */
+    ['wheel', 'touchstart', 'keydown'].forEach(function (typ) {
+      window.addEventListener(typ, function () { abgebrochen = true; }, { passive: true });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="#warteliste"]'), function (a) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        abgebrochen = false;
+        if (window.location.hash !== '#warteliste' && window.history && window.history.pushState) {
+          window.history.pushState(null, '', '#warteliste');
+        }
+        springen(0);
+      });
+    });
+    /* Aufruf von aussen mit /#warteliste (z. B. von der Bestaetigungsseite). */
+    if (window.location.hash === '#warteliste') {
+      window.addEventListener('load', function () { abgebrochen = false; springen(2); });
+    }
+  })();
 
   /* ================= Scroll-Maschine =================
      Der Scrollwert wird im Ereignis nur gemerkt, gerechnet und gezeichnet
