@@ -1,0 +1,114 @@
+/* Gemeinsame Gestaltung der Zwischenseiten /einladung/, /freund/ und /liste/.
+   Dieselben Farben wie /bestaetigt/. */
+:root{
+  --bg:#0B0F17;
+  --card:#141B2A;
+  --text:#F8FAFC;
+  --muted:#94A3B8;
+  --mint:#0DF2A3;
+  --rule:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  line-height:1.65;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 16px;
+}
+.karte{
+  width:100%;
+  max-width:440px;
+  background:var(--card);
+  border:1px solid var(--rule);
+  border-radius:18px;
+  padding:36px 28px 26px;
+  text-align:center;
+}
+.zeichen{width:56px;height:56px;margin:0 auto 18px;display:block;}
+.marke{
+  margin:0 0 .35em;
+  color:var(--mint);
+  font-size:.76em;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+h1{font-size:1.5em;line-height:1.3;margin:0 0 .45em;letter-spacing:-.01em;text-wrap:balance;}
+p{margin:.6em 0;color:var(--muted);font-size:.98em;}
+strong{color:var(--text);}
+a{color:var(--mint);}
+
+.knopf{
+  display:block;
+  width:100%;
+  margin:24px 0 0;
+  padding:15px 22px;
+  background:var(--mint);
+  color:#04231A;
+  font:inherit;
+  font-size:1.02em;
+  font-weight:700;
+  border:0;
+  border-radius:12px;
+  cursor:pointer;
+}
+.knopf:active{opacity:.85;}
+.hinweis{font-size:.86em;margin-top:12px;}
+
+.codekasten{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:20px 0 0;
+  padding:12px 14px;
+  border:1px solid var(--rule);
+  border-radius:12px;
+  text-align:left;
+}
+.codelabel{color:var(--muted);font-size:.8em;}
+.code{
+  flex:1;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:1.25em;
+  font-weight:700;
+  letter-spacing:.18em;
+  color:var(--text);
+}
+.klein-knopf{
+  background:transparent;
+  color:var(--mint);
+  border:1px solid rgba(13,242,163,.4);
+  border-radius:10px;
+  padding:8px 12px;
+  font:inherit;
+  font-size:.86em;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.fuss{margin-top:24px;padding-top:18px;border-top:1px solid var(--rule);}
+.fuss p{font-size:.9em;margin:.35em 0;}
+.zweit{
+  display:inline-block;
+  margin:10px 0 8px;
+  padding:10px 20px;
+  border:1px solid var(--rule);
+  border-radius:999px;
+  color:var(--text);
+  text-decoration:none;
+  font-size:.92em;
+  font-weight:600;
+}
+.klein{font-size:.84em;}
+
+.knopf:focus-visible,.zweit:focus-visible,.klein-knopf:focus-visible,a:focus-visible{
+  outline:2px solid var(--text);
+  outline-offset:3px;
+}
+.verborgen{display:none;}

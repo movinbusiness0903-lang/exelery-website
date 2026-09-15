@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["B2TS7Z7677.com.exelery.app"],
+        "components": [
+          { "/": "/einladung/*", "comment": "Einladung, 1 Monat Pro (exelery://ref)" },
+          { "/": "/einladung", "comment": "dasselbe ohne Schraegstrich" },
+          { "/": "/freund/*", "comment": "Freundschaftsanfrage (exelery://friend)" },
+          { "/": "/freund", "comment": "dasselbe ohne Schraegstrich" },
+          { "/": "/liste/*", "comment": "Geteilte Einkaufsliste (exelery://shopping)" },
+          { "/": "/liste", "comment": "dasselbe ohne Schraegstrich" }
+        ]
+      }
+    ]
+  }
+}

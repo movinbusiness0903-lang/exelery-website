@@ -1,0 +1,9 @@
+# GitHub Pages baut diese Seite mit Jekyll. Jekyll laesst Ordner mit Punkt am
+# Anfang weg -- .well-known muss aber ausgeliefert werden: dort liegt die Datei,
+# mit der iOS Links auf exelery.de/einladung/, /freund/ und /liste/ direkt in
+# der Exelery-App oeffnet (15.09.2026).
+#
+# Bewusst NICHT .nojekyll: das wuerde auch alle anderen versteckten Ordner
+# veroeffentlichen.
+include:
+  - .well-known
