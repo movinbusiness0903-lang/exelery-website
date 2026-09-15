@@ -123,22 +123,20 @@
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
 
-  /* ===== Nav ===== */
+  /* ===== Nav: schwebende Pille (Entwurf P1, Kevin 15.09.2026) =====
+     Bleibt beim Scrollen sichtbar und wird nur kompakter. Die Breite kommt
+     vom Inhalt, am Handy geht sie fast ueber die volle Breite. */
   header.nav{
-    position:fixed;top:0;left:0;right:0;z-index:80;
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    background:rgba(11,15,23,.55);
-    border-bottom:1px solid var(--line);
-    /* Beim Runterscrollen schiebt sich der Balken weg. Auf dem Handy verdeckte
-       er sonst dauerhaft die Kapitel-Ueberschriften. */
-    transition:transform .28s ease;
-    will-change:transform;
+    position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:80;
+    display:flex;align-items:center;gap:30px;white-space:nowrap;
+    padding:6px 6px 6px 20px;border-radius:999px;
+    background:rgba(20,27,42,.5);
+    backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
+    border:1px solid rgba(255,255,255,.13);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 40px -18px rgba(0,0,0,.7);
+    transition:top .4s cubic-bezier(.2,.8,.2,1),gap .4s cubic-bezier(.2,.8,.2,1),padding .4s cubic-bezier(.2,.8,.2,1),background .4s ease;
   }
-  header.nav.nav-weg{transform:translateY(-100%);}
-  @media(prefers-reduced-motion:reduce){
-    header.nav{transition:none;}
-  }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;}
+  header.nav.kompakt{top:10px;gap:20px;padding:4px 4px 4px 16px;background:rgba(11,15,23,.74);}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.18em;font-size:.92em;font-family:var(--font-head);}
   .brand .mark{width:24px;height:24px;}
   .nav-links{display:flex;align-items:center;gap:22px;font-size:.9em;color:var(--muted);}
@@ -146,13 +144,16 @@
   .nav-links a:hover{color:var(--mint);}
   .nav-cta{
     color:#04120c;background:linear-gradient(90deg,var(--mint-bright),var(--mint));
-    font-weight:700;padding:8px 16px;border-radius:999px;font-size:.86em;
+    font-weight:700;padding:9px 18px;border-radius:999px;font-size:.86em;
     transition:transform .2s ease,box-shadow .2s ease;
   }
   .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--mint-glow);color:#04120c;}
 
-  /* ===== Hero mit Scroll-Sequenz ===== */
-  .hero-scrub{height:280vh;position:relative;}
+  /* ===== Hero mit Scroll-Sequenz =====
+     Strecke 15.09.2026 auf Kevins Wunsch rund 40 % kuerzer: 280vh -> 210vh,
+     also 1,1 statt 1,8 Bildschirmhoehen fuer die Atem-Sequenz (am Handy
+     220vh -> 170vh, 0,7 statt 1,2). Alle 48 Bilder bleiben. */
+  .hero-scrub{height:210vh;position:relative;}
   .hero-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;}
   .hero-media{position:absolute;inset:0;}
   .hero-media canvas,.hero-media .poster{
@@ -161,45 +162,73 @@
   .hero-media .poster{background:url('media/hero/poster.webp') center 30%/cover no-repeat;}
   .hero-media canvas{opacity:0;transition:opacity .5s ease;}
   .hero-media.seq-ready canvas{opacity:1;}
+  /* Startbereich V2 (Kevin 15.09.2026): Text links, Handy rechts. Der
+     Verlauf dunkelt die Atem-Sequenz links fuer den Text ab. */
   .hero-shade{
     position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(11,15,23,.55) 0%,rgba(11,15,23,.25) 40%,rgba(11,15,23,.82) 88%,var(--bg) 100%);
+    background:
+      linear-gradient(180deg,rgba(11,15,23,0) 72%,var(--bg) 100%),
+      linear-gradient(100deg,rgba(11,15,23,.88) 0%,rgba(11,15,23,.6) 55%,rgba(11,15,23,.72) 100%);
   }
-  .hero-content{
-    position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:0 var(--rand);
+  .hero-content{position:relative;z-index:2;height:100%;display:flex;align-items:center;}
+  .hero-raster{
+    width:100%;max-width:1160px;margin:0 auto;padding:64px var(--rand) 0;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;
   }
-  .hero-content .logo-mark{width:72px;height:72px;margin-bottom:20px;filter:drop-shadow(0 0 18px var(--mint-glow));}
-  .blade{stroke-dasharray:120;stroke-dashoffset:120;animation:draw 1.2s ease forwards .2s;}
-  .blade.b2{animation-delay:.5s;}
-  @keyframes draw{to{stroke-dashoffset:0;}}
-  .wordmark{font-size:clamp(2.6em,8vw,5em);font-weight:800;letter-spacing:.18em;margin:0;padding-left:.18em;line-height:1.1;}
-  .wordmark span{display:inline-block;opacity:0;transform:translateY(16px);animation:rise .6s ease forwards;animation-delay:calc(.35s + var(--i)*.05s);}
-  @keyframes rise{to{opacity:1;transform:none;}}
-  .claim{font-size:clamp(1.02em,2.6vw,1.4em);font-weight:600;margin:12px 0 0;opacity:0;animation:fadeUp .7s ease forwards .9s;}
+  .hero-text{min-width:0;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .hero-abz{
+    display:inline-flex;align-items:center;gap:10px;margin:0 0 20px;
+    padding:7px 14px 7px 11px;border-radius:999px;
+    background:rgba(13,242,163,.12);border:1px solid rgba(13,242,163,.38);
+    color:#CFFFEF;font-weight:700;font-size:.9em;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:0;animation:fadeUp .7s ease forwards .3s;
+  }
+  .hero-abz[hidden]{display:none;}
+  .hero-abz i{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(13,242,163,.22);}
+  /* font-size:1rem, damit „em" in Zeile 2 wie im Entwurf 16 px meint und
+     nicht die Browser-Vorgabe fuer h1 (32 px) — sonst waere sie doppelt so gross. */
+  .hero-titel{margin:0;font-size:1rem;font-weight:800;line-height:1.04;letter-spacing:-.032em;text-shadow:0 2px 20px rgba(11,15,23,.75);}
+  /* Zeile 1 steht in EINER Zeile und ist kleiner. Die Groesse haengt an der
+     Breite der Textspalte (PC: 57,5 % des Rasters, Handy: volle Breite), so
+     bricht sie von 360 bis 1440 px nie um. Gemessen am 15.09.2026: „Dein Ziel.
+     Deine Reise." ist in Manrope 800 rund 10,5 Schriftgroessen breit; der
+     Teiler 11,4 laesst etwa 8 % Reserve. */
+  .hero-z1{
+    display:block;white-space:nowrap;color:var(--text);
+    font-size:min(2.9rem,calc((min(100vw,1160px) - 2 * var(--rand) - 40px) * .575 / 11.4));
+    opacity:0;animation:fadeUp .7s ease forwards .45s;
+  }
+  /* Zeile 2 in Farbe und Groesse wie im Entwurf V2. */
+  .hero-z2{display:block;font-size:clamp(2.4em,6vw,4.7em);padding-bottom:.06em;opacity:0;animation:fadeUp .7s ease forwards .6s;}
   /* Der Untertitel stand in --muted (#94A3B8) direkt auf dem hellen, unruhigen
      Hero-Bild und war auf dem Handy praktisch nicht zu lesen. Heller Ton plus
-     ein weicher Schatten loesen das, ohne Bild oder Animation anzufassen — der
-     Schatten traegt auch dort, wo der Bildinhalt gerade hell ist. */
-  .subline{max-width:520px;margin:16px auto 0;color:rgba(248,250,252,.9);font-size:1.05em;opacity:0;animation:fadeUp .7s ease forwards 1.05s;text-shadow:0 1px 16px rgba(11,15,23,.9),0 1px 3px rgba(11,15,23,.8);}
-  .claim,.wordmark{text-shadow:0 2px 20px rgba(11,15,23,.75);}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
-  .hero-form-slot{margin-top:34px;width:100%;max-width:460px;opacity:0;animation:fadeUp .7s ease forwards 1.2s;}
-  /* Waagerecht mittig ueber left/right, NICHT ueber transform. Grund: die
-     fadeUp-Animation unten endet auf `transform:none` und haelt das mit
-     `forwards` fest — ein translateX(-50%) wurde dadurch geloescht, und der
-     Hinweis stand um seine halbe Breite zu weit rechts. Dasselbe passierte
-     bei `prefers-reduced-motion`. Die Flex-Spalte mittet ihre beiden Kinder
-     selbst, die Animation bleibt unangetastet. `pointer-events:none`, weil
-     der Kasten jetzt ueber die volle Breite geht und rein schmueckend ist. */
-  .scroll-hint{
-    position:absolute;bottom:26px;left:0;right:0;z-index:2;pointer-events:none;
-    color:var(--muted);font-size:.78em;letter-spacing:.14em;text-transform:uppercase;
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    opacity:0;animation:fadeUp .7s ease forwards 1.6s;
+     ein weicher Schatten loesen das — der Schatten traegt auch dort, wo der
+     Bildinhalt gerade hell ist. */
+  .subline{max-width:520px;margin:18px 0 0;color:rgba(248,250,252,.9);font-size:1.05em;opacity:0;animation:fadeUp .7s ease forwards .8s;text-shadow:0 1px 16px rgba(11,15,23,.9),0 1px 3px rgba(11,15,23,.8);}
+  .hero-knoepfe{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;opacity:0;animation:fadeUp .7s ease forwards .95s;}
+  .hero-zweit{
+    display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 28px;
+    border-radius:16px;border:1px solid rgba(255,255,255,.22);background:rgba(11,15,23,.35);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    color:var(--text);font-family:var(--font-head);font-weight:700;font-size:1.02em;white-space:nowrap;
+    transition:border-color .2s ease,color .2s ease;
   }
-  .scroll-hint svg{transform:rotate(90deg);animation:hintPulse 1.8s ease-in-out infinite;}
-  @keyframes hintPulse{0%,100%{transform:rotate(90deg) translateX(0);opacity:.7;}50%{transform:rotate(90deg) translateX(6px);opacity:1;}}
+  .hero-zweit:hover{border-color:var(--mint);color:var(--mint);}
+  .hero-zweit:focus-visible{outline:3px solid var(--mint-soft);outline-offset:3px;}
+  /* Platz fuer das Handy. Ohne JavaScript (und bei „Bewegung reduzieren")
+     steht hier das Handy still. Mit Bewegung uebernimmt das fliegende Handy
+     (.handy-flug), das beim Scrollen in die App-Szene gleitet. */
+  .hero-handy-platz{justify-self:end;width:300px;aspect-ratio:1290/2616;opacity:0;animation:fadeUp .8s ease forwards 1.05s;}
+  .hero-handy-platz .phone-device{width:100%;}
+  .handy-flug-an .hero-handy-platz .phone-device{visibility:hidden;}
+  .handy-flug{display:none;}
+  .handy-flug-an .handy-flug{
+    display:block;position:fixed;top:0;left:0;margin:0;z-index:60;pointer-events:none;
+    transform-origin:50% 50%;opacity:0;animation:flugEin .8s ease forwards 1.05s;
+  }
+  @keyframes flugEin{to{opacity:1;}}
 
   /* ===== Warteliste-Formular ===== */
   .wl-form{display:flex;gap:10px;width:100%;position:relative;}
@@ -233,6 +262,7 @@
     transition:transform .2s ease,box-shadow .2s ease;
   }
   .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px var(--mint-glow);color:#04120c;}
+  .hero-cta.gross{min-height:58px;padding:16px 40px;font-size:1.12em;border-radius:16px;box-shadow:0 14px 40px -12px var(--mint-glow);}
   .hero-cta:focus-visible{outline:3px solid var(--mint-soft);outline-offset:3px;}
   .wl-note{margin-top:10px;color:var(--muted);font-size:.8em;}
   .wl-note a{color:var(--mint);text-decoration:underline;text-underline-offset:2px;}
@@ -434,21 +464,34 @@
     .shot-duo .shot-frame.small{width:min(260px,35vw);}
     .shot-duo .shot-frame:last-child{margin-top:30px;}
     .nums{gap:28px;justify-content:flex-start;}
-    .hero-scrub{height:220vh;}
+    .hero-scrub{height:170vh;}
+    /* Startbereich untereinander: Text mittig, Handy darunter. Es darf unten
+       aus dem Bild ragen, beim Scrollen gleitet es ohnehin nach oben in die
+       App-Szene. */
+    .hero-content{align-items:flex-start;}
+    .hero-raster{grid-template-columns:minmax(0,1fr);gap:30px;padding-top:88px;text-align:center;justify-items:center;}
+    .hero-z1{font-size:min(2.9rem,calc((100vw - 2 * var(--rand)) / 11.4));}
+    .subline{margin-left:auto;margin-right:auto;}
+    .hero-knoepfe{justify-content:center;}
+    .hero-handy-platz{justify-self:center;width:min(220px,52vw);}
+    .hero-shade{
+      background:linear-gradient(180deg,rgba(11,15,23,.78) 0%,rgba(11,15,23,.55) 45%,rgba(11,15,23,.88) 85%,var(--bg) 100%);
+    }
   }
   @media(max-width:560px){
     .wl-form{flex-direction:column;}
     .wl-form button{width:100%;}
+    header.nav{left:12px;right:12px;transform:none;justify-content:space-between;}
     .nav-links{gap:14px;font-size:.84em;}
     .nav-links .nav-plain{display:none;}
     .chapter-bg{min-height:60vh;}
+    .hero-knoepfe{flex-direction:column;width:100%;}
+    .hero-knoepfe a{width:100%;}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     *{animation:none!important;transition:none!important;}
-    .reveal,.claim,.subline,.hero-form-slot,.scroll-hint{opacity:1;transform:none;}
-    .wordmark span{opacity:1;transform:none;}
-    .blade{stroke-dashoffset:0;}
+    .reveal,.subline,.hero-abz,.hero-z1,.hero-z2,.hero-knoepfe,.hero-handy-platz{opacity:1;transform:none;}
     .hero-scrub{height:100vh;}
     .hero-media canvas{display:none;}
     .phone-scene{height:auto;}
@@ -473,20 +516,18 @@
 </svg>
 
 <header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top">
-      <svg class="mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-        <path d="M30 24 L58 50 L30 76" stroke="url(#mintgrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M52 24 L80 50 L52 76" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-      </svg>
-      <span>EXELERY</span>
-    </a>
-    <nav class="nav-links">
-      <a class="nav-plain" href="datenschutz/">Datenschutz</a>
-      <a class="nav-plain" href="impressum/">Impressum</a>
-      <a class="nav-cta" href="#warteliste">Früher Zugang</a>
-    </nav>
-  </div>
+  <a class="brand" href="#top">
+    <svg class="mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <path d="M30 24 L58 50 L30 76" stroke="url(#mintgrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M52 24 L80 50 L52 76" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+    </svg>
+    <span>EXELERY</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-plain" href="datenschutz/">Datenschutz</a>
+    <a class="nav-plain" href="impressum/">Impressum</a>
+    <a class="nav-cta" href="#warteliste">Früher Zugang</a>
+  </nav>
 </header>
 
 <main id="top">
@@ -500,28 +541,37 @@
       </div>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-content" id="heroContent">
-        <svg class="logo-mark" viewBox="0 0 100 100" fill="none" aria-label="Exelery Logo">
-          <path class="blade b1" d="M30 24 L58 50 L30 76" stroke="url(#mintgrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-          <path class="blade b2" d="M52 24 L80 50 L52 76" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
-        </svg>
-        <h1 class="wordmark" aria-label="EXELERY">
-          <span style="--i:0">E</span><span style="--i:1">X</span><span style="--i:2">E</span><span style="--i:3">L</span><span style="--i:4">E</span><span style="--i:5">R</span><span style="--i:6">Y</span>
-        </h1>
-        <p class="claim mint-text">Dein Ziel. Deine Reise. Dein Erfolg.</p>
-        <p class="subline">Die Fitness-App, die mitdenkt: Training, Ernährung und Motivation – in einem.</p>
-        <!-- Oben nur ein Knopf, kein zweites E-Mail-Feld: Eingetragen wird
-             ausschliesslich unten in der Warteliste. Zwei Felder fuer dasselbe
-             haben verwirrt (Kevin, 14.09.2026). -->
-        <div class="hero-form-slot hero-cta-slot">
-          <a class="hero-cta" href="#warteliste">Früher Zugang</a>
+        <div class="hero-raster">
+          <div class="hero-text" id="heroText">
+            <!-- Nur sichtbar, solange der Server „Aktion an und noch frei"
+                 meldet. Bei 0 freien Plaetzen, ausgeschalteter Aktion oder
+                 Stoerung bleibt er von selbst weg (Skript gruender-zaehler). -->
+            <p class="hero-abz" data-hero-plaetze aria-live="polite" hidden><i aria-hidden="true"></i><span></span></p>
+            <h1 class="hero-titel"><span class="hero-z1">Dein Ziel. Deine Reise.</span> <span class="hero-z2 mint-text">Dein Erfolg.</span></h1>
+            <p class="subline">Die Fitness-App, die mitdenkt: Training, Ernährung und Motivation – in einem.</p>
+            <!-- Kein E-Mail-Feld hier oben: Eingetragen wird ausschliesslich
+                 unten in der Warteliste (Kevin, 14.09.2026). -->
+            <div class="hero-knoepfe">
+              <a class="hero-cta gross" href="#warteliste">Früher Zugang</a>
+              <a class="hero-zweit" href="#app">Die App ansehen</a>
+            </div>
+          </div>
+          <div class="hero-handy-platz" id="heroHandyPlatz">
+            <div class="phone-device" role="img" aria-label="Die Exelery-App, Tab Ernährung">
+              <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="" width="640" height="1298"></div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="scroll-hint" aria-hidden="true">
-        <span>Scrollen</span>
-        <svg width="18" height="18" viewBox="0 0 100 100" fill="none"><path d="M30 24 L58 50 L30 76" stroke="#0DF2A3" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
     </div>
   </section>
+
+  <!-- Das fliegende Handy: liegt anfangs genau auf dem Handy im Startbereich
+       und gleitet beim Scrollen in die Lage des Handys der App-Szene. Dort
+       uebernimmt #phoneDevice mit demselben Bildschirm. -->
+  <div class="phone-device handy-flug" id="handyFlug" aria-hidden="true">
+    <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="" width="640" height="1298"></div>
+  </div>
 
   <!-- ============ TELEFON-SZENE: scroll-gesteuert ============ -->
   <section class="phone-scene" id="app" aria-label="Die App im Überblick">
@@ -733,7 +783,9 @@
 (function () {
   'use strict';
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var narrow = window.matchMedia('(max-width: 768px)').matches;
+  /* 900 px wie im CSS: dort wird der Startbereich einspaltig. Vorher lud das
+     Skript schon ab 768 px „Handy", das CSS schaltete aber erst bei 900 um. */
+  var narrow = window.matchMedia('(max-width: 900px)').matches;
 
   /* ================= Warteliste ================= */
   var SUPA_URL = 'https://jedsuqylwgbyuuvyypdm.supabase.co';
@@ -816,47 +868,18 @@
     el.textContent = text;
   }
 
-  /* ================= Gruenderplaetze, live ================= */
-  /* Kevin und Moritz, 14.09.2026: Die ersten 30 bestaetigten Anmeldungen
-     bekommen Pro fuer immer, alle danach 2 Monate. Sind die Plaetze weg,
-     stellt sich die Seite von selbst um — dafuer fragt sie den Server.
-     Im HTML steht die sichere Fassung; getauscht wird NUR bei einer klaren
-     Antwort „aktiv und noch frei". */
-  (function () {
-    var sub = document.querySelector('[data-wl-sub]');
-    var zeile = document.querySelector('[data-wl-plaetze]');
-    if (!sub || !zeile || !window.fetch) return;
-    fetch(SUPA_URL + '/functions/v1/warteliste', {
-      method: 'POST',
-      headers: { 'apikey': SUPA_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ aktion: 'stand' })
-    }).then(function (res) {
-      return res.ok ? res.json() : null;
-    }).then(function (d) {
-      if (!d || d.gruenderAktiv !== true) return;
-      var frei = Math.floor(Number(d.frei));
-      var plaetze = Math.floor(Number(d.plaetze));
-      var monate = Math.floor(Number(d.monate));
-      if (!(frei > 0) || !(plaetze > 0) || frei > plaetze) return;
-      if (!(monate > 0)) monate = 2;
-      sub.innerHTML = 'Die ersten <b>' + plaetze + ' bestätigten Anmeldungen</b> bekommen '
-        + '<b>Exelery&nbsp;Pro für immer</b> – solange es Exelery gibt. Alle danach bekommen '
-        + '<b>' + monate + '&nbsp;Monate Pro gratis</b>. Und jeder das Abzeichen <b>„Day&nbsp;One“</b>.';
-      zeile.innerHTML = 'Noch <b>' + frei + '</b> von ' + plaetze + ' Gründerplätzen frei'
-        + ' · <a href="faq/#gruender">Bedingungen</a>';
-      zeile.hidden = false;
-    }).catch(function () { /* Sichere Fassung bleibt stehen. */ });
-  })();
+  /* Gruenderplaetze live: steht seit 15.09.2026 im eigenen Skript
+     „gruender-zaehler" am Ende der Seite, damit pruefe-gruender-hinweis.mjs
+     genau diesen Code pruefen kann. */
 
-  /* ================= Sprung zur Warteliste ================= */
+  /* ================= Sprung zu Warteliste und App-Szene ================= */
   /* Der sanfte Sprung des Browsers rechnet sein Ziel EINMAL am Anfang aus.
      Aendert sich unterwegs die Seitenlaenge (Bilder laden nach, die Adress-
      leiste am Handy faehrt ein), endet er zu frueh. Genau das hat Kevin am
      14.09.2026 gesehen: Landung beim Abzeichen-Bild statt bei der Warteliste.
-     Deshalb: springen, warten bis die Seite ruht, nachmessen, nachspringen. */
+     Deshalb: springen, warten bis die Seite ruht, nachmessen, nachspringen.
+     Seit 15.09.2026 auch fuer „Die App ansehen" (#app). */
   (function () {
-    var ziel = document.getElementById('warteliste');
-    if (!ziel) return;
     var abgebrochen = false;
     function amEnde() {
       var y = window.scrollY || window.pageYOffset || 0;
@@ -871,7 +894,7 @@
         setTimeout(pruefe, 120);
       })();
     }
-    function springen(runde) {
+    function springen(ziel, runde) {
       if (abgebrochen) return;
       var sanft = !reduceMotion && runde < 2;
       try {
@@ -881,7 +904,7 @@
       }
       wennRuhig(function () {
         if (abgebrochen || runde >= 4 || amEnde()) return;
-        if (Math.abs(ziel.getBoundingClientRect().top) > 2) springen(runde + 1);
+        if (Math.abs(ziel.getBoundingClientRect().top) > 2) springen(ziel, runde + 1);
       });
     }
     /* Wer waehrenddessen selbst scrollt, bekommt die Seite nicht mehr
@@ -889,20 +912,24 @@
     ['wheel', 'touchstart', 'keydown'].forEach(function (typ) {
       window.addEventListener(typ, function () { abgebrochen = true; }, { passive: true });
     });
-    Array.prototype.forEach.call(document.querySelectorAll('a[href="#warteliste"]'), function (a) {
-      a.addEventListener('click', function (ev) {
-        ev.preventDefault();
-        abgebrochen = false;
-        if (window.location.hash !== '#warteliste' && window.history && window.history.pushState) {
-          window.history.pushState(null, '', '#warteliste');
-        }
-        springen(0);
+    ['warteliste', 'app'].forEach(function (id) {
+      var ziel = document.getElementById(id);
+      if (!ziel) return;
+      Array.prototype.forEach.call(document.querySelectorAll('a[href="#' + id + '"]'), function (a) {
+        a.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          abgebrochen = false;
+          if (window.location.hash !== '#' + id && window.history && window.history.pushState) {
+            window.history.pushState(null, '', '#' + id);
+          }
+          springen(ziel, 0);
+        });
       });
+      /* Aufruf von aussen mit /#warteliste (z. B. von der Bestaetigungsseite). */
+      if (window.location.hash === '#' + id) {
+        window.addEventListener('load', function () { abgebrochen = false; springen(ziel, 2); });
+      }
     });
-    /* Aufruf von aussen mit /#warteliste (z. B. von der Bestaetigungsseite). */
-    if (window.location.hash === '#warteliste') {
-      window.addEventListener('load', function () { abgebrochen = false; springen(2); });
-    }
   })();
 
   /* ================= Scroll-Maschine =================
@@ -925,22 +952,19 @@
     window.addEventListener('resize', onScroll);
   }
 
-  /* Kopfbalken: beim Runterscrollen weg, beim Hochscrollen zurueck.
-     Ganz oben ist er immer da. Die 6px-Schwelle verhindert Flackern bei
-     winzigen Scroll-Zuckungen (Trackpad, Gummiband auf iOS). */
+  /* Kopfleiste (Pille, Entwurf P1): ab 24 px Scroll kompakter, aber immer
+     sichtbar. Bis 15.09.2026 schob sich der breite Balken beim Runterscrollen
+     weg; die schmale Pille verdeckt kaum etwas und bleibt deshalb stehen. */
   (function () {
     var nav = document.querySelector('header.nav');
     if (!nav) return;
-    var letzte = window.scrollY || window.pageYOffset || 0;
     var wartet = false;
     function pruefe() {
       var y = window.scrollY || window.pageYOffset || 0;
-      if (y < 80) nav.classList.remove('nav-weg');
-      else if (y > letzte + 6) nav.classList.add('nav-weg');
-      else if (y < letzte - 6) nav.classList.remove('nav-weg');
-      letzte = y;
+      nav.classList.toggle('kompakt', y > 24);
       wartet = false;
     }
+    pruefe();
     window.addEventListener('scroll', function () {
       if (!wartet) { wartet = true; requestAnimationFrame(pruefe); }
     }, { passive: true });
@@ -958,7 +982,9 @@
   var heroSection = document.getElementById('hero');
   var heroMedia = document.getElementById('heroMedia');
   var canvas = document.getElementById('heroCanvas');
-  var heroContent = document.getElementById('heroContent');
+  /* Nur der Text blendet aus, nicht der ganze Inhalt: ein transform auf einem
+     Vorfahren des Handys wuerde position:fixed des fliegenden Handys brechen. */
+  var heroText = document.getElementById('heroText');
   var FRAME_COUNT = 48;
   var frameStep = narrow ? 2 : 1; /* Handy laedt jedes zweite Bild */
   var frames = [];
@@ -1024,9 +1050,9 @@
       }
       /* Hero-Inhalt macht dem Bild Platz */
       var fade = Math.min(1, p * 2.2);
-      heroContent.style.opacity = String(1 - fade);
-      heroContent.style.transform = 'translateY(' + (-fade * 60) + 'px)';
-      heroContent.style.pointerEvents = fade > 0.6 ? 'none' : '';
+      heroText.style.opacity = String(1 - fade);
+      heroText.style.transform = 'translateY(' + (-fade * 60) + 'px)';
+      heroText.style.pointerEvents = fade > 0.6 ? 'none' : '';
     });
   }
 
@@ -1063,6 +1089,68 @@
         st.style.transform = 'translateY(' + ((1 - inO) * 24) + 'px)';
       });
     });
+  }
+
+  /* ================= Handy-Uebergabe: Startbereich -> App-Szene =================
+     Kevin, 15.09.2026: Das Handy im Startbereich soll beim Scrollen sauber
+     nach unten in die App-Szene gleiten und sich dort drehen.
+
+     Ein einziges Handy (#handyFlug, position:fixed) liegt anfangs genau auf
+     dem Platz im Startbereich. Waehrend der Atem-Sequenz steht es still. Ab
+     60 % der Hero-Strecke gleitet es auf Lage und Breite, die #phoneDevice
+     hat, sobald die App-Szene festklebt, und dreht sich dabei in deren
+     Startlage (rotateY -26°, rotateX 4°). Klebt die Szene, uebernimmt
+     #phoneDevice mit demselben Bildschirm. Jeder Wert kommt direkt aus dem
+     Scrollstand, rueckwaerts laeuft also alles von selbst umgekehrt.
+
+     Gemessen wird relativ zu den sticky-Kaesten, nicht zum Fenster: so sind
+     Start- und Zielpunkt unabhaengig davon, wo gerade gescrollt ist. */
+  var flug = document.getElementById('handyFlug');
+  var handyPlatz = document.getElementById('heroHandyPlatz');
+  var heroSticky = heroSection ? heroSection.querySelector('.hero-sticky') : null;
+  var szeneSticky = scene ? scene.querySelector('.phone-sticky') : null;
+  var szeneStage = scene ? scene.querySelector('.phone-stage') : null;
+
+  if (!reduceMotion && flug && handyPlatz && heroSticky && szeneSticky && szeneStage && device) {
+    document.documentElement.classList.add('handy-flug-an');
+    var messen = function () {
+      var hs = heroSticky.getBoundingClientRect();
+      var pr = handyPlatz.getBoundingClientRect();
+      var ss = szeneSticky.getBoundingClientRect();
+      var st = szeneStage.getBoundingClientRect();
+      return {
+        x0: pr.left - hs.left, y0: pr.top - hs.top, w0: pr.width,
+        x1: st.left - ss.left, y1: st.top - ss.top, w1: device.offsetWidth
+      };
+    };
+    var weich = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+    jobs.push(function (y) {
+      /* In JEDEM Bild neu messen (vier Lesezugriffe, kein Schreiben dazwischen).
+         Zwischengespeichert stimmte der Start nicht mehr, sobald der Gruender-
+         Hinweis nach dem Serverabruf erschien und das Handy 59 px nach unten
+         schob (gemessen 15.09.2026 am Handy). */
+      var flugMass = messen();
+      var heroStart = heroSection.offsetTop;
+      var heroEnde = heroStart + heroSection.offsetHeight - window.innerHeight;
+      var von = heroStart + (heroEnde - heroStart) * 0.6;
+      var bis = scene.offsetTop;
+      var t = Math.min(1, Math.max(0, (y - von) / Math.max(1, bis - von)));
+      var e = weich(t);
+      var x = flugMass.x0 + (flugMass.x1 - flugMass.x0) * e;
+      var top = flugMass.y0 + (flugMass.y1 - flugMass.y0) * e;
+      var w = flugMass.w0 + (flugMass.w1 - flugMass.w0) * e;
+      flug.style.width = w + 'px';
+      flug.style.transform = 'translate3d(' + x + 'px,' + top + 'px,0) perspective(1400px) rotateY(' + (-26 * e) + 'deg) rotateX(' + (4 * e) + 'deg)';
+      var angekommen = y >= bis - 0.5;
+      flug.style.visibility = angekommen ? 'hidden' : 'visible';
+      device.style.visibility = angekommen ? 'visible' : 'hidden';
+    });
+    /* Ohne Scrollen laeuft kein Job: aendert sich das Layout in Ruhe (Hinweis
+       erscheint, Schrift ist geladen), das Handy von selbst nachziehen. */
+    window.addEventListener('load', onScroll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(onScroll);
+    if (window.ResizeObserver) new ResizeObserver(onScroll).observe(heroSticky.querySelector('.hero-raster'));
+    onScroll();
   }
 
   /* ================= Parallax-Hintergruende ================= */
@@ -1119,5 +1207,55 @@
 })();
 </script>
 
+<script id="gruender-zaehler">
+/* ================= Gruenderplaetze, live =================
+   Kevin und Moritz, 14.09.2026: Die ersten 30 bestaetigten Anmeldungen
+   bekommen Pro fuer immer, alle danach 2 Monate. Sind die Plaetze weg,
+   stellt sich die Seite von selbst um — dafuer fragt sie den Server.
+
+   Zwei Stellen: der Hinweis oben im Startbereich (seit 15.09.2026) und der
+   Text in der Warteliste. Beide zeigen NUR bei einer klaren Antwort „aktiv
+   und noch frei" etwas. Bei 0 freien Plaetzen, ausgeschalteter Aktion oder
+   einer Stoerung bleibt der Hinweis versteckt und in der Warteliste die
+   sichere Fassung aus dem HTML stehen. Geprueft: pruefe-gruender-hinweis.mjs */
+(function () {
+  'use strict';
+  var SUPA_URL = 'https://jedsuqylwgbyuuvyypdm.supabase.co';
+  var SUPA_KEY = 'sb_publishable_SHls8JQwn6HWvP4r7tIRIA_VF370pMa';
+  var sub = document.querySelector('[data-wl-sub]');
+  var zeile = document.querySelector('[data-wl-plaetze]');
+  var hinweis = document.querySelector('[data-hero-plaetze]');
+  if (!window.fetch || !(sub || zeile || hinweis)) return;
+  fetch(SUPA_URL + '/functions/v1/warteliste', {
+    method: 'POST',
+    headers: { 'apikey': SUPA_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ aktion: 'stand' })
+  }).then(function (res) {
+    return res.ok ? res.json() : null;
+  }).then(function (d) {
+    if (!d || d.gruenderAktiv !== true) return;
+    var frei = Math.floor(Number(d.frei));
+    var plaetze = Math.floor(Number(d.plaetze));
+    var monate = Math.floor(Number(d.monate));
+    if (!(frei > 0) || !(plaetze > 0) || frei > plaetze) return;
+    if (!(monate > 0)) monate = 2;
+    if (sub) {
+      sub.innerHTML = 'Die ersten <b>' + plaetze + ' bestätigten Anmeldungen</b> bekommen '
+        + '<b>Exelery&nbsp;Pro für immer</b> – solange es Exelery gibt. Alle danach bekommen '
+        + '<b>' + monate + '&nbsp;Monate Pro gratis</b>. Und jeder das Abzeichen <b>„Day&nbsp;One“</b>.';
+    }
+    if (zeile) {
+      zeile.innerHTML = 'Noch <b>' + frei + '</b> von ' + plaetze + ' Gründerplätzen frei'
+        + ' · <a href="faq/#gruender">Bedingungen</a>';
+      zeile.hidden = false;
+    }
+    if (hinweis) {
+      var text = hinweis.querySelector('span');
+      if (text) text.innerHTML = 'Noch <b>' + frei + '</b> von ' + plaetze + ' Gründerplätzen';
+      hinweis.hidden = false;
+    }
+  }).catch(function () { /* Hinweis bleibt versteckt, sichere Fassung bleibt stehen. */ });
+})();
+</script>
 </body>
 </html>

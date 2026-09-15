@@ -5,5 +5,11 @@
 #
 # Bewusst NICHT .nojekyll: das wuerde auch alle anderen versteckten Ordner
 # veroeffentlichen.
+#
+# dev/_expo: das Dev-Board (exelery.de/dev/, seit 15.09.2026) ist ein Expo-Web-
+# Export, seine Skripte liegen in einem Ordner mit Unterstrich. Den liesse
+# Jekyll sonst ebenfalls weg.
 include:
   - .well-known
+  - _expo
+  - dev/_expo
