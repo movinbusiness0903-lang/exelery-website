@@ -201,7 +201,11 @@
     opacity:0;animation:fadeUp .7s ease forwards .45s;
   }
   /* Zeile 2 in Farbe und Groesse wie im Entwurf V2. */
-  .hero-z2{display:block;font-size:clamp(2.4em,6vw,4.7em);padding-bottom:.06em;opacity:0;animation:fadeUp .7s ease forwards .6s;}
+  /* Verlaufsschrift (background-clip:text) wird nur INNERHALB des Kastens
+     gemalt. Die Unterlaenge des "g" ragte .065em heraus und fehlte (Kevins
+     Video, 16.09.2026). Innen .16em Platz, aussen .10em zurueck: der Kasten
+     reicht unter das g, alles darunter steht wie vorher (+.06em). */
+  .hero-z2{display:block;font-size:clamp(2.4em,6vw,4.7em);padding-bottom:.16em;margin-bottom:-.1em;opacity:0;animation:fadeUp .7s ease forwards .6s;}
   /* Der Untertitel stand in --muted (#94A3B8) direkt auf dem hellen, unruhigen
      Hero-Bild und war auf dem Handy praktisch nicht zu lesen. Heller Ton plus
      ein weicher Schatten loesen das — der Schatten traegt auch dort, wo der
@@ -366,6 +370,9 @@
   .chapter-text li svg{flex:none;margin-top:4px;}
   .nums{display:flex;gap:44px;margin:30px 0 0;flex-wrap:wrap;}
   .num-big{font-size:clamp(2.2em,5vw,3.4em);font-weight:800;line-height:1;letter-spacing:-.02em;}
+  /* Gleiches Problem wie .hero-z2: bei Zeilenhoehe 1 fehlten .143em vom g in
+     "188 g" und "85 kg". Platz innen, genauso viel aussen zurueck. */
+  .num-big.mint-text{padding-bottom:.2em;margin-bottom:-.2em;}
   .num-lbl{color:var(--muted);font-size:.86em;margin-top:6px;letter-spacing:.06em;text-transform:uppercase;}
 
   /* ===== Warteliste-Sektion ===== */
@@ -632,7 +639,7 @@
         <div class="phone-stage">
           <div class="phone-device" id="phoneDevice">
             <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1298"></div>
-            <div class="phone-screen"><img src="media/web/gewicht.webp" alt="Gewichtsverlauf mit Kurve, minus 4,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/gewicht.webp" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
             <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1298" loading="lazy"></div>
             <div class="phone-screen"><img src="media/web/training.webp" alt="Trainings-Screen mit Wochenplan" width="640" height="1298" loading="lazy"></div>
             <div class="phone-screen"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1298" loading="lazy"></div>
@@ -665,8 +672,8 @@
             <li><svg width="16" height="16" viewBox="0 0 100 100" fill="none"><path d="M30 24 L58 50 L30 76" stroke="#0DF2A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Einkaufsliste passend zum Plan – auch als geteilte Liste</li>
           </ul>
           <div class="nums">
-            <div><div class="num-big mint-text"><span data-count="2100" data-suffix=""></span></div><div class="num-lbl">kcal Tagesziel</div></div>
-            <div><div class="num-big mint-text"><span data-count="188" data-suffix=" g"></span></div><div class="num-lbl">Protein im Blick</div></div>
+            <div><div class="num-big mint-text"><span data-count="2590" data-suffix=""></span></div><div class="num-lbl">kcal Tagesziel</div></div>
+            <div><div class="num-big mint-text"><span data-count="160" data-suffix=" g"></span></div><div class="num-lbl">Protein im Blick</div></div>
           </div>
         </div>
         <div class="shot">
@@ -705,7 +712,7 @@
             <li><svg width="16" height="16" viewBox="0 0 100 100" fill="none"><path d="M30 24 L58 50 L30 76" stroke="#0DF2A3" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>Apple Health und Health Connect – Apple Watch, Garmin, Fitbit, WHOOP und mehr</li>
           </ul>
           <div class="nums">
-            <div><div class="num-big mint-text"><span data-count="85" data-suffix=" kg"></span></div><div class="num-lbl">× 6 – dein letzter Satz weiß es</div></div>
+            <div><div class="num-big mint-text"><span data-count="126" data-suffix=" kg"></span></div><div class="num-lbl">× 6 – dein letzter Satz weiß es</div></div>
             <div><div class="num-big mint-text"><span data-count="5" data-suffix=""></span></div><div class="num-lbl">Tage pro Woche</div></div>
           </div>
         </div>
@@ -1084,7 +1091,11 @@
   var scene = document.getElementById('app');
   var device = document.getElementById('phoneDevice');
   var steps = Array.prototype.slice.call(document.querySelectorAll('.phone-step'));
-  var screens = Array.prototype.slice.call(document.querySelectorAll('.phone-screen'));
+  /* Nur die Bildschirme IM Szenen-Handy. Seitenweit gesucht kamen seit dem
+     Startbereich V2 zwei fremde dazu (Startbereich, #handyFlug): 7 statt 5
+     Stufen, das fliegende Handy wurde schwarz, Texte fehlten ab Training
+     (Kevins Video, 16.09.2026). pruefe-telefon-szene.mjs haelt das fest. */
+  var screens = device ? Array.prototype.slice.call(device.querySelectorAll('.phone-screen')) : [];
   var dots = Array.prototype.slice.call(document.querySelectorAll('#phoneProgress i'));
   var STAGES = screens.length;
 
