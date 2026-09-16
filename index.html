@@ -220,7 +220,10 @@
   /* Platz fuer das Handy. Ohne JavaScript (und bei „Bewegung reduzieren")
      steht hier das Handy still. Mit Bewegung uebernimmt das fliegende Handy
      (.handy-flug), das beim Scrollen in die App-Szene gleitet. */
-  .hero-handy-platz{justify-self:end;width:300px;aspect-ratio:1290/2616;opacity:0;animation:fadeUp .8s ease forwards 1.05s;}
+  /* Breite haengt auch an der Bildschirmhoehe: auf einem kurzen Laptop
+     (z. B. 1280x640) ragte das Handy sonst unten heraus. 44svh Breite
+     bedeutet rund 89 % Hoehe, es bleibt also im Bild. */
+  .hero-handy-platz{justify-self:end;width:300px;width:min(300px,44svh);aspect-ratio:1290/2616;opacity:0;animation:fadeUp .8s ease forwards 1.05s;}
   .hero-handy-platz .phone-device{width:100%;}
   .handy-flug-an .hero-handy-platz .phone-device{visibility:hidden;}
   .handy-flug{display:none;}
@@ -465,15 +468,22 @@
     .shot-duo .shot-frame:last-child{margin-top:30px;}
     .nums{gap:28px;justify-content:flex-start;}
     .hero-scrub{height:170vh;}
-    /* Startbereich untereinander: Text mittig, Handy darunter. Es darf unten
-       aus dem Bild ragen, beim Scrollen gleitet es ohnehin nach oben in die
-       App-Szene. */
+    /* Startbereich untereinander: Text mittig, Handy darunter. Abstaende und
+       Handygroesse haengen an der Bildschirmhoehe (svh = die kleine Hoehe,
+       also mit sichtbarer Browserleiste). Vorher stand hier alles fest, und
+       auf 360x740 ragte das Handy 150 px, auf 360x640 sogar 250 px aus dem
+       Bild (gemessen 16.09.2026). */
     .hero-content{align-items:flex-start;}
     .hero-raster{grid-template-columns:minmax(0,1fr);gap:30px;padding-top:88px;text-align:center;justify-items:center;}
+    /* Zweite Zeile fuer Browser, die „svh" kennen (iOS 15.4+, Firefox 101+).
+       Aeltere lassen sie weg und behalten die festen Werte darueber.
+       80 px sind das Minimum oben: die schwebende Leiste endet bei 69 px, mit
+       weniger lag das Abzeichen „Noch X von 30" darunter (16.09.2026). */
+    .hero-raster{gap:clamp(14px,2.4svh,30px);padding-top:clamp(80px,9svh,88px);}
     .hero-z1{font-size:min(2.9rem,calc((100vw - 2 * var(--rand)) / 11.4));}
     .subline{margin-left:auto;margin-right:auto;}
     .hero-knoepfe{justify-content:center;}
-    .hero-handy-platz{justify-self:center;width:min(220px,52vw);}
+    .hero-handy-platz{justify-self:center;width:min(220px,52vw);width:min(220px,52vw,24svh);}
     .hero-shade{
       background:linear-gradient(180deg,rgba(11,15,23,.78) 0%,rgba(11,15,23,.55) 45%,rgba(11,15,23,.88) 85%,var(--bg) 100%);
     }
@@ -485,8 +495,22 @@
     .nav-links{gap:14px;font-size:.84em;}
     .nav-links .nav-plain{display:none;}
     .chapter-bg{min-height:60vh;}
-    .hero-knoepfe{flex-direction:column;width:100%;}
-    .hero-knoepfe a{width:100%;}
+    /* Die beiden Knoepfe stehen nebeneinander statt untereinander: das spart
+       70 px Hoehe, und genau die fehlten dem Handy im Startbereich. Wird es
+       zu eng (unter rund 330 px Breite), rutschen sie von selbst wieder
+       untereinander — dafuer sorgt flex-basis 140 px mit Umbruch. */
+    .hero-knoepfe{width:100%;gap:10px;}
+    .hero-knoepfe a{flex:1 1 140px;min-width:0;}
+    .hero-knoepfe .hero-cta.gross{padding:16px 14px;font-size:1.06em;}
+    .hero-knoepfe .hero-zweit{padding:0 14px;font-size:.98em;}
+  }
+  /* Sehr schmale Handys (iPhone SE der ersten Jahre, 320 px): die Knoepfe
+     bleiben nebeneinander, „Die App ansehen" darf dafuer zweizeilig werden.
+     Untereinander waeren sie 127 px hoch, und die fehlen dem Handy im Bild. */
+  @media(max-width:370px){
+    .hero-knoepfe a{flex:1 1 118px;}
+    .hero-knoepfe .hero-cta.gross{padding:12px 8px;font-size:1em;}
+    .hero-knoepfe .hero-zweit{padding:8px;font-size:.92em;white-space:normal;line-height:1.2;}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
