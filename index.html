@@ -502,22 +502,34 @@
     .nav-links{gap:14px;font-size:.84em;}
     .nav-links .nav-plain{display:none;}
     .chapter-bg{min-height:60vh;}
-    /* Die beiden Knoepfe stehen nebeneinander statt untereinander: das spart
-       70 px Hoehe, und genau die fehlten dem Handy im Startbereich. Wird es
-       zu eng (unter rund 330 px Breite), rutschen sie von selbst wieder
-       untereinander — dafuer sorgt flex-basis 140 px mit Umbruch. */
-    .hero-knoepfe{width:100%;gap:10px;}
-    .hero-knoepfe a{flex:1 1 140px;min-width:0;}
-    .hero-knoepfe .hero-cta.gross{padding:16px 14px;font-size:1.06em;}
-    .hero-knoepfe .hero-zweit{padding:0 14px;font-size:.98em;}
-  }
-  /* Sehr schmale Handys (iPhone SE der ersten Jahre, 320 px): die Knoepfe
-     bleiben nebeneinander, „Die App ansehen" darf dafuer zweizeilig werden.
-     Untereinander waeren sie 127 px hoch, und die fehlen dem Handy im Bild. */
-  @media(max-width:370px){
-    .hero-knoepfe a{flex:1 1 118px;}
-    .hero-knoepfe .hero-cta.gross{padding:12px 8px;font-size:1em;}
-    .hero-knoepfe .hero-zweit{padding:8px;font-size:.92em;white-space:normal;line-height:1.2;}
+    /* Kevin, 17.09.2026 (Handy-Bilder): „das Handy ist so klein, man kann
+       schlecht lesen, was da steht". Die zwei Knoepfe im Startbereich fallen
+       auf dem Handy weg: „Frueher Zugang" steht immer in der Leiste, die
+       App-Szene kommt beim naechsten Wischen. Das Handy bekommt den Platz.
+       Seine Breite haengt an der GROSSEN Bildschirmhoehe (lvh, Browserleiste
+       eingeklappt), 320 px ist der Text darueber samt Abstaenden. Ist die
+       Browserleiste ausgeklappt, steht der Fuss des Handys kurz darunter —
+       so war es auch vorher schon. Gemessen 390x750: 212 statt 180 px breit,
+       auf Kevins iPhone vorher 162 px. Ohne lvh gilt die Zeile fuer <= 900 px. */
+    .hero-knoepfe{display:none;}
+    .hero-handy-platz{width:min(250px,64vw,calc((100lvh - 320px) * .4931));}
+    /* App-Szene: Der Inhalt war hoeher als die Szene und stand mittig, oben
+       lag das Handy unter der Leiste, unten blieb Platz (Kevins Bild 3).
+       Jetzt beginnt er unter der Leiste (endet bei 57 px) und die Szene ist
+       so hoch wie der Bildschirm bei eingeklappter Browserleiste — beim
+       Weiterwischen ist sie eingeklappt. Der Textkasten ist so hoch wie der
+       laengste Text (alle Texte liegen in derselben Rasterzelle), nicht mehr
+       fest 190 px. Das Handy wird nur auf niedrigen Bildschirmen kleiner. */
+    .phone-sticky{height:100vh;height:100lvh;align-items:flex-start;padding-top:68px;box-sizing:border-box;}
+    .phone-inner{gap:14px;}
+    .phone-device{width:min(250px,58vw,calc((100lvh - 290px) * .4931));}
+    .phone-copy{min-height:0;display:grid;}
+    .phone-step{position:relative;inset:auto;grid-area:1/1;}
+    /* Bilderpaare in den Kapiteln: bis an den Textrand (26 px) statt 41 px
+       Rand, also rund 11 % groesser (Kevins Bild 2). */
+    .shot-duo{gap:3.5vw;}
+    .shot-duo .shot-frame{width:46vw;}
+    .shot-duo .shot-frame.small{width:40vw;}
   }
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
@@ -528,7 +540,8 @@
     .phone-scene{height:auto;}
     .phone-sticky{position:relative;height:auto;padding:80px 0;}
     .phone-step{position:relative;opacity:1;transform:none;margin-bottom:40px;pointer-events:auto;}
-    .phone-copy{min-height:0;}
+    .phone-copy{min-height:0;display:block;}
+    .phone-step{grid-area:auto;}
     .phone-screen{position:relative;opacity:0;display:none;}
     .phone-screen:first-child{opacity:1;display:block;}
     .phone-progress{display:none;}
@@ -589,7 +602,7 @@
           </div>
           <div class="hero-handy-platz" id="heroHandyPlatz">
             <div class="phone-device" role="img" aria-label="Die Exelery-App, Tab Ernährung">
-              <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="" width="640" height="1298"></div>
+              <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1298"></div>
             </div>
           </div>
         </div>
@@ -601,7 +614,7 @@
        und gleitet beim Scrollen in die Lage des Handys der App-Szene. Dort
        uebernimmt #phoneDevice mit demselben Bildschirm. -->
   <div class="phone-device handy-flug" id="handyFlug" aria-hidden="true">
-    <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="" width="640" height="1298"></div>
+    <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1298"></div>
   </div>
 
   <!-- ============ TELEFON-SZENE: scroll-gesteuert ============ -->
@@ -638,11 +651,11 @@
         </div>
         <div class="phone-stage">
           <div class="phone-device" id="phoneDevice">
-            <div class="phone-screen active"><img src="media/web/ernaehrung.webp" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1298"></div>
-            <div class="phone-screen"><img src="media/web/gewicht.webp" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/training.webp" alt="Trainings-Screen mit Wochenplan" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1298"></div>
+            <div class="phone-screen"><img src="media/web/gewicht.webp" srcset="media/web/gewicht.webp 640w, media/web/gewicht-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" srcset="media/web/einkauf-sheet.webp 640w, media/web/einkauf-sheet-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/training.webp" srcset="media/web/training.webp 640w, media/web/training-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Trainings-Screen mit Wochenplan" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/abzeichen.webp" srcset="media/web/abzeichen.webp 640w, media/web/abzeichen-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1298" loading="lazy"></div>
           </div>
           <div class="phone-progress" id="phoneProgress" aria-hidden="true">
             <i class="on"></i><i></i><i></i><i></i><i></i>
@@ -678,8 +691,8 @@
         </div>
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame"><img src="media/web/ernaehrung.webp" alt="Ernährungs-Screen" width="640" height="1298" loading="lazy"></div>
-            <div class="shot-frame small"><img src="media/web/gewicht.webp" alt="Gewichts-Screen" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Ernährungs-Screen" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/gewicht.webp" srcset="media/web/gewicht.webp 640w, media/web/gewicht-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Gewichts-Screen" width="640" height="1298" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -700,8 +713,8 @@
       <div class="chapter-cols flip">
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame small"><img src="media/web/logbuch.webp" alt="Logbuch mit Sätzen und Gewichten" width="640" height="1298" loading="lazy"></div>
-            <div class="shot-frame"><img src="media/web/training.webp" alt="Trainings-Startseite" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/logbuch.webp" srcset="media/web/logbuch.webp 640w, media/web/logbuch-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Logbuch mit Sätzen und Gewichten" width="640" height="1298" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/training.webp" srcset="media/web/training.webp 640w, media/web/training-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Trainings-Startseite" width="640" height="1298" loading="lazy"></div>
           </div>
         </div>
         <div class="chapter-text">
@@ -744,7 +757,7 @@
           </div>
         </div>
         <div class="shot">
-          <div class="shot-frame"><img src="media/web/abzeichen.webp" alt="Abzeichen-Sammlung" width="640" height="1298" loading="lazy"></div>
+          <div class="shot-frame"><img src="media/web/abzeichen.webp" srcset="media/web/abzeichen.webp 640w, media/web/abzeichen-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Abzeichen-Sammlung" width="640" height="1298" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -943,6 +956,62 @@
     ['wheel', 'touchstart', 'keydown'].forEach(function (typ) {
       window.addEventListener(typ, function () { abgebrochen = true; }, { passive: true });
     });
+
+    /* Die Seite beginnt immer oben (Kevin, 17.09.2026: „wenn man die Webseite
+       in Google sucht und oeffnet, scrollt sie direkt runter zu Sei Day One,
+       auch beim Neuladen"). Ursache: Google haengt an Treffer einen Textsprung
+       an (exelery.de/#:~:text=…). Chrome und Safari scrollen dann selbst zu
+       diesem Text, auch nach dem Neuladen; der Adresszeile sieht man das kaum
+       an, und location.hash ist dabei leer. Chrome springt ausserdem beim
+       Neuladen an die letzte Stelle zurueck.
+       Nur ein Klick auf „Frueher Zugang" / „Die App ansehen" oder ein Link
+       mit /#warteliste bzw. /#app von einer anderen Seite fuehrt nach unten.
+       Bis der Besucher selbst etwas tut (Mausrad, Tippen, Taste, Klick) und
+       hoechstens 4 s nach dem Laden wird jedes fremde Scrollen zurueckgesetzt.
+       Das Scroll-Ereignis kommt vor dem naechsten Bild, deshalb blitzt unten
+       nichts auf. Zurueck/Vor im Browser bleibt, wie der Browser es macht. */
+    var ankunft = 'navigate';
+    try {
+      var eintrag = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+      if (eintrag && eintrag.type) ankunft = eintrag.type;
+      else if (window.performance && performance.navigation && performance.navigation.type === 1) ankunft = 'reload';
+      else if (window.performance && performance.navigation && performance.navigation.type === 2) ankunft = 'back_forward';
+    } catch (e) {}
+    function obenHalten() {
+      var halten = true;
+      function yJetzt() { return window.scrollY || window.pageYOffset || 0; }
+      /* Ohne das rollt Safari wegen html{scroll-behavior:smooth} sichtbar die
+         ganze Seite hoch (gemessen in WebKit: 0,8 s von 9866 px bis 0). */
+      function zurueck() {
+        if (!halten || yJetzt() <= 0) return;
+        var wurzel = document.documentElement.style;
+        wurzel.scrollBehavior = 'auto';
+        window.scrollTo(0, 0);
+        wurzel.scrollBehavior = '';
+      }
+      function loslassen() {
+        if (!halten) return;
+        halten = false;
+        window.removeEventListener('scroll', zurueck);
+      }
+      window.addEventListener('scroll', zurueck);
+      ['wheel', 'touchstart', 'keydown', 'mousedown', 'pointerdown'].forEach(function (typ) {
+        window.addEventListener(typ, loslassen, { passive: true });
+      });
+      /* Chrome laedt Suchtreffer manchmal schon vorab unsichtbar (prerender).
+         Dann laeuft die Frist erst ab dem Moment, in dem die Seite erscheint. */
+      window.addEventListener('load', function () {
+        zurueck();
+        if (document.prerendering) {
+          document.addEventListener('prerenderingchange', function () { zurueck(); setTimeout(loslassen, 4000); });
+        } else {
+          setTimeout(loslassen, 4000);
+        }
+      });
+      zurueck();
+    }
+    var sprungBeimLaden = false;
+
     ['warteliste', 'app'].forEach(function (id) {
       var ziel = document.getElementById(id);
       if (!ziel) return;
@@ -956,11 +1025,15 @@
           springen(ziel, 0);
         });
       });
-      /* Aufruf von aussen mit /#warteliste (z. B. von der Bestaetigungsseite). */
-      if (window.location.hash === '#' + id) {
+      /* Aufruf von aussen mit /#warteliste (z. B. von der Bestaetigungsseite).
+         Nicht beim Neuladen: Nach einem Klick auf „Frueher Zugang" steht
+         #warteliste in der Adresse, ein Neuladen soll trotzdem oben beginnen. */
+      if (window.location.hash === '#' + id && ankunft === 'navigate') {
+        sprungBeimLaden = true;
         window.addEventListener('load', function () { abgebrochen = false; springen(ziel, 2); });
       }
     });
+    if (!sprungBeimLaden && ankunft !== 'back_forward') obenHalten();
   })();
 
   /* ================= Scroll-Maschine =================
