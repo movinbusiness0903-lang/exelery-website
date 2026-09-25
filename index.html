@@ -1288,7 +1288,24 @@
        erscheint, Schrift ist geladen), das Handy von selbst nachziehen. */
     window.addEventListener('load', onScroll);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(onScroll);
-    if (window.ResizeObserver) new ResizeObserver(onScroll).observe(heroSticky.querySelector('.hero-raster'));
+    if (window.ResizeObserver) {
+      var beobachter = new ResizeObserver(onScroll);
+      beobachter.observe(heroSticky.querySelector('.hero-raster'));
+      /* Auch den Platz selbst beobachten: seine Breite haengt auf schmalen
+         Geraeten an svh bzw. lvh, und die stehen erst fest, wenn die
+         Browserleiste sitzt. */
+      beobachter.observe(handyPlatz);
+    }
+    /* Kevin, 25.09.2026: Auf Handybreite lag das Handy mal genau, mal bis zu
+       14 px zu tief - bei gleichem Code, rein zufaellig.
+       Ursache: Der Platz blendet sich mit fadeUp ein (translateY 14px -> 0,
+       laeuft ab 1,05 s). getBoundingClientRect() rechnet diese Verschiebung
+       mit. Wer waehrend der Animation misst, legt das Handy zu tief und bleibt
+       dort, weil danach nichts mehr rechnet. Am PC fiel es kaum auf, weil dort
+       meist noch ein anderer Ausloeser nachkam.
+       Belegt: Neuberechnung gezielt bei 1400 ms ausgeloest, ohne diese Zeile
+       5,44 px daneben (Chromium) und 3,68 px (WebKit), mit ihr 0,00 px. */
+    handyPlatz.addEventListener('animationend', onScroll);
     onScroll();
   }
 
