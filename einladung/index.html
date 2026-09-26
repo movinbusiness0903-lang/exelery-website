@@ -2,6 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+  <!-- Sicherheits-Kopfzeilen, 26.09.2026. GitHub Pages kann keine echten
+       HTTP-Kopfzeilen setzen; diese beiden wirken auch als <meta>. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://jedsuqylwgbyuuvyypdm.supabase.co">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Einladung zu Exelery</title>
 
@@ -63,5 +67,14 @@
 </main>
 
 <script src="/app-link.js"></script>
+
+<!-- Impressumspflicht (§ 5 DDG), ergaenzt am 26.09.2026: von JEDER Seite
+     erreichbar, auch von denen, die nur ueber einen Link aus einer Nachricht
+     geoeffnet werden. -->
+<footer style="text-align:center;padding:20px 16px 30px;font-size:12px;line-height:1.8;color:#64748B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+  <a href="/impressum/" style="color:#94A3B8;text-decoration:none">Impressum</a>
+  <span aria-hidden="true"> · </span>
+  <a href="/datenschutz/" style="color:#94A3B8;text-decoration:none">Datenschutz</a>
+</footer>
 </body>
 </html>
