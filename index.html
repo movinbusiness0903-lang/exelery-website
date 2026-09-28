@@ -149,6 +149,23 @@
     margin:0;font-family:var(--font-body);background:var(--bg);color:var(--text);
     line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
+  /* ── Kein Gummiband an den Seitenraendern ────────────────────────────────
+     Kevin, 26.09.2026 (Video vom iPhone): am Seitenanfang nach unten gezogen,
+     und das Handy schiebt sich ueber die Ueberschrift und den Satz darunter.
+
+     Warum: `#handyFlug` ist `position:fixed`, seine Lage haengt an `scrollY`.
+     Beim iOS-Gummiband verschiebt Safari den sichtbaren Inhalt, laesst `scrollY`
+     aber auf 0 stehen. Der Scroll-Listener feuert also gar nicht -- der Text
+     wandert nach unten, das Handy bleibt, wo es war, und liegt danach auf dem
+     Text. Von aussen sieht es aus, als habe man das Handy nach oben gezogen.
+
+     Abgeschaltet wird deshalb das Gummiband, NICHT am Flug herumgerechnet: die
+     Uebergabe Startbereich -> App-Szene ist auf 1,3 px gemessen. An ihrer
+     Rechnung ist nichts falsch -- ihr fehlt nur das Ereignis.
+
+     `overscroll-behavior-y` gilt ab iOS 16. Aeltere Geraete verhalten sich wie
+     bisher; es geht nichts kaputt, es bleibt dort nur beim alten Bild. */
+  html,body{overscroll-behavior-y:none;}
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
   .wrap{max-width:1160px;margin:0 auto;padding:0 var(--rand);}
@@ -1254,6 +1271,10 @@
   var szeneSticky = scene ? scene.querySelector('.phone-sticky') : null;
   var szeneStage = scene ? scene.querySelector('.phone-stage') : null;
 
+  /* Das Handy IM Dokument (unter dem Platzhalter). Es uebernimmt wieder,
+     solange der Flug nicht begonnen hat -- siehe `vorFlug` weiter unten. */
+  var heroHandy = handyPlatz ? handyPlatz.querySelector('.phone-device') : null;
+
   if (!reduceMotion && flug && handyPlatz && heroSticky && szeneSticky && szeneStage && device) {
     document.documentElement.classList.add('handy-flug-an');
     var messen = function () {
@@ -1285,7 +1306,33 @@
       flug.style.width = w + 'px';
       flug.style.transform = 'translate3d(' + x + 'px,' + top + 'px,0) perspective(1400px) rotateY(' + (-26 * e) + 'deg) rotateX(' + (4 * e) + 'deg)';
       var angekommen = y >= bis - 0.5;
-      flug.style.visibility = angekommen ? 'hidden' : 'visible';
+      /* ── Vor dem Abflug uebernimmt wieder das Handy im Dokument ──────────
+         Kevin, 26.09.2026, Video vom iPhone: am Seitenanfang nach unten
+         gezogen, und das Handy schiebt sich ueber die Ueberschrift und den
+         Satz darunter.
+
+         Ursache: `flug` ist `position:fixed` und haengt an `scrollY`. Beim
+         iOS-Gummiband verschiebt Safari den sichtbaren Inhalt, laesst `scrollY`
+         aber auf 0 stehen -- dieser Job laeuft also gar nicht. Der Text wandert
+         nach unten, das Handy bleibt liegen, und beides ueberlappt.
+
+         `overscroll-behavior-y:none` waere die naheliegende Antwort und steht
+         auch im CSS, aber WebKit kennt die Eigenschaft nicht: gemessen am
+         27.09.2026 meldet `CSS.supports('overscroll-behavior-y','none')` dort
+         `false`. Auf dem iPhone -- also genau dort, wo der Fehler auftrat --
+         haette sie nichts geaendert.
+
+         Was stattdessen greift: Solange der Flug noch nicht begonnen hat
+         (t === 0), zeigt wieder das Handy im Dokumentfluss. Das macht jede
+         Verschiebung von selbst mit, weil es Teil der Seite ist -- Gummiband
+         eingeschlossen, ganz ohne Ereignis und ohne Rechnung. Das fliegende
+         Handy erscheint erst, wenn es sich wirklich bewegt.
+
+         Dasselbe Prinzip wie am anderen Ende (`angekommen`), nur am Anfang. Die
+         auf 1,3 px gemessene Uebergabe dazwischen bleibt unberuehrt. */
+      var vorFlug = t <= 0;
+      flug.style.visibility = angekommen || vorFlug ? 'hidden' : 'visible';
+      if (heroHandy) heroHandy.style.visibility = vorFlug ? 'visible' : 'hidden';
       device.style.visibility = angekommen ? 'visible' : 'hidden';
     });
     /* Ohne Scrollen laeuft kein Job: aendert sich das Layout in Ruhe (Hinweis
