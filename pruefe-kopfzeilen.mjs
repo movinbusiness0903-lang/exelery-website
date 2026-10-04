@@ -38,6 +38,13 @@ function seiten(d, out = []) {
   for (const e of readdirSync(d, { withFileTypes: true })) {
     // /dev/ ist ein Expo-Export und wird erzeugt, nicht von Hand gepflegt.
     if (['.git', 'node_modules', 'dev', '_expo', 'media'].includes(e.name)) continue;
+    // Die Bestaetigungsdatei der Google Search Console enthaelt NUR die eine
+    // Zeichenkette, die Google erwartet ("google-site-verification: ...").
+    // Google verlangt ausdruecklich, den Inhalt nicht zu veraendern -- ein
+    // Kopfzeilen-Block darin wuerde die Bestaetigung gefaehrden. Gemessen am
+    // 04.10.2026: dieser Waechter meldete sie als Fehler, seit sie am
+    // 02.10.2026 dazukam.
+    if (/^google[0-9a-f]+\.html$/.test(e.name)) continue;
     const f = join(d, e.name);
     if (e.isDirectory()) seiten(f, out);
     else if (e.name.endsWith('.html')) out.push(f);
