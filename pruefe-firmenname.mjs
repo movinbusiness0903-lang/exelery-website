@@ -82,11 +82,22 @@ if (!/Kevin Baron<br>/.test(imp)) {
 console.log(`Firmenname geprueft: ${dateien(WURZEL).length} Dateien, ${PFLICHT.length} Pflichtstellen.`);
 
 if (gegenprobe) {
+  // Eine Gegenprobe, die nur Probleme ZAEHLT, ist auch ohne Sabotage gruen,
+  // sobald irgendwo sonst etwas rot ist -- sie beweist dann nichts. Sie muss
+  // den sabotierten Fall NAMENTLICH treffen und darf sonst nichts faerben.
+  // Die Sabotage dreht NUR das Impressum zurueck. Rot darf also nur das
+  // Impressum werden -- wird mehr rot, misst die Gegenprobe etwas anderes.
+  const fremd = probleme.filter((p) => !p.startsWith('impressum/index.html'));
+  if (fremd.length) {
+    console.error('\nGEGENPROBE UNBRAUCHBAR: etwas anderes ist rot als die Sabotage:');
+    fremd.forEach((p) => console.error('  - ' + p));
+    process.exit(1);
+  }
   if (probleme.length === 0) {
     console.error('\nGEGENPROBE GESCHEITERT: der zurueckgedrehte Name blieb gruen.');
     process.exit(1);
   }
-  console.log(`\nGegenprobe in Ordnung: ${probleme.length} Problem(e):`);
+  console.log(`\nGegenprobe in Ordnung: nur das Impressum wurde rot (${probleme.length}):`);
   probleme.forEach((p) => console.log('  - ' + p));
   process.exit(0);
 }
