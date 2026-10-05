@@ -8,7 +8,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exelery – Dein Ziel. Deine Reise. Dein Erfolg.</title>
-<meta name="description" content="Exelery ist die Fitness-App, die mitdenkt: KI-Ernährungs-Tracking, Trainingspläne, Wearable-Anbindung und Motivation. Trag dich ein und sichere dir den Gründer-Vorteil.">
+<meta name="description" content="Die Fitness-App, die mitdenkt: KI-Ernährungs-Tracking, Trainingspläne, Wearable-Anbindung und Motivation. Jetzt eintragen und Gründer-Vorteil sichern.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0B0F17">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
@@ -192,7 +192,10 @@
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.18em;font-size:.92em;font-family:var(--font-head);}
   .brand .mark{width:24px;height:24px;}
   .nav-links{display:flex;align-items:center;gap:22px;font-size:.9em;color:var(--muted);}
-  .nav-links a{transition:color .2s;}
+  /* GEMESSEN 05.10.2026: die beiden Rechtslinks in der Kopfzeile waren
+     23 px hoch -- ein Pixel unter der AA-Schwelle aus WCAG 2.5.8 (24 px).
+     Die Polsterung aendert nichts am Aussehen, nur an der Tippflaeche. */
+  .nav-links a{display:inline-block;padding:4px 2px;transition:color .2s;}
   .nav-links a:hover{color:var(--mint);}
   .nav-cta{
     color:#04120c;background:linear-gradient(90deg,var(--mint-bright),var(--mint));
@@ -489,7 +492,7 @@
   .foot-social a:hover{color:var(--bg);background:var(--mint);border-color:var(--mint);}
   .foot-social svg{width:20px;height:20px;display:block;}
   .foot-links{display:flex;gap:6px 20px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:.94em;}
-  .foot-links a{transition:color .2s;}
+  .foot-links a{display:inline-block;padding:3px 2px;transition:color .2s;}
   .foot-links a:hover{color:var(--mint);}
   .foot-mail{color:var(--muted);font-size:.94em;transition:color .2s;}
   .foot-mail:hover{color:var(--mint);}
