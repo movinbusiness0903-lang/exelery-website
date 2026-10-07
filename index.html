@@ -518,6 +518,24 @@
     .phone-stage{justify-self:center;order:1;}
     .phone-device{width:min(230px,58vw);}
     .phone-scene{height:460vh;}
+    /* ⚠️ KEINE Hintergrund-Weichzeichnung am Handy.
+       Kevin am 07.10.2026: „wenn man auf der webseite nach unten scrollt laggt
+       die auf dem handy sehr, ruckelt relativ stark."
+
+       `backdrop-filter:blur(20px)` auf einem `position:fixed`-Element heisst:
+       der Browser muss bei JEDEM Bild alles neu weichzeichnen, was gerade
+       hinter der Leiste durchscrollt — ueber die volle Breite, waehrend der
+       Inhalt sich bewegt. Am Rechner faellt das nicht auf, auf einem Handy ist
+       es eine der teuersten Sachen, die eine Seite verlangen kann.
+
+       Ersatz ist eine fast deckende Flaeche. Auf 375 px Breite ist der
+       Unterschied kaum zu sehen; der Gewinn ist es. */
+    header.nav{
+      background:rgba(16,22,34,.92);
+      backdrop-filter:none;-webkit-backdrop-filter:none;
+      box-shadow:0 10px 26px -14px rgba(0,0,0,.8);
+    }
+    header.nav.kompakt{background:rgba(16,22,34,.96);}
     .chapter-cols,.chapter-cols.flip{grid-template-columns:minmax(0,1fr);gap:34px;}
     .chapter-cols .shot{order:1;}
     .chapter-cols .chapter-text{order:2;}
