@@ -197,12 +197,20 @@
      Die Polsterung aendert nichts am Aussehen, nur an der Tippflaeche. */
   .nav-links a{display:inline-block;padding:4px 2px;transition:color .2s;}
   .nav-links a:hover{color:var(--mint);}
-  .nav-cta{
+  /* GEMESSEN 12.10.2026: der Knopf war 93 x 28 px und trug die Polsterung
+     4px 2px — nicht die 9px 18px, die hier seit dem Entwurf stehen.
+     `.nav-links a` ist eine Klasse PLUS ein Typ und schlägt damit `.nav-cta`,
+     eine Klasse allein. Die Gestaltung des Knopfes war also nie wirksam, und
+     es fiel niemandem auf, weil ein kleinerer Knopf immer noch ein Knopf ist.
+     Der Selektor nennt jetzt beides und gewinnt. */
+  .nav-links a.nav-cta{
     color:#04120c;background:linear-gradient(90deg,var(--mint-bright),var(--mint));
     font-weight:700;padding:9px 18px;border-radius:999px;font-size:.86em;
     transition:transform .2s ease,box-shadow .2s ease;
   }
-  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--mint-glow);color:#04120c;}
+  /* Dieselbe Falle eine Zeile tiefer: `.nav-links a:hover` schlug
+     `.nav-cta:hover`, der Knopftext wurde beim Zeigen mint AUF mint. */
+  .nav-links a.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--mint-glow);color:#04120c;}
 
   /* ===== Hero mit Scroll-Sequenz =====
      Strecke 15.09.2026 auf Kevins Wunsch rund 40 % kuerzer: 280vh -> 210vh,
@@ -571,9 +579,21 @@
   @media(max-width:560px){
     .wl-form{flex-direction:column;}
     .wl-form button{width:100%;}
-    header.nav{left:12px;right:12px;transform:none;justify-content:space-between;}
+    /* Kevin, 12.10.2026 (Handy-Bild): „exelery steht so weit links und früher
+       zugang so weit rechts. mach also die nav bar ein bisschen enger auf dem
+       handylayout."
+       Ursache war genau diese Zeile: sie zog die Pille von Rand zu Rand
+       (`left:12px;right:12px`) und schob ihren Inhalt mit
+       `justify-content:space-between` auseinander. Die Breite kommt jetzt
+       wieder vom Inhalt, mittig wie am Rechner, mit einem Deckel für den Fall,
+       dass der Inhalt doch einmal breiter wird als der Bildschirm. */
+    header.nav{
+      left:50%;transform:translateX(-50%);
+      max-width:calc(100vw - 24px);
+      gap:20px;padding:5px 5px 5px 16px;
+    }
+    header.nav.kompakt{gap:16px;padding:4px 4px 4px 14px;}
     .nav-links{gap:14px;font-size:.84em;}
-    .nav-links .nav-plain{display:none;}
     .chapter-bg{min-height:60vh;}
     /* Kevin, 17.09.2026 (Handy-Bilder): „das Handy ist so klein, man kann
        schlecht lesen, was da steht". Die zwei Knoepfe im Startbereich fallen
@@ -640,9 +660,11 @@
     </svg>
     <span>EXELERY</span>
   </a>
+  <!-- Kevin, 12.10.2026: „oben aus der nav bar, bitte Impressum und
+       datenschutz rausnehmen". Beide stehen weiter in der Fußzeile und sind
+       damit von jeder Seite aus erreichbar — die Pflichtangaben wandern also,
+       sie verschwinden nicht. -->
   <nav class="nav-links">
-    <a class="nav-plain" href="datenschutz/">Datenschutz</a>
-    <a class="nav-plain" href="impressum/">Impressum</a>
     <a class="nav-cta" href="#warteliste">Früher Zugang</a>
   </nav>
 </header>

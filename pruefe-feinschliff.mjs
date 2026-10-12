@@ -46,13 +46,26 @@ function starteServer() {
       const datei = join(WURZEL, pfad);
       let inhalt = readFileSync(datei);
       if (gegenprobe && pfad === '/index.html') {
-        // Sabotage: die Polsterung der Kopfzeilen-Links wieder herausnehmen.
-        // Dann sind sie 23 px hoch -- ein Pixel unter WCAG 2.5.8.
-        inhalt = Buffer.from(
-          inhalt.toString('utf8').replace(
-            '.nav-links a{display:inline-block;padding:4px 2px;transition:color .2s;}',
-            '.nav-links a{transition:color .2s;}'),
-          'utf8');
+        // Sabotage: die Polsterung des Kopfzeilen-Knopfes herausnehmen. Dann
+        // ist er rund 20 px hoch -- unter den 24 px aus WCAG 2.5.8.
+        //
+        // ⚠️ UMGEHÄNGT AM 12.10.2026. Vorher sabotierte diese Stelle die Regel
+        // `.nav-links a{padding:4px 2px}`, weil daran die beiden Rechtslinks in
+        // der Kopfzeile hingen. Die hat Kevin heute entfernt. Die alte Sabotage
+        // hätte danach NICHTS MEHR GETROFFEN — die Gegenprobe wäre still grün
+        // geblieben und hätte damit bewiesen, dass nichts mehr geprüft wird.
+        //
+        // Eine Gegenprobe muss mit dem wandern, was sie beweist. Trifft sie
+        // nicht mehr, bricht der Lauf hier ab statt leise durchzulaufen.
+        const vorher = inhalt.toString('utf8');
+        const nachher = vorher.replace(
+          'font-weight:700;padding:9px 18px;border-radius:999px;font-size:.86em;',
+          'font-weight:700;padding:0;border-radius:999px;font-size:.86em;');
+        if (nachher === vorher) {
+          console.error('Gegenprobe greift ins Leere: die sabotierte Regel steht nicht mehr in index.html.');
+          process.exit(1);
+        }
+        inhalt = Buffer.from(nachher, 'utf8');
       }
       res.writeHead(200, { 'Content-Type': TYPEN[extname(datei)] ?? 'application/octet-stream' });
       res.end(inhalt);
