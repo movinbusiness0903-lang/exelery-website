@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Sechs Seiten. Bis zum 09.09.2026 standen hier nur drei — die
-  Nutzungsbedingungen fehlten, obwohl es sie seit Juli gibt.
+  Sieben Seiten. Bis zum 09.09.2026 standen hier nur drei — die
+  Nutzungsbedingungen fehlten, obwohl es sie seit Juli gibt. Am 31.10.2026
+  kam die Loesch-Seite dazu; Meta verlangt eine oeffentliche Adresse, unter
+  der Nutzer erfahren, wie sie ihre Daten loeschen lassen.
 
   <lastmod> ist neu. Ohne dieses Feld hat eine Suchmaschine keinen Anhaltspunkt,
   was sich geaendert hat, und schaut entsprechend selten nach.
@@ -37,6 +39,12 @@
   <url>
     <loc>https://exelery.de/impressum/</loc>
     <lastmod>2026-09-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://exelery.de/konto-loeschen/</loc>
+    <lastmod>2026-10-31</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
