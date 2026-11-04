@@ -90,7 +90,13 @@ function lauf(html) {
   return { z, ergebnisse, ende };
 }
 
-const ERWARTET = ['ernaehrung.webp', 'gewicht.webp', 'einkauf-sheet.webp', 'training.webp', 'abzeichen.webp'];
+// ⚠️ `-pm` seit dem 04.11.2026: die Aufnahmen im Startbereich sind oben um
+//    die Statusleiste verlaengert, damit sie das Seitenverhaeltnis eines
+//    iPhone Pro Max haben (1320 x 2868 statt unserer 1290 x 2616). Ohne das
+//    saessen sie im Geraeterahmen seitlich beschnitten oder gestaucht.
+//    Erzeugt von planung/social/web-geraete-bauen.mjs im App-Repo.
+const ERWARTET = ['ernaehrung-pm.webp', 'gewicht-pm.webp', 'einkauf-sheet-pm.webp',
+  'training-pm.webp', 'abzeichen-pm.webp'];
 
 function pruefe(html) {
   const fehler = [];

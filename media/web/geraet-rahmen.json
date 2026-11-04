@@ -1,0 +1,15 @@
+{
+  "_warum": "Lage des Glases im Geraeterahmen, in Prozent des Bildes. Erzeugt von planung/social/web-geraete-bauen.mjs. Das CSS in index.html (.phone-screen) MUSS mit diesen Werten uebereinstimmen.",
+  "bild": {
+    "breite": 759,
+    "hoch": 1504
+  },
+  "glas": {
+    "links": 7.51,
+    "oben": 2.66,
+    "breite": 86.034,
+    "hoch": 94.348,
+    "radiusProzent": 9.618
+  },
+  "seitenverhaeltnis": 0.50465
+}

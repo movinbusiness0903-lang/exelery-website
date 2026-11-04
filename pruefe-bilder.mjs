@@ -103,11 +103,27 @@ const echtLesen = (datei) => {
 
 let rot = !pruefen(HTML, echtLesen, false);
 
+// ⚠️ DIE SABOTAGEN LESEN IHRE ZIELE AUS DEM HTML, sie nennen keine
+//    Dateinamen mehr. Am 04.11.2026 standen hier „training.webp",
+//    „abzeichen-1290.webp" und „width=640 height=1298" fest eingetragen —
+//    und als die Bilder auf `-pm` und `-geraet` umgestellt wurden, traf
+//    keine einzige Sabotage mehr. Der Waechter hat das gemeldet („liess
+//    sich nicht einschleusen") statt still gruen zu bleiben, und genau
+//    dafuer steht die Zeile 113. Aber eine Gegenprobe, die bei jeder
+//    Umbenennung nachgezogen werden muss, wird irgendwann nicht nachgezogen.
+const ersteStelle = HTML.match(/<img src="media\/web\/([a-z-]+)\.webp"[^>]*srcset="([^"]*)"[^>]*width="(\d+)" height="(\d+)"/);
+if (!ersteStelle) throw new Error('Keine Bild-Stelle mit srcset und Massen gefunden.');
+const [, einName, einSrcset, einW, einH] = ersteStelle;
+const einGross = `media/web/${einName}-1290.webp`;
+
 const GEGENPROBEN = [
-  ['eine Stelle ohne srcset', HTML.replace(/ srcset="media\/web\/training\.webp 640w, media\/web\/training-1290\.webp 1290w"/, ''), echtLesen],
-  ['grosse Fassung fehlt', HTML, (d) => (d === 'media/web/abzeichen-1290.webp' ? null : echtLesen(d))],
-  ['grosse Fassung nur 640 px', HTML, (d) => (d === 'media/web/gewicht-1290.webp' ? echtLesen('media/web/gewicht.webp') : echtLesen(d))],
-  ['falsches Seitenverhaeltnis im HTML', HTML.replace('width="640" height="1298"', 'width="640" height="1400"'), echtLesen],
+  ['eine Stelle ohne srcset', HTML.replace(` srcset="${einSrcset}"`, ''), echtLesen],
+  ['grosse Fassung fehlt', HTML, (d) => (d === einGross ? null : echtLesen(d))],
+  ['grosse Fassung so klein wie die kleine', HTML,
+    (d) => (d === einGross ? echtLesen(`media/web/${einName}.webp`) : echtLesen(d))],
+  ['falsches Seitenverhaeltnis im HTML',
+    HTML.replace(`width="${einW}" height="${einH}"`, `width="${einW}" height="${Number(einH) + 110}"`),
+    echtLesen],
 ];
 for (const [was, html, lesen] of GEGENPROBEN) {
   if (html === HTML && lesen === echtLesen) { console.log(`FEHLER Gegenprobe „${was}" liess sich nicht einschleusen`); rot = true; continue; }

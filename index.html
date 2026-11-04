@@ -138,6 +138,56 @@
     --line-strong:rgba(255,255,255,.15);
     --font-head:'Manrope','Inter',-apple-system,sans-serif;
     --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    /* ── Typografie-Stufen, 04.11.2026 ────────────────────────────────────
+       GEMESSEN am gerenderten Bild auf 1280 px, VOR dieser Aenderung:
+       .subline 16,80 px · .phone-step p 16,96 px · .chapter-text p 17,28 px
+       · .chapter-text li 16,00 px.
+
+       Vier Textgroessen innerhalb von 1,28 Pixeln. Das ist keine Stufe,
+       das sind vier Zufallswerte, die alle gleich aussehen. Eine Stufe,
+       die man nicht sieht, ist keine — und genau daran liegt es, wenn eine
+       Seite „billig" wirkt, obwohl jede einzelne Zeile fuer sich stimmt.
+
+       Jetzt drei Stufen mit sichtbarem Abstand: Vorspann, Fliesstext,
+       Beiwerk. Die Schlagzeilen stehen eine Stufe hoeher UND enger: grosse
+       Schrift braucht WENIGER Zeilenabstand, nicht denselben. Dasselbe
+       Verhaeltnis wie in .hero-titel (1,04), die vom ersten Tag an richtig
+       eingestellt war — der Rest der Seite zieht jetzt nach. */
+    --vorspann:1.22em;    /* der erste Satz eines Kapitels */
+    --vorspann-zh:1.5;
+    --kopf-zh:1.04;       /* Schlagzeilen: eng */
+    --kopf-sp:-.022em;
+    /* Ein Neutralton ZWISCHEN --text und --muted, nur fuer den Vorspann.
+       Die Marke bleibt unberuehrt — --bg und --mint sind unveraendert, das
+       hier ist eine Graustufe mehr und keine neue Farbe. Kontrast auf --bg:
+       12,98:1 gerechnet, also weit ueber AAA. */
+    --text-weich:#CBD5E1;
+    /* ── Das Geraetefoto, 04.11.2026 ─────────────────────────────────────
+       Kevin: „ueberall dort, wo man handyscreens sieht, wie auch da oben."
+
+       Der Rahmen `media/web/geraet-rahmen.webp` ist ein frontales Geraet
+       mit DURCHSICHTIGEM Glas. Er liegt als Ebene UEBER den Aufnahmen —
+       darum kann ein Screen nicht mehr unten herauslaufen (Kevins Bild 1
+       vom 04.11.): das Gehaeuse liegt darueber und beschneidet ihn.
+
+       ⚠️ DIESE FUENF ZAHLEN STEHEN AN EINER EINZIGEN STELLE, UND DAS IST
+          ABSICHT. Das Verhaeltnis stand bis heute VIERMAL in dieser Datei
+          (zweimal als 1290/2616, zweimal als .4931). Zwei Stellen fuer eine
+          Zahl sind der Fehler; der Vergleich ist nur der Waechter davor.
+
+          Erzeugt von planung/social/web-geraete-bauen.mjs, nachzulesen in
+          media/web/geraet-rahmen.json. `pruefe-geraet-rahmen.mjs` haelt
+          beide Seiten zusammen und wirft, wenn sie auseinanderlaufen. */
+    --geraet-verh:0.50465;   /* Breite durch Hoehe des ganzen Bildes */
+    --glas-links:7.51%;
+    --glas-oben:2.66%;
+    --glas-breit:86.034%;
+    --glas-hoch:94.348%;
+    /* Die Rundung des Glases, aus demselben Bild gemessen: 73 px auf 653 px
+       Glasbreite und 1419 px Glashoehe. Zwei Werte, weil das Glas hoch und
+       schmal ist — ein einzelner Prozentwert gaebe oben und unten eine
+       andere Rundung als links und rechts. */
+    --glas-rund:11.18% / 5.14%;
     /* Seitenabstand der ganzen Seite an EINER Stelle. Auf schmalen Geraeten
        groesser, damit der Text nicht an der Displaykante klebt. */
     --rand:24px;
@@ -273,7 +323,10 @@
      Hero-Bild und war auf dem Handy praktisch nicht zu lesen. Heller Ton plus
      ein weicher Schatten loesen das — der Schatten traegt auch dort, wo der
      Bildinhalt gerade hell ist. */
-  .subline{max-width:520px;margin:18px 0 0;color:rgba(248,250,252,.9);font-size:1.05em;opacity:0;animation:fadeUp .7s ease forwards .8s;text-shadow:0 1px 16px rgba(11,15,23,.9),0 1px 3px rgba(11,15,23,.8);}
+  /* Auch hier die Vorspann-Stufe (04.11.2026): der Satz unter der
+     Schlagzeile ist der wichtigste Fliesstext der ganzen Seite und stand
+     mit 16,8 px kleiner da als der Fliesstext in den Kapiteln. */
+  .subline{max-width:27em;margin:20px 0 0;color:rgba(248,250,252,.92);font-size:var(--vorspann);line-height:var(--vorspann-zh);text-wrap:pretty;opacity:0;animation:fadeUp .7s ease forwards .8s;text-shadow:0 1px 16px rgba(11,15,23,.9),0 1px 3px rgba(11,15,23,.8);}
   .hero-knoepfe{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;opacity:0;animation:fadeUp .7s ease forwards .95s;}
   .hero-zweit{
     display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:0 28px;
@@ -290,7 +343,7 @@
   /* Breite haengt auch an der Bildschirmhoehe: auf einem kurzen Laptop
      (z. B. 1280x640) ragte das Handy sonst unten heraus. 44svh Breite
      bedeutet rund 89 % Hoehe, es bleibt also im Bild. */
-  .hero-handy-platz{justify-self:end;width:300px;width:min(300px,44svh);aspect-ratio:1290/2616;opacity:0;animation:fadeUp .8s ease forwards 1.05s;}
+  .hero-handy-platz{justify-self:end;width:300px;width:min(300px,44svh);aspect-ratio:var(--geraet-verh);opacity:0;animation:fadeUp .8s ease forwards 1.05s;}
   .hero-handy-platz .phone-device{width:100%;}
   .handy-flug-an .hero-handy-platz .phone-device{visibility:hidden;}
   .handy-flug{display:none;}
@@ -359,24 +412,58 @@
     position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
     opacity:0;transform:translateY(24px);pointer-events:none;
   }
-  .phone-step .step-k{color:var(--mint);font-family:var(--font-head);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.78em;margin-bottom:12px;}
-  .phone-step h3{font-size:clamp(1.5em,3.4vw,2.4em);font-weight:800;margin:0 0 14px;line-height:1.15;letter-spacing:-.01em;}
-  .phone-step p{color:var(--muted);font-size:1.06em;max-width:420px;margin:0;}
+  .phone-step .step-k{color:var(--mint);font-family:var(--font-head);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.76em;margin-bottom:14px;}
+  .phone-step h3{font-size:clamp(1.6em,3.8vw,2.7em);font-weight:800;margin:0 0 16px;line-height:1.08;letter-spacing:var(--kopf-sp);text-wrap:balance;}
+  /* Dieselbe Vorspann-Stufe wie in den Kapiteln: der Satz unter der
+     Zwischenueberschrift ist hier IMMER der Vorspann, nie Fliesstext. */
+  .phone-step p{color:var(--text-weich);font-size:var(--vorspann);line-height:var(--vorspann-zh);max-width:24em;margin:0;text-wrap:pretty;}
   .phone-stage{perspective:1400px;justify-self:end;}
+  /* ── Das Geraet im Startbereich ist ein FOTO, kein CSS-Rahmen ──────────
+     Kevin am 04.11.2026: „ja oben das soll auch mit einem geraet im
+     hintergrund sein, das war ja meine ansage, ueberall dort, wo man
+     handyscreens sieht, wie auch da oben."
+
+     Vorher stand hier ein mit CSS gezeichneter Rahmen: 3 px Rand in
+     #232c3f auf schwarzem Grund. Auf einer dunklen Seite sieht man davon
+     fast nichts — deshalb Kevins „dort ist kein handy im hintergrund".
+
+     ⚠️ ER WAR KEIN VIDEO, UND DAS IST ABSICHT. Kevin bot an: „zur not
+        erzeuge ein video wie es sich genau im passenden winkel dreht."
+        Gebraucht wird es nicht: das Foto ist FRONTAL, und die vorhandene
+        3D-Drehung dreht das Bild einfach mit. Ein Video muesste je Bild
+        neu zusammengesetzt werden, waere weicher, schwerer, und es koennte
+        auf halbem Weg nicht stehenbleiben — was diese Szene dauernd tut.
+
+     ⚠️ ALS PSEUDO-ELEMENT, NICHT ALS <img>. Drei Wächter messen den Aufbau
+        dieses Blocks (pruefe-telefon-szene zaehlt die .phone-screen in
+        #phoneDevice). Ein zusaetzliches Element im HTML haette sie
+        angefasst; ein ::after fasst nichts an. */
   .phone-device{
-    position:relative;width:min(320px,72vw);aspect-ratio:1290/2616;
-    border-radius:48px;background:#000;
-    border:3px solid #232c3f;
-    box-shadow:0 40px 90px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.05),0 0 80px rgba(13,242,163,.07);
+    position:relative;width:min(320px,72vw);aspect-ratio:var(--geraet-verh);
     transform-style:preserve-3d;will-change:transform;
-    overflow:hidden;
+    filter:drop-shadow(0 34px 60px rgba(0,0,0,.62));
   }
+  /* Schwarzes Glas als Unterlage. Ohne sie saehe man beim Wechsel der
+     Aufnahmen (beide kurz halb durchsichtig) die Seite durchscheinen. */
+  .phone-device::before{
+    content:'';position:absolute;z-index:0;
+    left:var(--glas-links);top:var(--glas-oben);
+    width:var(--glas-breit);height:var(--glas-hoch);
+    background:#05070C;border-radius:var(--glas-rund);
+  }
+  /* Das Geraet selbst, ueber den Aufnahmen. Sein durchsichtiges Glas gibt
+     sie frei, sein Gehaeuse beschneidet sie. */
   .phone-device::after{
-    content:'';position:absolute;inset:0;border-radius:45px;z-index:5;pointer-events:none;
-    box-shadow:inset 0 0 24px rgba(0,0,0,.55);
+    content:'';position:absolute;inset:0;z-index:5;pointer-events:none;
+    background:url('media/web/geraet-rahmen.webp') center/100% 100% no-repeat;
   }
-  .phone-screen{position:absolute;inset:0;opacity:0;transition:opacity .35s ease;}
-  .phone-screen img{width:100%;height:100%;object-fit:cover;border-radius:45px;}
+  .phone-screen{
+    position:absolute;z-index:1;
+    left:var(--glas-links);top:var(--glas-oben);
+    width:var(--glas-breit);height:var(--glas-hoch);
+    opacity:0;transition:opacity .35s ease;
+  }
+  .phone-screen img{width:100%;height:100%;object-fit:cover;border-radius:var(--glas-rund);}
   .phone-screen.active{opacity:1;}
   .phone-progress{
     display:flex;gap:8px;justify-content:center;margin-top:22px;
@@ -399,16 +486,39 @@
     position:absolute;inset:0;
     background:linear-gradient(180deg,var(--bg) 0%,rgba(11,15,23,.25) 30%,rgba(11,15,23,.4) 60%,var(--bg) 100%);
   }
-  .chapter-head{position:relative;z-index:2;width:100%;padding-top:120px;padding-bottom:60px;}
-  .chapter-head .eyebrow{color:var(--mint);font-family:var(--font-head);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.8em;margin:0 0 12px;}
-  .chapter-head h2{font-size:clamp(2em,5.4vw,3.6em);font-weight:800;margin:0;line-height:1.08;letter-spacing:-.015em;max-width:640px;}
+  /* Mehr Luft zwischen den Kapiteln (04.11.2026). Vorher 120/60 oben und
+     40/90 unten — die Kapitel lagen so dicht, dass das Foto hinter dem Kopf
+     kaum als eigener Raum gelesen wurde. Auf dem Handy wird beides wieder
+     kleiner (Block ab „Mobil"), dort ist Luft Scrollweg. */
+  .chapter-head{position:relative;z-index:2;width:100%;padding-top:148px;padding-bottom:72px;}
+  .chapter-head .eyebrow{color:var(--mint);font-family:var(--font-head);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.78em;margin:0 0 14px;}
+  /* `text-wrap:balance` verteilt die Woerter gleichmaessig auf die Zeilen,
+     statt die letzte Zeile mit einem einzelnen Wort stehen zu lassen. Genau
+     das passierte bei „Bleib dran – auch an Tag 200." Browser ohne die
+     Eigenschaft brechen wie bisher; es geht nichts verloren. */
+  .chapter-head h2{font-size:clamp(2.05em,5.9vw,4.05em);font-weight:800;margin:0;line-height:var(--kopf-zh);letter-spacing:var(--kopf-sp);max-width:640px;text-wrap:balance;}
+  /* ── Eigener Rhythmus statt desselben Musters ──────────────────────────
+     Kapitel 2 und 4 drehen die Spalten (.chapter-cols.flip): der Text steht
+     dort RECHTS. Der Kopf stand trotzdem immer links — das Auge sprang also
+     bei jedem zweiten Kapitel quer ueber die Seite.
+
+     Jetzt folgt der Kopf seiner eigenen Textspalte. Daraus wird ein Wechsel
+     links/rechts/links/rechts den ganzen Weg nach unten, und zwar aus der
+     Anordnung heraus, nicht als Verzierung.
+
+     Nur ab 901 px: darunter stehen die Spalten uebereinander, und dann gibt
+     es keine Seite mehr, der ein Kopf folgen koennte. */
+  @media(min-width:901px){
+    .chapter.rechts .chapter-head{text-align:right;}
+    .chapter.rechts .chapter-head h2{margin-left:auto;}
+  }
   /* ⚠️ Die Kurzschreibweise `padding: 40px 0 90px` hat hier die 24px von .wrap
      ueberschrieben — beide sind Ein-Klassen-Regeln, .chapter-body steht spaeter
      und gewinnt. Am Rechner faellt das nicht auf, weil der Inhalt ohnehin
      mittig in einem breiten Fenster sitzt; auf dem Handy klebte der Text am
      Rand. Deshalb die Seitenabstaende hier ausdruecklich mitgeben. */
-  .chapter-body{position:relative;z-index:2;padding:40px var(--rand) 90px;}
-  .chapter-cols{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;}
+  .chapter-body{position:relative;z-index:2;padding:52px var(--rand) 124px;}
+  .chapter-cols{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;}
   .chapter-cols.flip{grid-template-columns:.95fr 1.05fr;}
   .chapter-cols .shot{position:relative;}
   /* ── Die Kapitel-Aufnahmen stecken in einem echten Geraet ───────────────
@@ -444,7 +554,18 @@
   .shot-duo{display:flex;gap:14px;justify-content:center;align-items:flex-start;}
   .shot-duo .shot-frame{margin:0;}
   .shot-duo .shot-frame:last-child{margin-top:64px;}
-  .chapter-text p{color:var(--muted);font-size:1.08em;max-width:480px;}
+  /* Fliesstext: eine Stufe UNTER dem Vorspann, damit der Unterschied
+     sichtbar wird. `text-wrap:pretty` verhindert ein einzelnes Wort auf der
+     letzten Zeile. */
+  .chapter-text p{color:var(--muted);font-size:1em;max-width:480px;text-wrap:pretty;}
+  /* Der Vorspann — der erste Satz eines Kapitels. Jedes .chapter-text hat
+     genau einen; beim Coach steht danach noch .coach-tarif, und `first-of-type`
+     greift richtig nur den ersten. Breite in `em` statt in Pixeln: so bleiben
+     es rund 36 Zeichen je Zeile, egal wie gross die Schrift gerade ist. */
+  .chapter-text > p:first-of-type{
+    font-size:var(--vorspann);line-height:var(--vorspann-zh);
+    color:var(--text-weich);max-width:27em;margin:0 0 4px;
+  }
 
   /* ── Der KI-Coach: ein Chat aus HTML, kein Bild ────────────────────────
      Siehe die Begruendung am Abschnitt #coach weiter unten. */
@@ -454,8 +575,13 @@
   .coach .chapter-bg{min-height:0;}
   .coach .chapter-head{padding-top:132px;padding-bottom:38px;}
   .coach .chapter-body{padding-top:0;}
-  .coach-tarif{
-    margin-top:26px;font-size:.92em;color:var(--muted);
+  /* ⚠️ Stand hier bis zum 04.11.2026 als `.coach-tarif` — und die .92em
+     kamen NIE an: `.chapter-text p` ist eine Klasse PLUS ein Element und
+     schlaegt eine Klasse allein, egal welche Regel spaeter steht. Die Zeile
+     war also so gross wie der Fliesstext, obwohl sie Beiwerk ist. Mit dem
+     Element davor stimmt das Gewicht. */
+  .chapter-text p.coach-tarif{
+    margin-top:26px;font-size:.88em;color:var(--muted);max-width:27em;
     padding-left:14px;border-left:2px solid var(--mint);
   }
   .chat{
@@ -573,8 +699,14 @@
       rgba(79,168,232,0)   70%);
   }
   .badge-visual img{position:relative;display:block;width:100%;height:100%;}
-  .waitlist h2{font-size:clamp(2em,5vw,3.2em);font-weight:800;margin:0 0 16px;letter-spacing:-.015em;}
-  .waitlist .wl-sub{color:var(--muted);font-size:1.1em;margin:0 0 34px;}
+  /* ⚠️ GEMESSEN 04.11.2026: diese Ueberschrift lief mit 51,2 px Schrift und
+     81,9 px Zeilenabstand — das ist die 1,6 aus `body`, weil hier als
+     einziger Schlagzeile nie eine eigene Zeilenhoehe gesetzt wurde. Bei
+     „Sei Day One." faellt es nicht auf, solange es eine Zeile bleibt; auf
+     einem schmalen Handy wurden daraus zwei Zeilen mit einer Luecke, in die
+     eine dritte gepasst haette. Jetzt wie jede andere Schlagzeile. */
+  .waitlist h2{font-size:clamp(2.1em,5.4vw,3.5em);font-weight:800;margin:0 0 18px;line-height:var(--kopf-zh);letter-spacing:var(--kopf-sp);text-wrap:balance;}
+  .waitlist .wl-sub{color:var(--text-weich);font-size:var(--vorspann);line-height:var(--vorspann-zh);margin:0 auto 34px;max-width:27em;text-wrap:pretty;}
   .waitlist .wl-sub b{color:var(--text);}
   /* Echte Knappheit, live vom Server — kein ausgedachter Countdown. */
   .waitlist .wl-plaetze{
@@ -650,6 +782,12 @@
     .chapter-cols,.chapter-cols.flip{grid-template-columns:minmax(0,1fr);gap:34px;}
     .chapter-cols .shot{order:1;}
     .chapter-cols .chapter-text{order:2;}
+    /* Die zusaetzliche Luft vom 04.11. gilt dem Rechner. Auf dem Handy ist
+       Luft Scrollweg, also hier wieder knapper als am grossen Bildschirm —
+       aber immer noch etwas mehr als vorher (104/48 statt 120/60 oben
+       waeren zu wenig Unterschied zum Fliesstext gewesen). */
+    .chapter-head{padding-top:112px;padding-bottom:52px;}
+    .chapter-body{padding-top:38px;padding-bottom:86px;}
     /* Die zwei Telefonbilder bleiben nebeneinander wie am Rechner, sie werden
        nur an die Fensterbreite gebunden. Feste Pixelbreiten passen auf einem
        375px-Bildschirm schlicht nicht nebeneinander. */
@@ -708,7 +846,14 @@
        so war es auch vorher schon. Gemessen 390x750: 212 statt 180 px breit,
        auf Kevins iPhone vorher 162 px. Ohne lvh gilt die Zeile fuer <= 900 px. */
     .hero-knoepfe{display:none;}
-    .hero-handy-platz{width:min(250px,64vw,calc((100lvh - 320px) * .4931));}
+    /* ⚠️ 364 px Reserve, vorher 320. GEMESSEN am 04.11.2026 auf 320 x 568:
+       das Geraet ragte 37 px unter den Bildrand. Zwei Aenderungen desselben
+       Tages treffen sich hier — die groesseren Schlagzeilen (D3) brauchen
+       mehr Hoehe ueber dem Handy, und das Geraetefoto ist mit 0,505 etwas
+       breiter als der alte CSS-Rahmen mit 0,493, wird bei gleicher Hoehe
+       also breiter gerechnet. 364 ist der Wert, bei dem `pruefe-breiten.mjs`
+       auf allen acht Fenstergroessen gruen meldet. */
+    .hero-handy-platz{width:min(250px,64vw,calc((100lvh - 364px) * var(--geraet-verh)));}
     /* App-Szene: Der Inhalt war hoeher als die Szene und stand mittig, oben
        lag das Handy unter der Leiste, unten blieb Platz (Kevins Bild 3).
        Jetzt beginnt er unter der Leiste (endet bei 57 px) und die Szene ist
@@ -718,7 +863,7 @@
        fest 190 px. Das Handy wird nur auf niedrigen Bildschirmen kleiner. */
     .phone-sticky{height:100vh;height:100lvh;align-items:flex-start;padding-top:68px;box-sizing:border-box;}
     .phone-inner{gap:14px;}
-    .phone-device{width:min(250px,58vw,calc((100lvh - 290px) * .4931));}
+    .phone-device{width:min(250px,58vw,calc((100lvh - 290px) * var(--geraet-verh)));}
     .phone-copy{min-height:0;display:grid;}
     .phone-step{position:relative;inset:auto;grid-area:1/1;}
     /* Bilderpaare in den Kapiteln: bis an den Textrand (26 px) statt 41 px
@@ -800,7 +945,7 @@
           </div>
           <div class="hero-handy-platz" id="heroHandyPlatz">
             <div class="phone-device" role="img" aria-label="Die Exelery-App, Tab Ernährung">
-              <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1298"></div>
+              <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1391"></div>
             </div>
           </div>
         </div>
@@ -812,7 +957,7 @@
        und gleitet beim Scrollen in die Lage des Handys der App-Szene. Dort
        uebernimmt #phoneDevice mit demselben Bildschirm. -->
   <div class="phone-device handy-flug" id="handyFlug" aria-hidden="true">
-    <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1298"></div>
+    <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1391"></div>
   </div>
 
   <!-- ============ TELEFON-SZENE: scroll-gesteuert ============ -->
@@ -849,11 +994,11 @@
         </div>
         <div class="phone-stage">
           <div class="phone-device" id="phoneDevice">
-            <div class="phone-screen active"><img src="media/web/ernaehrung.webp" srcset="media/web/ernaehrung.webp 640w, media/web/ernaehrung-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1298"></div>
-            <div class="phone-screen"><img src="media/web/gewicht.webp" srcset="media/web/gewicht.webp 640w, media/web/gewicht-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/einkauf-sheet.webp" srcset="media/web/einkauf-sheet.webp 640w, media/web/einkauf-sheet-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/training.webp" srcset="media/web/training.webp 640w, media/web/training-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Trainings-Screen mit Wochenplan" width="640" height="1298" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/abzeichen.webp" srcset="media/web/abzeichen.webp 640w, media/web/abzeichen-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1298" loading="lazy"></div>
+            <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1391"></div>
+            <div class="phone-screen"><img src="media/web/gewicht-pm.webp" srcset="media/web/gewicht-pm.webp 640w, media/web/gewicht-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/einkauf-sheet-pm.webp" srcset="media/web/einkauf-sheet-pm.webp 640w, media/web/einkauf-sheet-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/training-pm.webp" srcset="media/web/training-pm.webp 640w, media/web/training-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Trainings-Screen mit Wochenplan" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen"><img src="media/web/abzeichen-pm.webp" srcset="media/web/abzeichen-pm.webp 640w, media/web/abzeichen-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1391" loading="lazy"></div>
           </div>
           <div class="phone-progress" id="phoneProgress" aria-hidden="true">
             <i class="on"></i><i></i><i></i><i></i><i></i>
@@ -889,8 +1034,8 @@
         </div>
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame"><img src="media/web/ernaehrung-geraet.webp" srcset="media/web/ernaehrung-geraet.webp 370w, media/web/ernaehrung-geraet-1290.webp 740w" sizes="(max-width: 900px) 240px, 300px" alt="Ernährungs-Screen" width="370" height="936" loading="lazy"></div>
-            <div class="shot-frame small"><img src="media/web/gewicht-geraet.webp" srcset="media/web/gewicht-geraet.webp 370w, media/web/gewicht-geraet-1290.webp 740w" sizes="(max-width: 900px) 240px, 300px" alt="Gewichts-Screen" width="370" height="936" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/ernaehrung-geraet.webp" srcset="media/web/ernaehrung-geraet.webp 380w, media/web/ernaehrung-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Ernährungs-Screen" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/gewicht-geraet.webp" srcset="media/web/gewicht-geraet.webp 380w, media/web/gewicht-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Gewichts-Screen" width="380" height="753" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -898,7 +1043,9 @@
   </section>
 
   <!-- ============ KAPITEL: TRAINING ============ -->
-  <section class="chapter" id="training">
+  <!-- `rechts`: in diesem Kapitel steht der Text rechts (.chapter-cols.flip),
+       also folgt der Kopf ihm dorthin. Siehe .chapter.rechts im CSS. -->
+  <section class="chapter rechts" id="training">
     <div class="chapter-bg">
       <div class="bg-img" data-parallax style="background-image:url('media/backdrops/ropes.webp')"></div>
       <div class="bg-shade"></div>
@@ -911,8 +1058,8 @@
       <div class="chapter-cols flip">
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame small"><img src="media/web/logbuch-geraet.webp" srcset="media/web/logbuch-geraet.webp 370w, media/web/logbuch-geraet-1290.webp 740w" sizes="(max-width: 900px) 240px, 300px" alt="Logbuch mit Sätzen und Gewichten" width="370" height="936" loading="lazy"></div>
-            <div class="shot-frame"><img src="media/web/training-geraet.webp" srcset="media/web/training-geraet.webp 370w, media/web/training-geraet-1290.webp 740w" sizes="(max-width: 900px) 240px, 300px" alt="Trainings-Startseite" width="370" height="936" loading="lazy"></div>
+            <div class="shot-frame small"><img src="media/web/logbuch-geraet.webp" srcset="media/web/logbuch-geraet.webp 380w, media/web/logbuch-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Logbuch mit Sätzen und Gewichten" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame"><img src="media/web/training-geraet.webp" srcset="media/web/training-geraet.webp 380w, media/web/training-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Trainings-Startseite" width="380" height="753" loading="lazy"></div>
           </div>
         </div>
         <div class="chapter-text">
@@ -955,7 +1102,7 @@
           </div>
         </div>
         <div class="shot">
-          <div class="shot-frame"><img src="media/web/abzeichen-geraet.webp" srcset="media/web/abzeichen-geraet.webp 370w, media/web/abzeichen-geraet-1290.webp 740w" sizes="(max-width: 900px) 240px, 300px" alt="Abzeichen-Sammlung" width="370" height="936" loading="lazy"></div>
+          <div class="shot-frame"><img src="media/web/abzeichen-geraet.webp" srcset="media/web/abzeichen-geraet.webp 380w, media/web/abzeichen-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Abzeichen-Sammlung" width="380" height="753" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -979,7 +1126,7 @@
           duzen, keine Emojis, KEINE ZAHL OHNE WERKZEUG, und zum Schluss drei
           Saetze, die der NUTZER als naechstes sagt — nicht drei Fragen an
           ihn. Die Pillen unten sind genau diese drei. -->
-  <section class="chapter coach" id="coach">
+  <section class="chapter coach rechts" id="coach">
     <div class="chapter-bg">
       <div class="bg-shade"></div>
       <div class="chapter-head wrap">

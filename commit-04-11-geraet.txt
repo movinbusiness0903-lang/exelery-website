@@ -1,0 +1,124 @@
+feat(design): frontales Geraet ueberall, Typografie in Stufen, 16 Waechter
+
+Zwei Dinge in einem Commit, weil sie sich an denselben Zeilen treffen:
+Kevins Korrekturen am Geraetefoto und der letzte offene Punkt aus dem Plan
+vom 03.11. (D3, Typografie).
+
+== 1. Das Geraet =======================================================
+
+Kevin am 04.11.2026: "ne nicht leicht gedreht, sondern komplett frontal
+wie vorher" und "ja oben das soll auch mit einem geraet im hintergrund
+sein, das war ja meine ansage, ueberall dort, wo man handyscreens sieht."
+
+Die Bilder kommen aus planung/social/web-geraete-bauen.mjs im App-Repo
+(Begruendung dort, Commit 661f91e). Hier aendert sich, wo sie liegen.
+
+-- Der Startbereich bekommt ein echtes Geraet --------------------------
+
+Vorher stand dort ein mit CSS gezeichneter Rahmen: 3 px in #232c3f auf
+schwarzem Grund. Auf einer dunklen Seite sieht man davon fast nichts --
+daher Kevins "dort ist kein handy im hintergrund".
+
+Jetzt liegt `geraet-rahmen.webp` als Ebene UEBER den Aufnahmen: dasselbe
+Geraet wie in den Kapiteln, aber mit durchsichtigem Glas. Die Aufnahmen
+wechseln dort durch, sie duerfen also nicht eingebacken sein.
+
+ACHTUNG: KEIN VIDEO, obwohl Kevin es angeboten hat ("zur not erzeuge ein
+video wie es sich genau im passenden winkel dreht"). Gebraucht wird
+keines: das Foto ist frontal, und die vorhandene 3D-Drehung dreht das Bild
+einfach mit. Ein Video muesste je Einzelbild neu zusammengesetzt werden,
+waere weicher, schwerer, und koennte auf halbem Weg nicht stehenbleiben --
+was diese Szene dauernd tut.
+
+ACHTUNG: als ::before/::after, nicht als neues <img>. Drei Waechter messen
+den Aufbau dieses Blocks; ein zusaetzliches Element haette sie angefasst,
+ein Pseudo-Element fasst nichts an.
+
+-- Die Aufnahmen bekommen das Pro-Max-Verhaeltnis ----------------------
+
+Kevin: "pass auf das das handy nicht zu breit wird ... es sollte schon so
+aussehen wie das neuste iphone pro max, nicht breiter." Und danach: "es
+muss ja nicht direkt 1zu1 die selbe groesse haben ... die
+seitenverhaeltnisse grundlegend meine ich damit."
+
+Die `-pm`-Fassungen sind oben um die Statusleiste verlaengert (1290 x 2803
+statt 1290 x 2616). Die Rohaufnahme bleibt unberuehrt -- sie ist die
+Eingabe des Bauskripts, und ein zweiter Lauf wuerde sonst ein zweites Mal
+verlaengern.
+
+-- Fuenf Zahlen an EINER Stelle ----------------------------------------
+
+Das Seitenverhaeltnis stand bis heute VIERMAL in dieser Datei, zweimal als
+`1290/2616` und zweimal als `.4931`. Jetzt --geraet-verh und vier
+Glas-Variablen, und `pruefe-geraet-rahmen.mjs` haelt sie mit
+`media/web/geraet-rahmen.json` zusammen. Zwei Stellen fuer eine Zahl sind
+der Fehler; der Vergleich ist nur der Waechter davor.
+
+== 2. Typografie (D3 aus dem Plan) =====================================
+
+GEMESSEN am gerenderten Bild auf 1280 px, vorher: .subline 16,80 px ·
+.phone-step p 16,96 px · .chapter-text p 17,28 px · .chapter-text li
+16,00 px. Vier Textgroessen innerhalb von 1,28 Pixeln -- keine Stufe,
+sondern vier Zufallswerte, die alle gleich aussehen.
+
+Jetzt drei Stufen mit sichtbarem Abstand: Vorspann, Fliesstext, Beiwerk.
+Die Schlagzeilen stehen eine Stufe hoeher UND enger -- grosse Schrift
+braucht weniger Zeilenabstand, nicht denselben.
+
+Zwei Fehler kamen dabei ans Licht:
+
+  * `.waitlist h2` lief mit 51,2 px Schrift und 81,9 px Zeilenabstand. Das
+    ist die 1,6 aus `body`: als einziger Schlagzeile wurde ihr nie eine
+    eigene Zeilenhoehe gegeben.
+  * `.coach-tarif` sollte .92em sein und war 1,08em. `.chapter-text p` ist
+    eine Klasse PLUS ein Element und schlaegt eine Klasse allein, egal
+    welche Regel spaeter steht. Die Ultra-Zeile war so gross wie der
+    Fliesstext, obwohl sie Beiwerk ist.
+
+Dazu der Rhythmus: Kapitel 2 und 4 drehen die Spalten, der Kopf stand
+trotzdem immer links. Jetzt folgt er seiner eigenen Textspalte -- links,
+rechts, links, rechts. Aus der Anordnung heraus, nicht als Verzierung.
+
+== 3. Waechter: 14 -> 16 ===============================================
+
+NEU `pruefe-geraet-rahmen.mjs`: haelt die fuenf CSS-Variablen mit
+geraet-rahmen.json zusammen, prueft Alphakanal und Masse des Rahmens und
+schlaegt an, wenn die alten festen Werte zurueckkommen. 5 Gegenproben.
+
+NEU `pruefe-breiten.mjs`: acht Fenstergroessen von 320 bis 1440, auf jeder
+kein Querscrollen, kein Element und kein TEXT ausserhalb des Bildes, und
+das Startbereich-Geraet bleibt im Bild. Kevin: "denke auch dran, dass das
+dann im handy layout auch passen muss und tablet, laptop etc."
+
+  Er hat sofort etwas gefunden: auf 320 x 568 ragte das Geraet 37 px unter
+  den Bildrand. Zwei Aenderungen desselben Tages trafen sich dort -- die
+  groesseren Schlagzeilen brauchen mehr Hoehe, und das Geraetefoto ist mit
+  0,505 breiter als der alte CSS-Rahmen mit 0,493. Reserve 320 -> 364 px.
+
+  Und seine zweite Gegenprobe blieb erst gruen: `getBoundingClientRect`
+  liefert den KASTEN, nicht den ueberlaufenden Text. Eine Schlagzeile mit
+  `white-space:nowrap` ragt darueber hinaus, ohne dass sich die Zahl
+  aendert. Dafuer gibt es `scrollWidth` -- der misst den Inhalt.
+
+GEAENDERT `pruefe-telefon-szene.mjs`: erwartet die -pm-Fassungen.
+
+GEAENDERT `pruefe-bilder.mjs`: seine Gegenproben nannten Dateinamen fest
+("training.webp", "abzeichen-1290.webp", width=640 height=1298). Nach der
+Umbenennung traf keine einzige mehr. Der Waechter hat das GEMELDET statt
+still gruen zu bleiben -- aber eine Gegenprobe, die bei jeder Umbenennung
+nachgezogen werden muss, wird irgendwann nicht nachgezogen. Sie lesen ihre
+Ziele jetzt aus dem HTML.
+
+GEAENDERT `geraete-eintragen.mjs`: trifft beide Zustaende, laeuft also
+mehrmals. Beim zweiten Lauf meldete es "5 von 5 nicht getroffen", weil es
+nur den Zustand VOR dem ersten Lauf kannte.
+
+-- Geprueft ------------------------------------------------------------
+
+Alle 16 Waechter gruen. Acht Fenstergroessen von 320 bis 1440 ohne
+Querscrollen. Einsatz des Screens ins Glas: 0 Stufen Abweichung bei allen
+fuenf Bildern.
+
+Ruecksprung weiterhin: git checkout stand-vor-umbau-03-11-2026 -- .
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
