@@ -93,6 +93,22 @@
      Besuchers an Google, bevor er etwas angeklickt hatte. -->
 <link rel="preload" as="font" type="font/woff2" crossorigin href="media/fonts/manrope-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="media/fonts/inter-latin.woff2">
+<!-- Das Geraet im Startbereich zuerst, der Kulissen-Poster danach.
+     Kevin am 04.11.2026: „oben bei der scrollanimation ganz am anfang hat
+     das handy oft blackscreen am anfang beim neuladen."
+     GEMESSEN auf schnellem 3G, vorher: das Gehaeuse kam bei 1334 ms (es
+     steckt in einem CSS-`url()` und wird deshalb erst beim Aufbau des
+     Elements entdeckt), die Aufnahme erst bei 3726 ms — dazwischen lag das
+     schwarze Glas offen. Beide stehen jetzt im Kopf, werden also schon
+     beim Lesen des HTML angefordert.
+     ⚠️ Die Reihenfolge ist Absicht: der Poster ist die Kulisse hinter dem
+     Text und faellt kaum auf, wenn er eine halbe Sekunde spaeter kommt.
+     Ein leeres Geraet faellt sofort auf. -->
+<link rel="preload" as="image" href="media/web/geraet-rahmen.webp" fetchpriority="high">
+<link rel="preload" as="image" fetchpriority="high"
+      imagesrcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w"
+      imagesizes="(max-width: 900px) 220px, 270px"
+      href="media/web/ernaehrung-pm.webp">
 <link rel="preload" as="image" href="media/hero/poster.webp">
 <style>
     /* Inter 400 latin-ext */
@@ -465,6 +481,23 @@
   }
   .phone-screen img{width:100%;height:100%;object-fit:cover;border-radius:var(--glas-rund);}
   .phone-screen.active{opacity:1;}
+  /* LADEVORSCHAU-ANFANG — erzeugt von ladebilder-bauen.mjs, nicht von Hand aendern */
+  /* Die Vorschau liegt HINTER dem Bild, nicht darin: sobald das scharfe
+     Bild da ist, deckt es sie vollstaendig zu. Kein Umschalten noetig,
+     also auch kein Flackern und keine Zeile JavaScript. */
+  .phone-screen{background-size:cover;background-position:center;border-radius:var(--glas-rund);}
+  .shot-frame{background-size:contain;background-position:center;background-repeat:no-repeat;}
+  .phone-screen[data-v="ernaehrung-pm"]{background-image:url('data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABQBQCdASoUACsAPu1iq08ppSOiMBqoATAdiWVUwFu9CbsQPqmVCS1tSEwy2Azxw//ABMAA/vKas0UfMfQfWYTQcBEZjIacdGwK2MnjUaxa0VhqZLrdO5k8zbkTh8OMw5DLug8MbEDpklHq535Ei5jgxiiDpRzHH9OofD4SEWPn2IGJQuQAAA==');}
+  .phone-screen[data-v="gewicht-pm"]{background-image:url('data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADQBACdASoUACsAPulipE2pJaMiMAqpIB0JYwDNSC5v4iqLj0a2XFHvVeN/DG6yAAD+8AdVPolzxGZrn/L9ZZLvV6S7pJdf0tpaASpyDhIDBm1jFEFXe4KGGZ8daNtNjszaSxq7ljtNbQE6kZ6rlCwokEW0+3f9ep3YLFUmbYcseI1w7EY3qqWuAAA=');}
+  .phone-screen[data-v="einkauf-sheet-pm"]{background-image:url('data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAQBQCdASoUACsAPu1iqU6ppSOiNVQIATAdiWMAxgRKhV5SwodseAKy+xVFohUCkVwAAP7yLYpCIQ6xekdsjvQKIBMKnU7IEF0I88U4BCAlfrWNZWNaUMb6bschqeEWku6qTao+2uW88Qks3ROqe+Ncza/Z5R4WvjOhk9F4OzbKzy1oQXDQAAAA');}
+  .phone-screen[data-v="training-pm"]{background-image:url('data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAAAQBQCdASoUACsAPu1qqVAppiOiqqoBMB2JZQDKeBZtQAr0Hnlki07xLgnkwrnrUKYAAP7ymp8SxrX7Xv63xb+ytwZ9Z5xe+WLUY3jZghOf6jg172+OIyg0CkekLL31jbIIpXCbnU8uzaI9JvNmM6i4wsEVOIMtG3h09W7vkp0CpJEQ6/WwGdqkKKAAAA==');}
+  .phone-screen[data-v="abzeichen-pm"]{background-image:url('data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABwAwCdASoUACsAPu1or08ppiSiKqoBMB2JZwDLLB62Rkj2VrAA/u/FXlaGpRrtAHsurc170lVB77DfP+9JvkyTyEzVOnyQ58GUrilXs8XD0sxNM5oHRRovsMcNNUTHpLt2Y+fA/9Hkj9U2oZvblsTHK30AAA==');}
+  .shot-frame[data-v="ernaehrung-geraet"]{background-image:url('data:image/webp;base64,UklGRi4BAABXRUJQVlA4WAoAAAAQAAAAEwAAJwAAQUxQSGUAAAARX6AmkiQ1dwI4gwweIyKAqf5y48QAm9ra2pyDCzZmLCABA80ASeZY6FMkxENP7NHbHNF/s2nbKEn3voH6SQsD+28EHiZiQS/T6uf2clk8Xm4vj5fgf0NPVZym7jDJzYTRMGlRAABWUDggogAAAPAFAJ0BKhQAKAA+7WasTymlpCIlbmEwHYllAMggDC/4AzRHjErQKn8l2kK+WD4UEcl2K4sCm2QAAP7sjcKh5++wm51f4IbOZlxk0NBaVzshDjOGSBmtsZUley391fHfvJYJcm9YgrcICSvSFjkicfO3PJQfrqXYO6+fOjrIqFyUatsOe06wbslLLsKEEyufmzs2Vv5WNEzjcateBN/KzYAAAA==');}
+  .shot-frame[data-v="gewicht-geraet"]{background-image:url('data:image/webp;base64,UklGRiYBAABXRUJQVlA4WAoAAAAQAAAAEwAAJwAAQUxQSGUAAAARX6AmkiQ1dwI4gwweIyKAqf5y48QAm9ra2pyDCzZmLCABA80ASeZY6FMkxENP7NHbHNF/s2nbKEn3voH6SQsD+28EHiZiQS/T6uf2clk8Xm4vj5fgf0NPVZym7jDJzYTRMGlRAABWUDggmgAAAFAFAJ0BKhQAKAA+7V6qTamkpCI1VAwBMB2JYgDLLGo5gsmk/WHaHFqkVncyy3Y/gyKUpAD+9eMCdj5HtbknRAr8jI9iGzcHCFsb5szWtoovwHgCZFskCwavyz+nhyMrbjwcJZMXuOvxWCqO6ta/8KIyZW/fH+Xns7TMiwDlESwgUN8DAdRMQt0a8Cc8rcTn88NQSHWuxcTrMAA=');}
+  .shot-frame[data-v="logbuch-geraet"]{background-image:url('data:image/webp;base64,UklGRiwBAABXRUJQVlA4WAoAAAAQAAAAEwAAJwAAQUxQSGUAAAARX6AmkiQ1dwI4gwweIyKAqf5y48QAm9ra2pyDCzZmLCABA80ASeZY6FMkxENP7NHbHNF/s2nbKEn3voH6SQsD+28EHiZiQS/T6uf2clk8Xm4vj5fgf0NPVZym7jDJzYTRMGlRAABWUDggoAAAALAFAJ0BKhQAKAA+2VKkTagko6I1W/wBABsJQBjeg8Gw+JDN0bPisUevVihX/3a6FSsvFATcAAD+73UQTGld2pfeuPsR7w/X3G5aohKdTqJp7JQhJmySPAHn4wqQoQ8yu0sFZx56yn2BZ/a8nxTssneslqlUw54A1dZUANA5RYb9fMEIi8SYTjLMfSjFfuk0eL4eUdohc1KaM0o86fBgAAA=');}
+  .shot-frame[data-v="training-geraet"]{background-image:url('data:image/webp;base64,UklGRj4BAABXRUJQVlA4WAoAAAAQAAAAEwAAJwAAQUxQSGUAAAARX6AmkiQ1dwI4gwweIyKAqf5y48QAm9ra2pyDCzZmLCABA80ASeZY6FMkxENP7NHbHNF/s2nbKEn3voH6SQsD+28EHiZiQS/T6uf2clk8Xm4vj5fgf0NPVZym7jDJzYTRMGlRAABWUDggsgAAANAFAJ0BKhQAKAA+7WCrTimlJCIquA35MB2JZwDFyAvv+BEQ7amy5zg/2tWVtMZHC0LoGu+G/gAA/uyNwqHn7n4o6Rp0MMc0QkknJ0HkQAIVCvY3cKBVv8CE5Syx8f5TMMvJ0GgwFb59zjCGnU1GCagX0eUjo7UocXu/4wmjAGxYagK2/4cWX5hjubHy2oqrYcz6WUEEhYsYeMbF2JjxiyBbapxRAoEAWgt6PbtIyYAAAAA=');}
+  .shot-frame[data-v="abzeichen-geraet"]{background-image:url('data:image/webp;base64,UklGRiYBAABXRUJQVlA4WAoAAAAQAAAAEwAAJwAAQUxQSGUAAAARX6AmkiQ1dwI4gwweIyKAqf5y48QAm9ra2pyDCzZmLCABA80ASeZY6FMkxENP7NHbHNF/s2nbKEn3voH6SQsD+28EHiZiQS/T6uf2clk8Xm4vj5fgf0NPVZym7jDJzYTRMGlRAABWUDggmgAAANAFAJ0BKhQAKAA+7WiqTimmJCIquA35MB2JZwDLMbkBmzYdkaKdfyyatJXk2LczVSt9JEybkAAA/vGPSj+349MUdY1DNQIY0VqlyhXqS3K3JRGShPVe1yaTMR+7tagr6JEOiqpFSea3hd6Cv68kL/90fblhEqpkHw+5X5GMThKbl1G3dLVxLhcnIFDCgGcNza5eBz1E9jYAAAA=');}
+  /* LADEVORSCHAU-ENDE */
   .phone-progress{
     display:flex;gap:8px;justify-content:center;margin-top:22px;
   }
@@ -945,7 +978,7 @@
           </div>
           <div class="hero-handy-platz" id="heroHandyPlatz">
             <div class="phone-device" role="img" aria-label="Die Exelery-App, Tab Ernährung">
-              <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1391"></div>
+              <div class="phone-screen active" data-v="ernaehrung-pm"><img src="media/web/ernaehrung-pm.webp" fetchpriority="high" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="" width="640" height="1391"></div>
             </div>
           </div>
         </div>
@@ -957,7 +990,7 @@
        und gleitet beim Scrollen in die Lage des Handys der App-Szene. Dort
        uebernimmt #phoneDevice mit demselben Bildschirm. -->
   <div class="phone-device handy-flug" id="handyFlug" aria-hidden="true">
-    <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="" width="640" height="1391"></div>
+    <div class="phone-screen active" data-v="ernaehrung-pm"><img src="media/web/ernaehrung-pm.webp" fetchpriority="high" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="" width="640" height="1391"></div>
   </div>
 
   <!-- ============ TELEFON-SZENE: scroll-gesteuert ============ -->
@@ -994,11 +1027,11 @@
         </div>
         <div class="phone-stage">
           <div class="phone-device" id="phoneDevice">
-            <div class="phone-screen active"><img src="media/web/ernaehrung-pm.webp" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1391"></div>
-            <div class="phone-screen"><img src="media/web/gewicht-pm.webp" srcset="media/web/gewicht-pm.webp 640w, media/web/gewicht-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1391" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/einkauf-sheet-pm.webp" srcset="media/web/einkauf-sheet-pm.webp 640w, media/web/einkauf-sheet-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1391" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/training-pm.webp" srcset="media/web/training-pm.webp 640w, media/web/training-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Trainings-Screen mit Wochenplan" width="640" height="1391" loading="lazy"></div>
-            <div class="phone-screen"><img src="media/web/abzeichen-pm.webp" srcset="media/web/abzeichen-pm.webp 640w, media/web/abzeichen-pm-1290.webp 1290w" sizes="(max-width: 900px) 240px, 400px" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen active" data-v="ernaehrung-pm"><img src="media/web/ernaehrung-pm.webp" fetchpriority="high" srcset="media/web/ernaehrung-pm.webp 640w, media/web/ernaehrung-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="Exelery Ernährungs-Screen mit Tagesziel-Ring und Makros" width="640" height="1391"></div>
+            <div class="phone-screen" data-v="gewicht-pm"><img src="media/web/gewicht-pm.webp" fetchpriority="low" srcset="media/web/gewicht-pm.webp 640w, media/web/gewicht-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="Gewichtsverlauf mit Kurve, minus 3,6 Kilogramm" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen" data-v="einkauf-sheet-pm"><img src="media/web/einkauf-sheet-pm.webp" fetchpriority="low" srcset="media/web/einkauf-sheet-pm.webp 640w, media/web/einkauf-sheet-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="Einkaufsliste mit Zeitraum-Auswahl" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen" data-v="training-pm"><img src="media/web/training-pm.webp" fetchpriority="low" srcset="media/web/training-pm.webp 640w, media/web/training-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="Trainings-Screen mit Wochenplan" width="640" height="1391" loading="lazy"></div>
+            <div class="phone-screen" data-v="abzeichen-pm"><img src="media/web/abzeichen-pm.webp" fetchpriority="low" srcset="media/web/abzeichen-pm.webp 640w, media/web/abzeichen-pm-1290.webp 1290w" sizes="(max-width: 900px) 220px, 270px" alt="Abzeichen-Sammlung, 11 von 41 freigeschaltet" width="640" height="1391" loading="lazy"></div>
           </div>
           <div class="phone-progress" id="phoneProgress" aria-hidden="true">
             <i class="on"></i><i></i><i></i><i></i><i></i>
@@ -1034,8 +1067,8 @@
         </div>
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame"><img src="media/web/ernaehrung-geraet.webp" srcset="media/web/ernaehrung-geraet.webp 380w, media/web/ernaehrung-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Ernährungs-Screen" width="380" height="753" loading="lazy"></div>
-            <div class="shot-frame small"><img src="media/web/gewicht-geraet.webp" srcset="media/web/gewicht-geraet.webp 380w, media/web/gewicht-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Gewichts-Screen" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame" data-v="ernaehrung-geraet"><img src="media/web/ernaehrung-geraet.webp" srcset="media/web/ernaehrung-geraet.webp 380w, media/web/ernaehrung-geraet-1290.webp 759w" sizes="(max-width: 900px) 200px, 300px" alt="Ernährungs-Screen" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame small" data-v="gewicht-geraet"><img src="media/web/gewicht-geraet.webp" srcset="media/web/gewicht-geraet.webp 380w, media/web/gewicht-geraet-1290.webp 759w" sizes="(max-width: 900px) 200px, 300px" alt="Gewichts-Screen" width="380" height="753" loading="lazy"></div>
           </div>
         </div>
       </div>
@@ -1058,8 +1091,8 @@
       <div class="chapter-cols flip">
         <div class="shot">
           <div class="shot-duo">
-            <div class="shot-frame small"><img src="media/web/logbuch-geraet.webp" srcset="media/web/logbuch-geraet.webp 380w, media/web/logbuch-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Logbuch mit Sätzen und Gewichten" width="380" height="753" loading="lazy"></div>
-            <div class="shot-frame"><img src="media/web/training-geraet.webp" srcset="media/web/training-geraet.webp 380w, media/web/training-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Trainings-Startseite" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame small" data-v="logbuch-geraet"><img src="media/web/logbuch-geraet.webp" srcset="media/web/logbuch-geraet.webp 380w, media/web/logbuch-geraet-1290.webp 759w" sizes="(max-width: 900px) 200px, 300px" alt="Logbuch mit Sätzen und Gewichten" width="380" height="753" loading="lazy"></div>
+            <div class="shot-frame" data-v="training-geraet"><img src="media/web/training-geraet.webp" srcset="media/web/training-geraet.webp 380w, media/web/training-geraet-1290.webp 759w" sizes="(max-width: 900px) 200px, 300px" alt="Trainings-Startseite" width="380" height="753" loading="lazy"></div>
           </div>
         </div>
         <div class="chapter-text">
@@ -1102,7 +1135,7 @@
           </div>
         </div>
         <div class="shot">
-          <div class="shot-frame"><img src="media/web/abzeichen-geraet.webp" srcset="media/web/abzeichen-geraet.webp 380w, media/web/abzeichen-geraet-1290.webp 759w" sizes="(max-width: 900px) 240px, 300px" alt="Abzeichen-Sammlung" width="380" height="753" loading="lazy"></div>
+          <div class="shot-frame" data-v="abzeichen-geraet"><img src="media/web/abzeichen-geraet.webp" srcset="media/web/abzeichen-geraet.webp 380w, media/web/abzeichen-geraet-1290.webp 759w" sizes="(max-width: 900px) 200px, 300px" alt="Abzeichen-Sammlung" width="380" height="753" loading="lazy"></div>
         </div>
       </div>
     </div>
