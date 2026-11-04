@@ -1,0 +1,86 @@
+feat(design): Geraetefotos, Scroll-Bewegung und ein Abschnitt fuer den KI-Coach
+
+Kevins Auftrag vom 03.11.2026, Umfang "Mittel", mit einer Ruecksprungmarke:
+"save den vorherigen stand, dass ich wenn es mir nicht gefaellt einfach
+wieder zu dem hier zurueck kann auf mein go, weil der jetzige funktioniert
+hat. aber es ist halt luft nach oben."
+
+Die Marke steht als Tag `stand-vor-umbau-03-11-2026` auf c2b0878. Zurueck:
+
+  git checkout stand-vor-umbau-03-11-2026 -- .
+  git commit -m "zurueck auf den Stand vor dem Umbau"
+
+-- Die Kapitel-Aufnahmen stecken in einem echten Geraet ---------------
+
+Vorher war `.shot-frame` ein abgerundetes Rechteck mit Rand -- dieselbe
+Machart, die Kevin schon am 27.10. an den Posts beanstandet hatte ("das
+handy ist nirgends eingeflossen").
+
+Jetzt bringt das Bild das Geraet selbst mit, freigestellt, mit Alpha.
+Erzeugt von planung/social/web-geraete-bauen.mjs im App-Repo. Darum faellt
+hier alles weg, was einen Rahmen nachbaute, und der Schatten wird zu
+`filter: drop-shadow`: box-shadow legt sich um den KASTEN, drop-shadow um
+den sichtbaren UMRISS. Bei einem freigestellten Geraet ist das der
+Unterschied zwischen einem schwebenden Telefon und einem Telefon in einer
+grauen Kiste.
+
+ACHTUNG: `einkauf-sheet` ist NICHT dabei, obwohl es eine App-Aufnahme ist.
+Es steckt in der Sticky-Szene, die ihr eigenes CSS-Geraet mit 3D-Drehung
+hat -- dort waere ein zweites Geraet im Bild eines zu viel. Das
+Eintrage-Skript hat das gemeldet statt es durchzuwinken.
+
+-- Die Kapitel-Geraete bewegen sich -----------------------------------
+
+Vorher standen sie still, waehrend im Hero und in der Sticky-Szene alles
+fuhr. Das faellt nicht als Fehler auf, sondern als Leere: zwei Drittel der
+Seite bewegen sich, das mittlere Drittel nicht.
+
+Eingehaengt in die VORHANDENE jobs[]-Mechanik, derselbe rAF-Takt wie
+Parallax und Zaehler. Kein zweiter Scroll-Listener.
+
+-- Der KI-Coach bekommt einen Abschnitt -------------------------------
+
+Kevin: "ausserdem haette ich gerne noch einen abteil zu dem KI-coach ...
+ne live animation, wie der chat schreibt oder sowas."
+
+Der Chat ist KEIN Bild, sondern echtes HTML: die Frage tippt sich Zeichen
+fuer Zeichen, drei Punkte erscheinen, die Antwort laeuft ein, dann die drei
+WEITER-Pillen. Gestochen scharf auf jedem Bildschirm, jederzeit im Text
+aenderbar, und es kostet keinen Credit.
+
+Er laeuft genau EINMAL und erst, wenn der Abschnitt im Bild ist. Eine
+Animation, die beim Laden startet, ist vorbei bevor jemand sie sieht; eine,
+die bei jedem Vorbeiscrollen neu startet, ist Flackern.
+
+Die Texte folgen den echten Regeln des Coaches aus
+supabase/functions/coach-chat/logik.ts: zwei bis fuenf Saetze, duzen, keine
+Emojis, keine Zahl ohne Datengrundlage, und zum Schluss drei Saetze, die
+der NUTZER sagt -- nicht drei Fragen an ihn.
+
+ACHTUNG: die Zeile "Der Coach-Chat gehoert zu Exelery Ultra" steht
+ausdruecklich dort. Ohne sie liest sich der Abschnitt wie ein Versprechen
+fuer die Gratiswoche, und die bringt Pro.
+
+Bei prefers-reduced-motion steht alles sofort fertig da.
+
+-- pruefe-bilder.mjs musste umgebaut werden ---------------------------
+
+Er verlangte woertlich "640w" und "1290w" und die festen Masse KLEIN/GROSS.
+Das hielt, solange jede Aufnahme ein nackter Screenshot im gleichen Format
+war. Seit die Kapitel-Aufnahmen in einem Geraet stecken (740 x 1871),
+meldete er fuenf Treffer -- obwohl an den Bildern nichts falsch war.
+
+Jetzt liest er die ECHTEN Dateimasse. So gemessen faengt er MEHR als
+vorher: eine falsche Breitenangabe bei den alten Bildern waere ihm
+entgangen, weil er 1290 nur mit 1290 verglich und nie mit der Datei.
+
+Vier Gegenproben halten.
+
+-- Geprueft -----------------------------------------------------------
+
+Alle 14 Waechter gruen, auch die langsamen (Gummiband 19/19, Feinschliff,
+Telefon-Szene, Handy-Lage, Start-oben, Bestaetigt).
+
+Offen: die Typografie (D3 aus dem Plan) ist noch nicht angefasst.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

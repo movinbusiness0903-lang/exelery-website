@@ -30,30 +30,66 @@ function webpMasse(buf) {
   return null;
 }
 
+/**
+ * ⚠️ 03.11.2026 — DIESER PRUEFER ERWARTETE FESTE ZAHLEN, UND DAS WAR EIN
+ *    FEHLER IN IHM, NICHT IM HTML.
+ *
+ *    Er verlangte woertlich „… 640w, …-1290.webp 1290w" und die Masse
+ *    KLEIN/GROSS. Das hielt, solange jede Aufnahme ein nackter Screenshot im
+ *    immer gleichen Format war. Seit die Kapitel-Aufnahmen in einem
+ *    freigestellten Geraet stecken (740 x 1871 statt 1290 x 2616), meldete er
+ *    fuenf Treffer — obwohl an den Bildern nichts falsch war.
+ *
+ *    Was er WIRKLICH sichern soll, ist nicht „die Zahl ist 1290", sondern:
+ *      * jede Stelle hat beide Fassungen, und beide Dateien gibt es,
+ *      * die Breitenangaben im srcset stimmen mit den ECHTEN Dateien,
+ *      * width/height im HTML passen zum Seitenverhaeltnis der Datei,
+ *      * die grosse Fassung ist wirklich breiter als die kleine.
+ *
+ *    So gemessen faengt er MEHR als vorher: eine falsche Breitenangabe bei
+ *    den alten Bildern waere ihm bisher entgangen, weil er 1290 nur mit 1290
+ *    verglichen hat und nie mit der Datei.
+ */
 function pruefen(html, lesen, leise) {
   const fehler = [];
   const stellen = [...html.matchAll(/<img src="media\/web\/([a-z-]+)\.webp"([^>]*)>/g)].filter((m) => m[1] !== 'dayone-abzeichen');
   if (stellen.length !== 12) fehler.push(`12 Bild-Stellen erwartet, gefunden ${stellen.length}`);
   const gesehen = new Set();
+
+  const masseVon = (datei) => {
+    const buf = lesen(datei);
+    return buf ? webpMasse(buf) : null;
+  };
+
   for (const [, name, rest] of stellen) {
+    gesehen.add(name);
+    const kleinDatei = `media/web/${name}.webp`;
+    const grossDatei = `media/web/${name}-1290.webp`;
+    const mK = masseVon(kleinDatei);
+    const mG = masseVon(grossDatei);
+    if (!mK) { fehler.push(`${kleinDatei} fehlt oder ist kein WebP`); continue; }
+    if (!mG) { fehler.push(`${grossDatei} fehlt oder ist kein WebP`); continue; }
+
     const srcset = (rest.match(/srcset="([^"]*)"/) || [])[1] || '';
-    if (srcset !== `media/web/${name}.webp 640w, media/web/${name}-1290.webp 1290w`) fehler.push(`${name}: srcset fehlt oder falsch („${srcset}")`);
+    const soll = `${kleinDatei} ${mK[0]}w, ${grossDatei} ${mG[0]}w`;
+    if (srcset !== soll) {
+      fehler.push(`${name}: srcset nennt nicht die echten Breiten. `
+        + `steht „${srcset}", soll „${soll}"`);
+    }
     if (!/sizes="[^"]+"/.test(rest)) fehler.push(`${name}: sizes fehlt`);
+
     const w = Number((rest.match(/width="(\d+)"/) || [])[1]);
     const h = Number((rest.match(/height="(\d+)"/) || [])[1]);
-    if (!w || !h || Math.abs(w / h - GROSS[0] / GROSS[1]) > 0.002) fehler.push(`${name}: width/height ${w}x${h} passt nicht zum Bild`);
-    gesehen.add(name);
-  }
-  for (const name of gesehen) {
-    for (const [datei, soll] of [[`media/web/${name}.webp`, KLEIN], [`media/web/${name}-1290.webp`, GROSS]]) {
-      const buf = lesen(datei);
-      if (!buf) { fehler.push(`${datei} fehlt`); continue; }
-      const m = webpMasse(buf);
-      if (!m || m[0] !== soll[0] || m[1] !== soll[1]) fehler.push(`${datei}: ${m ? m.join('x') : 'kein WebP'} statt ${soll.join('x')}`);
+    if (!w || !h || Math.abs(w / h - mK[0] / mK[1]) > 0.004) {
+      fehler.push(`${name}: width/height ${w}x${h} passt nicht zur Datei (${mK.join('x')})`);
+    }
+    if (mG[0] <= mK[0]) {
+      fehler.push(`${name}: die grosse Fassung (${mG[0]} px) ist nicht breiter `
+        + `als die kleine (${mK[0]} px)`);
     }
   }
   if (!leise) {
-    console.log(`${stellen.length} Bild-Stellen, ${gesehen.size} Bilder je 640 + 1290 px`);
+    console.log(`${stellen.length} Bild-Stellen, ${gesehen.size} Bilder je in zwei Fassungen`);
     for (const f of fehler) console.log('FEHLER', f);
     if (!fehler.length) console.log('ok   alle Stellen mit beiden Fassungen, Dateien und Masse stimmen');
   }
