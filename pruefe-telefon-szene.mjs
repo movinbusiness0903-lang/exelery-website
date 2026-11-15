@@ -68,6 +68,11 @@ function lauf(html) {
       querySelectorAll: (s) => alle[s] || [],
     },
     Array, Math, String,
+    // Seit 12.11.2026 (Handys wieder scharf) neigt sich das Geraet nur beim
+    // Scrollen. Beide Helfer stehen AUSSERHALB des Szenen-Blocks, den diese
+    // Pruefung herausschneidet — hier der Ruhezustand: kein Schwung, ganze Pixel.
+    schwungJetzt: () => 0,
+    ganzePixel: (v) => Math.round(v),
   };
   vm.runInNewContext(szenenCode(html), kontext);
   const job = kontext.jobs[0];

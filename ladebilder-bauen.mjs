@@ -53,10 +53,46 @@ const RAHMEN = ['ernaehrung-geraet', 'gewicht-geraet', 'logbuch-geraet', 'traini
 
 const VORSCHAU_BREIT = 20;
 
-/** Ein Bild auf 20 px herunterrechnen und als data:-Adresse zurueckgeben. */
-async function vorschau(name) {
+/* ── Kapitelbilder: die Vorschau gehoert INS GLAS, nicht hinters Geraet ──
+   Kevin, 12.11.2026: die Handys wirken am Rechner verwaschen, „mit einem
+   Dunst ums Geraet".
+
+   Bis heute war die Vorschau eines Kapitelbildes das GANZE Bild auf 20 px,
+   MIT Alphakanal, per `background-size:contain` auf Geraetegroesse gezogen.
+   Das scharfe Bild deckt sie nur dort zu, wo es selbst deckt — das Geraet ist
+   aussen aber durchsichtig. Beim Hochziehen verschmiert die Alphakante der
+   Vorschau um gut eine Vorschau-Zeile (rund 15 px), und genau diese
+   Verschmierung lag als grauer Schleier ums Gehaeuse: gemessen 3 bis 9
+   Helligkeitsstufen Aufhellung direkt neben dem Rand (pruefe-geraet-schaerfe).
+
+   Jetzt: nur die GLASFLAECHE, deckend auf Glasschwarz, und per
+   background-size/-position genau auf das Glas gelegt. Ihre Ecken liegen
+   unter der deckenden Einfassung; ausserhalb des Geraets steht nichts mehr.
+   Die Lage des Glases kommt aus derselben Datei wie im CSS
+   (geraet-rahmen.json), nicht aus einer zweiten Abschrift. */
+const GEO = JSON.parse(readFileSync(`${WURZEL}/media/web/geraet-rahmen.json`, 'utf8'));
+const G = GEO.glas;
+const runde = (z) => Number(z.toFixed(3));
+/* background-position in Prozent heisst: (Kasten - Bild) * p. Damit die
+   Vorschau bei G.links beginnt: p = links / (100 - breite). */
+const LAGE_X = runde((G.links / (100 - G.breite)) * 100);
+const LAGE_Y = runde((G.oben / (100 - G.hoch)) * 100);
+
+/** Ein Bild auf 20 px herunterrechnen und als data:-Adresse zurueckgeben.
+ *  `nurGlas`: nur die Glasflaeche, deckend (Kapitelbilder, siehe oben). */
+async function vorschau(name, nurGlas = false) {
   const quelle = `${WURZEL}/media/web/${name}.webp`;
-  const puffer = await sharp(quelle)
+  let bild = sharp(quelle);
+  if (nurGlas) {
+    const { width: b, height: h } = await sharp(quelle).metadata();
+    bild = sharp(quelle)
+      .extract({
+        left: Math.round((b * G.links) / 100), top: Math.round((h * G.oben) / 100),
+        width: Math.round((b * G.breite) / 100), height: Math.round((h * G.hoch) / 100),
+      })
+      .flatten({ background: '#05070C' });
+  }
+  const puffer = await bild
     .resize({ width: VORSCHAU_BREIT })
     // Geringe Qualitaet ist hier richtig: das Bild wird ohnehin auf das
     // Zwanzigfache gezogen, jedes Detail waere verschwendete Groesse.
@@ -79,7 +115,7 @@ for (const name of SCREENS) {
   zeilen.push(`  .phone-screen[data-v="${name}"]{background-image:url('${daten}');}`);
 }
 for (const name of RAHMEN) {
-  const { daten, bytes } = await vorschau(name);
+  const { daten, bytes } = await vorschau(name, true);
   summe += bytes;
   zeilen.push(`  .shot-frame[data-v="${name}"]{background-image:url('${daten}');}`);
 }
@@ -90,7 +126,9 @@ const block = [
   '     Bild da ist, deckt es sie vollstaendig zu. Kein Umschalten noetig,',
   '     also auch kein Flackern und keine Zeile JavaScript. */',
   '  .phone-screen{background-size:cover;background-position:center;border-radius:var(--glas-rund);}',
-  '  .shot-frame{background-size:contain;background-position:center;background-repeat:no-repeat;}',
+  '  /* Kapitelbilder: nur das Glas, deckend, genau aufs Glas gelegt — nichts',
+  '     davon reicht ueber das Gehaeuse hinaus (ladebilder-bauen.mjs, 12.11.). */',
+  `  .shot-frame{background-size:${G.breite}% ${G.hoch}%;background-position:${LAGE_X}% ${LAGE_Y}%;background-repeat:no-repeat;}`,
   ...zeilen,
   ENDE,
 ].join('\n');
