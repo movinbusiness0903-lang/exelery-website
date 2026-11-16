@@ -341,7 +341,11 @@ async function eineGroesse(browser, port, groesse) {
     const k = document.getElementById('app').getBoundingClientRect();
     return { oben: k.top + scrollY, fahrbar: k.height - innerHeight };
   });
-  for (const [name, anteil] of [['szene-1', 0.1], ['szene-3', 0.5]]) {
+  // Seit 16.11.2026 (Kevin) neigt sich das Szenen-Handy NACH SCROLLSTAND und
+  // steht erst ab der letzten Stufe (Motivation) gerade. szene-1 und szene-3
+  // sind darum absichtlich schraeg: dort zaehlt nur der Dunst. Scharf und
+  // gerade muss es am Ende sein (szene-ende), wo es ankommt.
+  for (const [name, anteil] of [['szene-1', 0.1], ['szene-3', 0.5], ['szene-ende', 0.95]]) {
     await fahreZu(seite, Math.round(s.oben + s.fahrbar * anteil));
     await seite.waitForTimeout(1100);
     await seite.waitForFunction(() => { const i = document.querySelector('#phoneDevice .phone-screen.active img'); return i && i.complete && i.naturalWidth > 0; }, null, { timeout: 15000 }).catch(() => {});
@@ -395,6 +399,10 @@ function urteilen(bericht) {
         if (/^(start|szene)/.test(w.name)) fehler.push(`${groesse} ${w.name}: ${w.fehlt}`);
         continue;
       }
+      if (/^szene-[13]$/.test(w.name)) {
+        if (w.dunst !== undefined && w.dunst > DUNST_MAX) fehler.push(`${groesse} ${w.name}: Dunst ums Geraet ${w.dunst.toFixed(1)} Helligkeitsstufen`);
+        continue;
+      }
       if (w.schaerfe < SCHAERFE_MIN) fehler.push(`${groesse} ${w.name}: Schaerfe ${w.schaerfe.toFixed(2)} < ${SCHAERFE_MIN} (${w.ruhe.text})`);
       if (!w.ruhe.ok) fehler.push(`${groesse} ${w.name}: in Ruhe nicht gerade — ${w.ruhe.text}`);
       if (w.dunst !== undefined && w.dunst > DUNST_MAX) fehler.push(`${groesse} ${w.name}: Dunst ums Geraet ${w.dunst.toFixed(1)} Helligkeitsstufen`);
@@ -438,6 +446,9 @@ const proben = [
   ['Neigung wieder dauerhaft an (auch in Ruhe)',
     (t) => t.replace(/function schwungJetzt\(\) \{[^}]*\}/, 'function schwungJetzt() { return 1; }'),
     (f) => f.some((x) => /Schaerfe|nicht gerade/.test(x))],
+  ['Szenen-Handy bei Motivation noch schraeg (Neigung endet nicht bei 0)',
+    (t) => t.replace('var rest = 1 - gerade * gerade * (3 - 2 * gerade);', 'var rest = 1 - 0.8 * gerade;'),
+    (f) => f.some((x) => /szene-ende: .*(Schaerfe|nicht gerade)/.test(x))],
   ['Ladevorschau wieder als ganzes Geraet mit Alpha hinter dem Bild',
     (t) => t.replace(/\.shot-frame\{background-size:[^}]*\}/, '.shot-frame{background-size:contain;background-position:center;background-repeat:no-repeat;}')
       .replace(/(\.shot-frame\[data-v="[a-z-]+"\]\{background-image:url\(')[^']*('\);\})/g,

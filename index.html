@@ -1593,10 +1593,22 @@
     }, { passive: true });
   })();
 
-  /* Fortschritt 0..1 einer sticky-Szene */
-  function progressOf(el, y) {
+  /* Fortschritt 0..1 einer sticky-Szene.
+
+     ⚠️ Kevin, 16.11.2026 (Video, iPhone): „Beim Handy (iOS) ruckelt die
+        Startanimation beim runter- und hochscrollen."
+        Ursache: Hier stand `el.offsetHeight - window.innerHeight`. Safari
+        blendet die Adressleiste beim Scrollen ein und aus, und
+        `innerHeight` springt dabei um rund 90 px. Im Startbereich bleiben
+        auf dem Handy nur 200–280 px Strecke uebrig — der Fortschritt sprang
+        also um bis zu die Haelfte: Bildfolge, Textblende und Flugstart
+        huepften, ohne dass sich der Scrollstand bewegt hatte.
+        Richtig ist die Hoehe des KLEBENDEN Kastens: genau so lange klebt er
+        wirklich, und seine Hoehe (100svh bzw. 100lvh) steht fest, egal was
+        die Leiste tut. pruefe-ios-leiste.mjs haelt das fest. */
+  function progressOf(el, y, kasten) {
     var top = el.offsetTop;
-    var h = el.offsetHeight - window.innerHeight;
+    var h = el.offsetHeight - kasten.offsetHeight;
     if (h <= 0) return 0;
     return Math.min(1, Math.max(0, (y - top) / h));
   }
@@ -1604,6 +1616,7 @@
   /* ================= Hero: Bildsequenz am Scrollbalken ================= */
   var heroSection = document.getElementById('hero');
   var heroMedia = document.getElementById('heroMedia');
+  var heroKasten = heroSection ? heroSection.querySelector('.hero-sticky') : null;
   var canvas = document.getElementById('heroCanvas');
   /* Nur der Text blendet aus, nicht der ganze Inhalt: ein transform auf einem
      Vorfahren des Handys wuerde position:fixed des fliegenden Handys brechen. */
@@ -1632,10 +1645,17 @@
       ctx.drawImage(img, (cw - w) / 2, (ch - h) * 0.3, w, h);
       lastDrawn = idx;
     };
+    /* Nur bei echter Groessenaenderung neu anlegen. Safari meldet `resize`
+       bei jedem Ein- und Ausblenden der Adressleiste; schon das Setzen von
+       canvas.width auf denselben Wert leert die Leinwand und legt den
+       Speicher neu an — ein Bild Leere mitten im Scrollen (16.11.2026). */
     var sizeCanvas = function () {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(heroMedia.clientWidth * dpr);
-      canvas.height = Math.round(heroMedia.clientHeight * dpr);
+      var cw = Math.round(heroMedia.clientWidth * dpr);
+      var ch = Math.round(heroMedia.clientHeight * dpr);
+      if (cw === canvas.width && ch === canvas.height) return;
+      canvas.width = cw;
+      canvas.height = ch;
       if (lastDrawn >= 0) drawFrame(lastDrawn);
     };
     sizeCanvas();
@@ -1663,7 +1683,7 @@
     else setTimeout(startLoading, 300);
 
     jobs.push(function (y) {
-      var p = progressOf(heroSection, y);
+      var p = progressOf(heroSection, y, heroKasten);
       /* Bildindex direkt aus dem Fortschritt – laeuft damit automatisch rueckwaerts */
       if (seqReady) {
         var exact = p * (FRAME_COUNT - 1);
@@ -1693,15 +1713,28 @@
 
   if (!reduceMotion && scene && device) {
     var currentStage = -1;
+    var szeneKasten = scene.querySelector('.phone-sticky');
     jobs.push(function (y) {
-      var p = progressOf(scene, y);
-      /* Drehung haengt am Scroll: kommt schraeg herein und richtet sich auf.
-         Wie STARK, haengt am Schwung — in Ruhe steht es gerade und auf
-         ganzen Pixeln (siehe „Neigung nur in Bewegung" oben). */
-      var k = schwungJetzt();
+      var p = progressOf(scene, y, szeneKasten);
+      /* ── Neigung NACH SCROLLSTAND (Kevin, 16.11.2026) ─────────────────────
+         „Ich will einfach, dass das Handy schräg animiert reingeflogen kommt,
+         mit jedem Scroll sich ein bisschen weiter gerade neigt, und wenn man
+         dann ganz unten ist … Dann ist das Handy gerade."
+         Vom 12.11. bis heute neigte es sich nur WAEHREND des Scrollens und
+         stand nach jedem Anhalten in 0,3 s wieder gerade (`schwung`) — es
+         richtete sich also bei jedem kleinen Ruck auf. Das war falsch.
+         Jetzt: Landung mit derselben Schraeglage wie das fliegende Handy
+         (-26° / 4°), dann mit jedem Stueck Scroll gerader, monoton und weich,
+         und GENAU 0°, sobald die letzte Stufe (Motivation, alle fuenf
+         Punkte) erreicht ist. Nicht darueber hinaus (die Formel bis 12.11.
+         endete bei +6°). Kein Zurueckspringen beim Anhalten, denn nichts
+         haengt an der Zeit. Bei 0° nur ganze Pixel — dort ist es scharf.
+         pruefe-handy-neigung.mjs haelt das fest. */
+      var gerade = Math.min(1, p * STAGES / (STAGES - 1));
+      var rest = 1 - gerade * gerade * (3 - 2 * gerade);
       var lift = Math.sin(p * Math.PI) * -14;
-      device.style.transform = k > 0
-        ? 'rotateY(' + ((-26 + p * 32) * k) + 'deg) rotateX(' + ((4 - p * 6) * k) + 'deg) translateY(' + lift + 'px)'
+      device.style.transform = rest > 0
+        ? 'rotateY(' + (-26 * rest) + 'deg) rotateX(' + (4 * rest) + 'deg) translateY(' + lift + 'px)'
         : 'translateY(' + ganzePixel(lift) + 'px)';
       var stage = Math.min(STAGES - 1, Math.floor(p * STAGES));
       if (stage !== currentStage) {
@@ -1768,7 +1801,9 @@
          schob (gemessen 15.09.2026 am Handy). */
       var flugMass = messen();
       var heroStart = heroSection.offsetTop;
-      var heroEnde = heroStart + heroSection.offsetHeight - window.innerHeight;
+      /* Klebe-Ende aus dem klebenden Kasten, nicht aus innerHeight — siehe
+         progressOf (iOS-Adressleiste, 16.11.2026). */
+      var heroEnde = heroStart + heroSection.offsetHeight - heroSticky.offsetHeight;
       var von = heroStart + (heroEnde - heroStart) * 0.6;
       var bis = scene.offsetTop;
       var t = Math.min(1, Math.max(0, (y - von) / Math.max(1, bis - von)));
@@ -1777,11 +1812,11 @@
       var top = flugMass.y0 + (flugMass.y1 - flugMass.y0) * e;
       var w = flugMass.w0 + (flugMass.w1 - flugMass.w0) * e;
       flug.style.width = w + 'px';
-      /* Derselbe Schwung wie bei #phoneDevice: an der Uebergabe neigen sich
-         beide gleich stark, in Ruhe liegt das Handy gerade auf ganzen Pixeln. */
-      var kf = schwungJetzt();
-      flug.style.transform = kf > 0
-        ? 'translate3d(' + x + 'px,' + top + 'px,0) perspective(1400px) rotateY(' + (-26 * e * kf) + 'deg) rotateX(' + (4 * e * kf) + 'deg)'
+      /* Neigung nach Scrollstand (Kevin, 16.11.2026): ganz oben gerade,
+         im Flug weich in die Schraeglage, in der #phoneDevice landet
+         (-26° / 4°). Haengt nur an `e`, nie an der Zeit. */
+      flug.style.transform = e > 0
+        ? 'translate3d(' + x + 'px,' + top + 'px,0) perspective(1400px) rotateY(' + (-26 * e) + 'deg) rotateX(' + (4 * e) + 'deg)'
         : 'translate(' + ganzePixel(x) + 'px,' + ganzePixel(top) + 'px)';
       var angekommen = y >= bis - 0.5;
       /* ── Vor dem Abflug uebernimmt wieder das Handy im Dokument ──────────

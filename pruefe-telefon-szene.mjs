@@ -33,7 +33,7 @@ function zaehle(html) {
 function szenenCode(html) {
   const m = html.match(/\/\* =+ Telefon-Szene =+ \*\/([\s\S]*?)\/\* =+ Handy-Uebergabe/);
   if (!m) throw new Error('Szenen-Block nicht gefunden');
-  const p = html.match(/function progressOf\(el, y\) \{[\s\S]*?\n  \}/);
+  const p = html.match(/function progressOf\(el, y, kasten\) \{[\s\S]*?\n  \}/);
   if (!p) throw new Error('progressOf nicht gefunden');
   return p[0] + '\n' + m[1];
 }
@@ -57,7 +57,10 @@ function lauf(html) {
   const steps = Array.from({ length: z.stufen }, () => element());
   const dots = Array.from({ length: z.punkte }, () => element());
   const device = element({ querySelectorAll: (s) => (s === '.phone-screen' ? szenenBilder : []) });
-  const scene = { offsetTop: 1000, offsetHeight: 5000 };
+  // Seit 16.11.2026 rechnet progressOf mit dem KLEBENDEN Kasten (.phone-sticky)
+  // statt mit innerHeight (iOS-Adressleiste); hier so hoch wie das Fenster.
+  const kasten = { offsetHeight: 1000 };
+  const scene = { offsetTop: 1000, offsetHeight: 5000, querySelector: (s) => (s === '.phone-sticky' ? kasten : null) };
   const alle = { '.phone-step': steps, '.phone-screen': [...fremde, ...szenenBilder], '#phoneProgress i': dots };
   const kontext = {
     jobs: [],
