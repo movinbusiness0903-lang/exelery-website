@@ -1315,7 +1315,9 @@
      ohne sie koennte jeder Fremde einen beliebigen Wert hineinschreiben,
      indem er einfach einen Parameter an die Adresse haengt. Alles Unbekannte
      faellt auf "website" zurueck, so wie bisher. */
-  var KANAELE = ['instagram', 'tiktok', 'x', 'facebook', 'youtube', 'reddit'];
+  /* `flyer` (16.11.2026): QR-Code auf dem Flyer → /flyer/ → /?utm_source=flyer.
+     Dieselbe Liste steht in supabase/functions/warteliste/logik.ts. */
+  var KANAELE = ['instagram', 'tiktok', 'x', 'facebook', 'youtube', 'reddit', 'flyer'];
   var HERKUNFT = (function () {
     try {
       var roh = new URLSearchParams(window.location.search).get('utm_source');

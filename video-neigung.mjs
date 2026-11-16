@@ -15,7 +15,8 @@ const AUS = process.argv[2];
 if (!AUS) { console.error('Ausgabeordner fehlt'); process.exit(1); }
 mkdirSync(AUS, { recursive: true });
 
-const alt = execFileSync('git', ['show', 'HEAD:index.html'], { cwd: WURZEL, encoding: 'utf8' });
+// Der Stand, den Kevin im Video gezeigt hat (zuletzt gepusht, 16.11.2026).
+const alt = execFileSync('git', ['show', 'ab1b803:index.html'], { cwd: WURZEL, encoding: 'utf8' });
 
 async function fahrt(name, kaputt) {
   const srv = server(kaputt);
