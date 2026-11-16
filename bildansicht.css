@@ -1,0 +1,72 @@
+/* W3 · Jedes Bild groß ansehen (16.11.2026).
+   Kevin: „Die Bilder überall auf der Webseite einzeln antippbar machen, aber
+   nicht, dass wenn man beim scrollen drauftippt und swiped das dann aufgeht
+   sondern nur beim klaren tip drauf … da bitte drauf achten, dass Qualität
+   gut bleibt." Logik: bildansicht.js. Wächter: pruefe-bildansicht.mjs. */
+
+img.ba-tippbar { cursor: zoom-in; }
+
+.bildansicht {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgba(5, 8, 12, 0.94);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s linear 200ms;
+  /* Kein Scrollen der Seite dahinter, auch nicht per Touch. */
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+.bildansicht.offen {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), visibility 0s;
+}
+
+.bildansicht img {
+  display: block;
+  max-width: min(100%, 560px);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  transform: scale(0.96);
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  /* Das Bild selbst schließt nicht; daneben tippen schon. */
+  cursor: default;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.bildansicht.offen img { transform: scale(1); }
+/* Kleine, runde Bilder (das Abzeichen) ohne Telefon-Ecken. */
+.bildansicht img.ba-rund { border-radius: 50%; box-shadow: none; max-width: min(100%, 360px); }
+
+.bildansicht .ba-zu {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(17, 24, 39, 0.85);
+  color: #F2F5F9;
+  font: 600 22px/1 system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.bildansicht .ba-zu:focus-visible { outline: 2px solid var(--mint, #0DF2A3); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bildansicht, .bildansicht.offen, .bildansicht img { transition: none; }
+  .bildansicht img { transform: none; }
+}

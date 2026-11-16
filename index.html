@@ -281,8 +281,16 @@
   /* ===== Hero mit Scroll-Sequenz =====
      Strecke 15.09.2026 auf Kevins Wunsch rund 40 % kuerzer: 280vh -> 210vh,
      also 1,1 statt 1,8 Bildschirmhoehen fuer die Atem-Sequenz (am Handy
-     220vh -> 170vh, 0,7 statt 1,2). Alle 48 Bilder bleiben. */
-  .hero-scrub{height:210vh;position:relative;}
+     220vh -> 170vh, 0,7 statt 1,2). Alle 48 Bilder bleiben.
+
+     16.11.2026 noch ein Drittel kuerzer. Kevin: „die Animation ist mir zu
+     lang, bzw man muss zu lange scrollen, versuche es mal mit 1/3 weniger".
+     Gemessen bis „Alles auf einen Blick" steht: Rechner 2,30 -> 1,54
+     Bildschirmhoehen, Handy und Tablet 1,88 -> 1,25. Zwei Hebel: die Strecke
+     210vh -> 154vh (Handy 170vh -> 125vh), und der erste Schritt blendet
+     nicht mehr NACH der Landung ein, sondern steht schon, wenn die Szene
+     hereinkommt (siehe `steps.forEach`). Waechter: pruefe-scrollweg.mjs. */
+  .hero-scrub{height:154vh;position:relative;}
   .hero-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;}
   .hero-media{position:absolute;inset:0;}
   .hero-media canvas,.hero-media .poster{
@@ -852,7 +860,7 @@
     .shot-duo .shot-frame.small{width:min(260px,35vw);}
     .shot-duo .shot-frame:last-child{margin-top:30px;}
     .nums{gap:28px;justify-content:flex-start;}
-    .hero-scrub{height:170vh;}
+    .hero-scrub{height:125vh;}
     /* Startbereich untereinander: Text mittig, Handy darunter. Abstaende und
        Handygroesse haengen an der Bildschirmhoehe (svh = die kleine Hoehe,
        also mit sichtbarer Browserleiste). Vorher stand hier alles fest, und
@@ -944,6 +952,8 @@
     .phone-progress{display:none;}
   }
 </style>
+<!-- W3 (16.11.2026): jedes Bild per klarem Tipp groß ansehen. -->
+<link rel="stylesheet" href="bildansicht.css">
 </head>
 <body>
 
@@ -1702,7 +1712,10 @@
       var local = (p * STAGES) - stage; /* 0..1 innerhalb der Stufe */
       steps.forEach(function (st, i) {
         if (i !== stage) { st.style.opacity = '0'; st.style.transform = 'translateY(24px)'; return; }
-        var inO = Math.min(1, local / 0.25);
+        /* Der ERSTE Schritt steht schon, wenn die Szene hereinkommt. Vorher
+           blendete er erst nach der Landung ein -- noch einmal 0,2
+           Bildschirmhoehen Weg (Kevin, 16.11.2026: „1/3 weniger scrollen"). */
+        var inO = i === 0 ? 1 : Math.min(1, local / 0.25);
         var outO = i === STAGES - 1 ? 1 : Math.min(1, (1 - local) / 0.15);
         var o = Math.min(inO, outO);
         st.style.opacity = String(o);
@@ -1984,12 +1997,29 @@
     if (reduceMotion) {
       counters.forEach(function (c) { c.textContent = fmt(+c.getAttribute('data-count')) + (c.getAttribute('data-suffix') || ''); });
     } else {
+      /* ─── Fertig, wenn das Kapitel mittig steht (16.11.2026) ──────────
+         Kevin: „wenn ich die handys und Texte mittig auf meinem Bildschirm
+         sind, dann sollen die zahlen auf den aktuellen stand hochgescrollt
+         sein. jetzt ist es so, dass die zahlen erst auf den letzten stand
+         hochgehen, wenn ich die handy bildschirme schon fast nicht mehr im
+         bild habe."
+
+         Vorher hing der Fortschritt an der ZAHL selbst und war erst 1, wenn
+         sie bei 25 % der Fensterhoehe stand -- da war das Kapitel schon fast
+         oben hinaus. Jetzt haengt er am KAPITEL (Text + Handys,
+         `.chapter-cols`): 0, wenn es unten hereinkommt, 1, wenn seine Mitte
+         die Fenstermitte erreicht. Am Handy steht der Text UEBER den
+         Geraeten; dort ist die Zahl ausserdem fertig, sobald sie selbst bei
+         55 % der Fensterhoehe steht -- was zuerst kommt. Rueckwaerts laeuft
+         es weiter mit. Waechter: pruefe-zaehler.mjs. */
       jobs.push(function () {
+        var H = window.innerHeight;
         counters.forEach(function (c) {
           var r = c.getBoundingClientRect();
-          /* Fortschritt haengt an der Position im Viewport – rueckwaerts inklusive */
-          var p = 1 - (r.top - window.innerHeight * 0.25) / (window.innerHeight * 0.55);
-          p = Math.min(1, Math.max(0, p));
+          var kasten = (c.closest('.chapter-cols') || c).getBoundingClientRect();
+          var pKapitel = (H - kasten.top) / Math.max(1, H / 2 + kasten.height / 2);
+          var pZahl = (H - r.top) / (H * 0.45);
+          var p = Math.min(1, Math.max(0, pKapitel, pZahl));
           var target = +c.getAttribute('data-count');
           var val = Math.round(target * (p < 1 ? 1 - Math.pow(1 - p, 3) : 1));
           c.textContent = fmt(val) + (c.getAttribute('data-suffix') || '');
@@ -2065,5 +2095,6 @@
   }).catch(function () { /* Hinweis bleibt versteckt, sichere Fassung bleibt stehen. */ });
 })();
 </script>
+<script src="bildansicht.js" defer></script>
 </body>
 </html>
