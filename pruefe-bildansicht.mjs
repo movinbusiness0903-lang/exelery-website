@@ -22,6 +22,7 @@ import { readFileSync } from 'node:fs';
 import { fahreZu, losmachen, ueberAlle, WURZEL } from './pruef-werkzeug.mjs';
 
 const SKRIPT = readFileSync(`${WURZEL}/bildansicht.js`, 'utf8');
+const HTML_ROH = readFileSync(`${WURZEL}/index.html`, 'utf8');
 const TAG = '<script src="bildansicht.js" defer></script>';
 
 const offen = (seite) => seite.evaluate(() => !!document.querySelector('.bildansicht.offen'));
@@ -48,10 +49,15 @@ function zeiger(seite, nr, art) {
     // Am Seitenende kann die Seite nicht weiter nach unten -- dann haette es
     // gar kein Rollen gegeben (gemessen: Abzeichen, Pixel 7). Also die
     // Richtung nehmen, in die es wirklich geht.
-    if (art === 'rollen') {
+    // „rollen-sofort" (16.11.2026): Loslassen, BEVOR das Scroll-Ereignis da
+    // ist. WebKit liefert es erst 84–108 ms spaeter; mit 120 ms Warten hing
+    // das Ergebnis an der Rechnerlast (rot unter Last, gruen ohne).
+    if (art === 'rollen' || art === 'rollen-sofort') {
       const d = window.scrollY > 60 ? -40 : 40;
       const vor = window.scrollY;
-      window.scrollBy(0, d); await warte(120); feuer('pointerup', 0, 0);
+      window.scrollBy(0, d);
+      if (art === 'rollen') await warte(120);
+      feuer('pointerup', 0, 0);
       if (window.scrollY === vor) throw new Error('Rollen-Probe: die Seite hat sich nicht bewegt');
       window.scrollBy(0, -d);
     }
@@ -119,7 +125,7 @@ async function messen(seite, g) {
     if (await offen(seite)) probleme.push(`${name}: Esc schliesst nicht`);
 
     // 2.–4. darf NICHT oeffnen
-    for (const art of ['wisch', 'rollen', 'lang']) {
+    for (const art of ['wisch', 'rollen', 'rollen-sofort', 'lang']) {
       await fahreZu(seite, Math.max(0, lage.y));
       await zeiger(seite, nr, art);
       if (await offen(seite)) { probleme.push(`${name}: oeffnet bei „${art}"`); await zuMachen(seite); }
@@ -154,8 +160,18 @@ const proben = [
   ['Schwellen aus -- Wisch oeffnet', (h) => h.replace(TAG, `<script>${SKRIPT
     .replace('var BEWEGUNG_MAX = 10;', 'var BEWEGUNG_MAX = 100000;')
     .replace('var DAUER_MAX = 450;', 'var DAUER_MAX = 100000;')
-    .replace('&& !s.gerollt', '')}</script>`)],
+    .replace('&& !gerollt', '')}</script>`)],
+  ['nur das Scroll-Ereignis -- Loslassen vor dem Ereignis oeffnet', (h) => {
+    const alt = "var gerollt = s.gerollt || Math.abs((window.scrollY || window.pageYOffset || 0) - s.sy) > 1;";
+    if (!SKRIPT.includes(alt)) throw new Error('Sabotage trifft nichts');
+    return h.replace(TAG, `<script>${SKRIPT.replace(alt, 'var gerollt = s.gerollt;')}</script>`);
+  }],
 ];
+// Laeuft eine Sabotage ins Leere, waere die Probe nicht rot, sondern kaputt.
+for (const [name, kaputt] of proben) {
+  try { if (kaputt(HTML_ROH) === HTML_ROH) throw new Error('nichts veraendert'); }
+  catch (e) { console.log(`  FEHLER  ${name} — Sabotage trifft nichts (${e.message})`); rot = true; }
+}
 for (const [name, kaputt] of proben) {
   const e = await ueberAlle(messen, { ...nurEins, kaputt });
   const erkannt = urteilen(e).length > 0;

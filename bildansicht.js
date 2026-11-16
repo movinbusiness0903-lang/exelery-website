@@ -138,8 +138,14 @@
   document.addEventListener('pointerdown', function (e) {
     var img = bildFuer(e.target, e.clientX, e.clientY);
     if (!img || e.button > 0) { start = null; return; }
-    start = { img: img, x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, gerollt: false };
+    start = { img: img, x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, gerollt: false,
+      sy: window.scrollY || window.pageYOffset || 0 };
   }, true);
+  /* Das Scroll-EREIGNIS allein reicht nicht: WebKit liefert es erst mit dem
+     naechsten Bildaufbau, gemessen 84–108 ms nach dem Scrollen (16.11.2026).
+     Kommt das Loslassen vorher, galt ein gerollter Tipp als klar und das Bild
+     ging auf (pruefe-bildansicht, WebKit, „rollen"). Darum beim Loslassen
+     zusaetzlich den Scrollstand vergleichen — der steht sofort fest. */
   window.addEventListener('scroll', function () { if (start) start.gerollt = true; }, { passive: true });
   document.addEventListener('pointercancel', function () { start = null; }, true);
   document.addEventListener('pointerup', function (e) {
@@ -148,7 +154,8 @@
     if (!s || e.pointerId !== s.id || bildFuer(e.target, e.clientX, e.clientY) !== s.img) return;
     var weg = Math.hypot(e.clientX - s.x, e.clientY - s.y);
     var dauer = performance.now() - s.t;
-    if (weg < BEWEGUNG_MAX && dauer < DAUER_MAX && !s.gerollt) oeffnen(s.img);
+    var gerollt = s.gerollt || Math.abs((window.scrollY || window.pageYOffset || 0) - s.sy) > 1;
+    if (weg < BEWEGUNG_MAX && dauer < DAUER_MAX && !gerollt) oeffnen(s.img);
   }, true);
 
   // Tastatur und Screenreader: Bilder sind auch per Enter erreichbar.
