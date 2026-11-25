@@ -12,6 +12,9 @@ Gesundheitsdaten liegen auf Servern in der Europäischen Union, werden nicht ver
 
 - [Startseite](https://exelery.de/): Überblick über Ernährung, Training, Motivation und den KI-Coach, Warteliste
 - [Häufige Fragen](https://exelery.de/faq/): Start, Preise, Gründerplätze, Geräte, Genauigkeit der Foto-Schätzung, Datenschutz
+- [Ratgeber](https://exelery.de/ratgeber/): Nährwert-Tabellen aus der App-Datenbank
+- [Kalorientabelle](https://exelery.de/ratgeber/kalorientabelle/): Kalorien, Eiweiß, Kohlenhydrate, Fett und Ballaststoffe je 100 g für rund 290 Grundnahrungsmittel
+- [Eiweißreiche Lebensmittel](https://exelery.de/ratgeber/eiweissreiche-lebensmittel/): die eiweißreichsten Lebensmittel je 100 g und je 100 kcal, pflanzliche Quellen
 - [Datenschutzerklärung](https://exelery.de/datenschutz/): welche Daten wofür verarbeitet werden, inklusive Foto-, Text- und Spracheingabe
 - [Konto löschen](https://exelery.de/konto-loeschen/): wie Nutzer ihr Konto und ihre Daten löschen
 
