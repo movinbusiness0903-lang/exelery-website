@@ -13,6 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="canonical" href="https://exelery.de/ratgeber/">
+<link rel="preload" as="image" href="/media/backdrops/kueche.webp" type="image/webp">
 <meta name="description" content="Kalorientabelle und eiweißreiche Lebensmittel mit Werten je 100 g, aus derselben Datenbank, mit der die Exelery-App rechnet.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Exelery">
@@ -30,62 +31,162 @@
 <meta name="twitter:description" content="Kalorientabelle und eiweißreiche Lebensmittel mit Werten je 100 g, aus derselben Datenbank, mit der die Exelery-App rechnet.">
 <meta name="twitter:image" content="https://exelery.de/media/og/start.png">
 <style>
-  :root{--bg:#0B0F17;--text:#F8FAFC;--muted:#94A3B8;--accent:#0DF2A3;--rule:rgba(255,255,255,.10);--box:#141B2A;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(/media/fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(/media/fonts/inter-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/media/fonts/inter-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/media/fonts/inter-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url(/media/fonts/manrope-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url(/media/fonts/manrope-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  @font-face{font-family:'Manrope';font-style:normal;font-weight:800;font-display:swap;src:url(/media/fonts/manrope-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+  @font-face{font-family:'Manrope';font-style:normal;font-weight:800;font-display:swap;src:url(/media/fonts/manrope-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+  :root{
+    --bg:#0B0F17;--flaeche:#121927;--flaeche-2:#18202F;
+    --text:#F8FAFC;--muted:#94A3B8;--leise:#64748B;--accent:#0DF2A3;
+    --linie:rgba(255,255,255,.06);
+    --rand:clamp(16px,5vw,48px);--breit:1080px;
+    --kopf:'Manrope',system-ui,sans-serif;--fliess:'Inter',system-ui,sans-serif;
+  }
   *{box-sizing:border-box;}
-  html{background:var(--bg);}
-  body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);max-width:880px;margin:0 auto;padding:40px 24px 80px;color:var(--text);line-height:1.7;font-size:16px;min-height:100vh;}
-  nav.krumen{font-size:.88em;color:var(--muted);margin-bottom:18px;}
-  nav.krumen a{color:var(--muted);}
-  header.doc{border-bottom:3px solid var(--accent);padding-bottom:18px;margin-bottom:8px;}
-  h1{font-size:2.1em;margin:0 0 .15em;letter-spacing:-.01em;line-height:1.25;}
-  .stand{color:var(--muted);font-size:.92em;margin:0;}
-  h2{font-size:1.32em;margin-top:2.4em;border-bottom:2px solid var(--rule);padding-bottom:6px;}
-  p{margin:.75em 0;}
-  a{color:var(--accent);}
+  html{background:var(--bg);-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--fliess);font-size:16px;line-height:1.65;}
+  a{color:var(--accent);text-underline-offset:3px;}
   a:hover{text-decoration:none;}
-  .lead{font-size:1.05em;}
-  .antwort{background:var(--box);border-left:3px solid var(--accent);border-radius:8px;padding:14px 20px;margin:1.4em 0;}
-  .tabelle{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1em 0;border-radius:10px;background:var(--box);}
-  table{border-collapse:collapse;width:100%;font-size:.94em;}
-  th,td{padding:8px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--rule);}
-  th:first-child,td:first-child{text-align:left;white-space:normal;min-width:9em;}
-  thead th{position:sticky;top:0;background:#1B2335;color:var(--muted);font-weight:normal;font-size:.9em;}
-  tbody tr:last-child td{border-bottom:none;}
-  td.hl{color:var(--accent);font-weight:bold;}
-  .klein{color:var(--muted);font-size:.86em;}
-  .suche{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--rule);background:var(--box);color:var(--text);font-size:16px;margin:1em 0 .2em;}
-  .karten{display:grid;gap:14px;margin:1.6em 0;}
-  .karte{display:block;background:var(--box);border-radius:12px;padding:18px 20px;text-decoration:none;color:var(--text);border:1px solid var(--rule);}
-  .karte:hover{border-color:var(--accent);}
-  .karte strong{color:var(--accent);font-size:1.12em;}
-  .karte span{display:block;color:var(--muted);margin-top:4px;}
-  .app{background:var(--box);border-radius:12px;padding:16px 20px;margin-top:2.4em;}
-  .back{display:inline-block;margin-top:2.4em;font-weight:bold;text-decoration:none;color:var(--accent);}
-  .source{color:var(--muted);font-size:.9em;margin-top:2.5em;border-top:1px solid var(--rule);padding-top:14px;}
-  @media (max-width:560px){body{padding:28px 16px 64px;}h1{font-size:1.65em;}th,td{padding:7px 9px;}}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .innen{max-width:var(--breit);margin:0 auto;padding:0 var(--rand);}
+
+  /* Kopf: Zeichen links, ein leiser Weg zur Warteliste rechts */
+  .leiste{position:absolute;inset:0 0 auto;z-index:3;}
+  .leiste .innen{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-family:var(--kopf);font-weight:700;letter-spacing:.18em;font-size:.9rem;}
+  .brand .mark{width:26px;height:26px;}
+  .leiste .weg{color:var(--text);font-size:.92rem;font-weight:600;text-decoration:none;opacity:.85;}
+  .leiste .weg:hover{opacity:1;color:var(--accent);}
+
+  /* Der eine Blickfang: Kulisse, nach unten in den Grund auslaufend */
+  .buehne{position:relative;overflow:hidden;padding:150px 0 56px;isolation:isolate;}
+  .buehne::before{content:"";position:absolute;inset:0;z-index:-2;background:url(/media/backdrops/kueche.webp) center 40%/cover no-repeat;opacity:.42;transform:scale(1.04);}
+  .buehne::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,15,23,.55) 0%,rgba(11,15,23,.35) 35%,var(--bg) 100%),linear-gradient(90deg,rgba(11,15,23,.85) 0%,rgba(11,15,23,.2) 70%);}
+  nav.krumen{font-size:.84rem;color:var(--muted);margin-bottom:22px;}
+  nav.krumen a{color:var(--muted);text-decoration:none;}
+  nav.krumen a:hover{color:var(--text);}
+  h1{font-family:var(--kopf);font-weight:800;font-size:clamp(2.4rem,6.4vw,4.6rem);line-height:1.04;letter-spacing:-.035em;margin:0 0 20px;max-width:15ch;text-wrap:balance;}
+  .lead{font-size:clamp(1.02rem,1.6vw,1.2rem);color:#CBD5E1;max-width:58ch;margin:0;text-wrap:pretty;}
+  .stand{font-size:.8rem;color:var(--leise);margin-top:18px;}
+
+  main{padding-bottom:40px;}
+  h2{font-family:var(--kopf);font-weight:700;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;line-height:1.15;margin:88px 0 10px;text-wrap:balance;}
+  h2 + p{margin-top:0;}
+  p{max-width:68ch;}
+  .klein{color:var(--muted);font-size:.86rem;}
+
+  /* Eine große Kennzahl statt eines Textkastens */
+  .kennzahl{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-top:8px;}
+  .kz{background:var(--flaeche);border-radius:18px;padding:26px 28px;}
+  .kz .wert{font-family:var(--kopf);font-weight:800;font-size:clamp(3rem,8vw,5.2rem);line-height:.95;letter-spacing:-.04em;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .kz .wert small{font-size:.38em;letter-spacing:0;margin-left:6px;color:var(--text);font-weight:700;}
+  .kz .was{margin-top:14px;font-family:var(--kopf);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;}
+  .kz .wozu{color:var(--muted);font-size:.9rem;margin-top:4px;}
+  .kz-liste{display:grid;gap:16px;}
+  .kz-liste .kz{padding:20px 24px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+  .kz-liste .wert{font-size:2.3rem;color:var(--text);}
+  .kz-liste .wert small{font-size:.5em;margin-left:3px;color:var(--muted);}
+  .kz-liste .was{margin:0;font-family:var(--fliess);font-size:1rem;color:var(--muted);font-weight:600;letter-spacing:0;text-align:right;}
+
+  /* Tabellen: Fläche statt Rand, ruhige Zeilen, Ziffern untereinander */
+  .tabelle{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:22px 0 10px;border-radius:16px;background:var(--flaeche);}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums;}
+  th,td{padding:13px 18px;text-align:right;white-space:nowrap;}
+  th:first-child,td:first-child{text-align:left;white-space:normal;min-width:10em;}
+  thead th{position:sticky;top:0;background:var(--flaeche-2);color:var(--muted);font-weight:600;font-size:.8rem;letter-spacing:.02em;}
+  tbody tr + tr td{border-top:1px solid var(--linie);}
+  tbody tr:hover td{background:rgba(255,255,255,.025);}
+  td.hl{color:var(--accent);font-weight:600;}
+  td .zusatz{color:var(--leise);font-size:.82rem;}
+
+  .suche{width:100%;max-width:520px;padding:15px 18px;border-radius:14px;border:1px solid transparent;background:var(--flaeche);color:var(--text);font:inherit;font-size:16px;}
+  .suche::placeholder{color:var(--leise);}
+  .suche:focus{outline:none;border-color:rgba(13,242,163,.5);}
+  .sprung{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none;}
+  .sprung a{display:inline-block;padding:7px 13px;border-radius:999px;background:var(--flaeche);color:var(--text);text-decoration:none;font-size:.86rem;}
+  .sprung a:hover{background:var(--flaeche-2);color:var(--accent);}
+
+  /* Übersicht: ein großes Element, ein kleines */
+  .karten{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:8px;}
+  .karte{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:260px;border-radius:20px;padding:28px;background:var(--flaeche);color:var(--text);text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .25s ease,background .25s ease;}
+  .karte.gross::before{content:"";position:absolute;inset:0;z-index:-2;background:url(/media/backdrops/kueche.webp) center/cover;opacity:.32;transition:opacity .3s ease,transform .6s ease;}
+  .karte.gross::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,var(--flaeche) 15%,rgba(18,25,39,.2) 100%);}
+  .karte:hover{transform:translateY(-2px);background:var(--flaeche-2);}
+  .karte.gross:hover::before{opacity:.42;transform:scale(1.03);}
+  .karte strong{font-family:var(--kopf);font-weight:800;font-size:clamp(1.4rem,2.6vw,1.9rem);letter-spacing:-.02em;line-height:1.15;}
+  .karte span{color:var(--muted);margin-top:8px;max-width:40ch;}
+  .karte .pfeil{position:absolute;top:24px;right:26px;color:var(--accent);font-size:1.3rem;transition:transform .25s ease;}
+  .karte:hover .pfeil{transform:translateX(4px);}
+
+  .app{margin-top:96px;background:var(--flaeche);border-radius:20px;padding:30px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .app p{margin:0;max-width:52ch;color:#CBD5E1;}
+  .app strong{display:block;font-family:var(--kopf);font-size:1.25rem;color:var(--text);margin-bottom:4px;}
+  .knopf{display:inline-block;background:var(--accent);color:#04140E;font-weight:700;text-decoration:none;padding:13px 22px;border-radius:999px;transition:transform .15s ease;}
+  .knopf:active{transform:scale(.97);}
+
+  footer{margin-top:72px;border-top:1px solid var(--linie);padding:28px 0 48px;color:var(--leise);font-size:.84rem;}
+  footer .innen{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer a{color:var(--muted);text-decoration:none;margin-right:16px;}
+  footer a:hover{color:var(--text);}
+
+  @media (max-width:720px){
+    .buehne{padding:118px 0 40px;}
+    .kennzahl,.karten{grid-template-columns:1fr;}
+    .karte{min-height:200px;}
+    h2{margin-top:64px;}
+    th,td{padding:11px 12px;}
+    .app{padding:24px;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
 <body>
 
-<nav class="krumen" aria-label="Brotkrumen"><a href="/">Exelery</a> › Ratgeber</nav>
-
-<header class="doc">
-  <h1>Ratgeber</h1>
-  <p class="stand">Stand: 25. November 2026 &nbsp;·&nbsp; Zahlen aus der Lebensmittel-Datenbank der Exelery-App</p>
+<header class="leiste">
+  <div class="innen">
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <defs><linearGradient id="mintgrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6FFFD0"/><stop offset="1" stop-color="#0DF2A3"/></linearGradient></defs>
+      <path d="M30 24 L58 50 L30 76" stroke="url(#mintgrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M52 24 L80 50 L52 76" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+    </svg>
+    <span>EXELERY</span></a>
+    <a class="weg" href="/#warteliste">Warteliste</a>
+  </div>
 </header>
 
-<p class="lead">Nährwerte zum Nachschlagen. Jede Zahl stammt aus der Lebensmittel-Datenbank der Exelery-App.</p>
+<section class="buehne">
+  <div class="innen">
+    <nav class="krumen" aria-label="Brotkrumen"><a href="/">Exelery</a> / Ratgeber</nav>
+    <h1>Nährwerte zum Nachschlagen</h1>
+    <p class="lead">Jede Zahl stammt aus der Lebensmittel-Datenbank der Exelery-App. Dieselben Werte, mit denen die App deine Mahlzeiten rechnet.</p>
+    <p class="stand">Stand 25. November 2026 · Zahlen aus der Lebensmittel-Datenbank der Exelery-App</p>
+  </div>
+</section>
 
-<div class="karten">
-<a class="karte" href="/ratgeber/kalorientabelle/"><strong>Kalorientabelle mit Makros</strong><span>287 Lebensmittel mit Kalorien, Eiweiß, Kohlenhydraten, Fett und Ballaststoffen, durchsuchbar.</span></a>
-<a class="karte" href="/ratgeber/eiweissreiche-lebensmittel/"><strong>Eiweißreiche Lebensmittel</strong><span>Die Top 25 je 100 g, die besten je 100 kcal und pflanzliche Quellen.</span></a>
+<main class="innen">
+<div class="karten" style="margin-top:40px">
+<a class="karte gross" href="/ratgeber/kalorientabelle/"><span class="pfeil" aria-hidden="true">→</span><strong>Kalorientabelle mit Makros</strong><span>296 Lebensmittel mit Kalorien, Eiweiß, Kohlenhydraten, Fett und Ballaststoffen. Durchsuchbar.</span></a>
+<a class="karte" href="/ratgeber/eiweissreiche-lebensmittel/"><span class="pfeil" aria-hidden="true">→</span><strong>Eiweißreiche Lebensmittel</strong><span>Die Top 25 je 100&nbsp;g, die besten je 100&nbsp;kcal und pflanzliche Quellen.</span></a>
 </div>
 
-<div class="app"><strong>Mit diesen Werten rechnet auch die App.</strong> In Exelery trägst du ein Lebensmittel per Suche, Foto oder Barcode ein, und Kalorien und Makros werden aus genau diesen Zahlen berechnet. <a href="/#warteliste">Zur Warteliste</a></div>
+<div class="app">
+  <p><strong>Mit diesen Werten rechnet die App.</strong>In Exelery trägst du ein Lebensmittel per Suche, Foto oder Barcode ein. Kalorien und Makros kommen aus genau diesen Zahlen.</p>
+  <a class="knopf" href="/#warteliste">Auf die Warteliste</a>
+</div>
 
-<a class="back" href="/ratgeber/">→ Alle Ratgeber</a>
+<p class="klein" style="margin-top:28px">Alle Werte je 100&nbsp;g, Getränke je 100&nbsp;ml. Fleisch und Fisch roh, so wie auf der Packung; gegarte Fassungen stehen als eigene Zeile. Bei Markenware gilt die Nährwerttabelle auf der Packung.</p>
+</main>
 
-<p class="source">Alle Werte je 100&nbsp;g (Getränke je 100&nbsp;ml), Durchschnittswerte auf Niveau des Bundeslebensmittelschlüssels. Bei Markenware weichen die Werte ab; dort gilt die Nährwerttabelle auf der Packung. Rechtliches: <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p>
+<footer>
+  <div class="innen">
+    <div><a href="/ratgeber/">Ratgeber</a><a href="/faq/">Häufige Fragen</a><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></div>
+    <div>© 2026 Exelery GbR</div>
+  </div>
+</footer>
 
 <script type="application/ld+json">
 {
