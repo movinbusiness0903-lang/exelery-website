@@ -15,6 +15,7 @@ Gesundheitsdaten liegen auf Servern in der Europäischen Union, werden nicht ver
 - [Ratgeber](https://exelery.de/ratgeber/): Nährwert-Tabellen aus der App-Datenbank
 - [Kalorientabelle](https://exelery.de/ratgeber/kalorientabelle/): Kalorien, Eiweiß, Kohlenhydrate, Fett und Ballaststoffe je 100 g für rund 290 Grundnahrungsmittel
 - [Eiweißreiche Lebensmittel](https://exelery.de/ratgeber/eiweissreiche-lebensmittel/): die eiweißreichsten Lebensmittel je 100 g und je 100 kcal, pflanzliche Quellen
+- [Wie viel Eiweiß brauche ich?](https://exelery.de/ratgeber/eiweissbedarf/): DGE-Referenzwert 0,8 g je kg, Studienlage zu Krafttraining (≥ 1,6 g je kg), Rechner, mit Quellen
 - [Datenschutzerklärung](https://exelery.de/datenschutz/): welche Daten wofür verarbeitet werden, inklusive Foto-, Text- und Spracheingabe
 - [Konto löschen](https://exelery.de/konto-loeschen/): wie Nutzer ihr Konto und ihre Daten löschen
 

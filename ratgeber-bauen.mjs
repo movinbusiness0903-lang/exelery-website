@@ -76,7 +76,8 @@ const LOGO = `<svg class="mark" viewBox="0 0 100 100" fill="none" aria-hidden="t
       <path d="M52 24 L80 50 L52 76" stroke="#F8FAFC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
     </svg>`;
 
-function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
+function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen, bild }) {
+  if (!bild) throw new Error(`${pfad}: kein Bild`);
   const url = `https://exelery.de/${pfad}`;
   const ld = {
     '@context': 'https://schema.org',
@@ -102,7 +103,8 @@ function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="canonical" href="${url}">
-<link rel="preload" as="image" href="/media/backdrops/kueche.webp" type="image/webp">
+<link rel="preload" as="image" href="/media/ratgeber/${bild}" type="image/webp">
+<script src="/phase.js"></script>
 <meta name="description" content="${esc(beschreibung)}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Exelery">
@@ -146,7 +148,7 @@ function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
 
   /* Der eine Blickfang: Kulisse, nach unten in den Grund auslaufend */
   .buehne{position:relative;overflow:hidden;padding:150px 0 56px;isolation:isolate;}
-  .buehne::before{content:"";position:absolute;inset:0;z-index:-2;background:url(/media/backdrops/kueche.webp) center 40%/cover no-repeat;opacity:.42;transform:scale(1.04);}
+  .buehne::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--kulisse) center 45%/cover no-repeat;opacity:.5;transform:scale(1.04);}
   .buehne::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(11,15,23,.55) 0%,rgba(11,15,23,.35) 35%,var(--bg) 100%),linear-gradient(90deg,rgba(11,15,23,.85) 0%,rgba(11,15,23,.2) 70%);}
   nav.krumen{font-size:.84rem;color:var(--muted);margin-bottom:22px;}
   nav.krumen a{color:var(--muted);text-decoration:none;}
@@ -193,17 +195,27 @@ function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
   .sprung a:hover{background:var(--flaeche-2);color:var(--accent);}
 
   /* Übersicht: ein großes Element, ein kleines */
-  .karten{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:8px;}
+  .karten{display:grid;grid-template-columns:1.35fr 1fr;grid-template-areas:"a b" "a c";gap:16px;margin-top:8px;}
+  .karten .karte:nth-child(1){grid-area:a;min-height:536px;}
+  .karten .karte:nth-child(2){grid-area:b;}
+  .karten .karte:nth-child(3){grid-area:c;}
   .karte{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:260px;border-radius:20px;padding:28px;background:var(--flaeche);color:var(--text);text-decoration:none;overflow:hidden;isolation:isolate;transition:transform .25s ease,background .25s ease;}
-  .karte.gross::before{content:"";position:absolute;inset:0;z-index:-2;background:url(/media/backdrops/kueche.webp) center/cover;opacity:.32;transition:opacity .3s ease,transform .6s ease;}
-  .karte.gross::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,var(--flaeche) 15%,rgba(18,25,39,.2) 100%);}
+  .karte.bild::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--kulisse) var(--pos,center)/var(--groesse,cover) no-repeat;opacity:.6;transition:opacity .3s ease,transform .6s ease;}
+  .karte.bild::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(18,25,39,.96) 12%,rgba(18,25,39,.55) 45%,rgba(18,25,39,0) 100%);}
   .karte:hover{transform:translateY(-2px);background:var(--flaeche-2);}
-  .karte.gross:hover::before{opacity:.42;transform:scale(1.03);}
+  .karte.bild:hover::before{opacity:.75;transform:scale(1.03);}
   .karte strong{font-family:var(--kopf);font-weight:800;font-size:clamp(1.4rem,2.6vw,1.9rem);letter-spacing:-.02em;line-height:1.15;}
   .karte span{color:var(--muted);margin-top:8px;max-width:40ch;}
   .karte .pfeil{position:absolute;top:24px;right:26px;color:var(--accent);font-size:1.3rem;transition:transform .25s ease;}
   .karte:hover .pfeil{transform:translateX(4px);}
 
+  .rechner{margin-top:18px;}
+  .rechner .suche{max-width:200px;margin-top:6px;font-family:var(--kopf);font-weight:700;font-size:1.3rem;}
+  .rechner-ergebnis{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .rechner-ergebnis .wert{font-size:clamp(2.6rem,6vw,3.8rem);}
+  .rechner-ergebnis .kz:last-child .wert{color:var(--text);}
+  .quellen{padding-left:1.2em;max-width:76ch;color:#CBD5E1;font-size:.92rem;}
+  .quellen li{margin:.55em 0;}
   .app{margin-top:96px;background:var(--flaeche);border-radius:20px;padding:30px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
   .app p{margin:0;max-width:52ch;color:#CBD5E1;}
   .app strong{display:block;font-family:var(--kopf);font-size:1.25rem;color:var(--text);margin-bottom:4px;}
@@ -217,12 +229,15 @@ function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
 
   @media (max-width:720px){
     .buehne{padding:118px 0 40px;}
-    .kennzahl,.karten{grid-template-columns:1fr;}
+    .kennzahl,.karten,.rechner-ergebnis{grid-template-columns:1fr;}
+    .karten{grid-template-areas:"a" "b" "c";}
+    .karten .karte:nth-child(1){min-height:300px;}
     .karte{min-height:200px;}
     h2{margin-top:64px;}
     th,td{padding:11px 12px;}
     .app{padding:24px;}
   }
+  .ohne-warteliste [data-warteliste]{display:none!important;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
@@ -232,11 +247,11 @@ function seite({ pfad, titel, beschreibung, h1, lead, inhalt, krumen }) {
   <div class="innen">
     <a class="brand" href="/">${LOGO}
     <span>EXELERY</span></a>
-    <a class="weg" href="/#warteliste">Warteliste</a>
+    <a class="weg" href="/#warteliste" data-warteliste>Warteliste</a>
   </div>
 </header>
 
-<section class="buehne">
+<section class="buehne" style="--kulisse:url(/media/ratgeber/${bild})">
   <div class="innen">
     <nav class="krumen" aria-label="Brotkrumen">${krumen.map(([n, u], i) => (i === krumen.length - 1 ? esc(n) : `<a href="/${u}">${esc(n)}</a>`)).join(' / ')}</nav>
     <h1>${esc(h1)}</h1>
@@ -250,7 +265,7 @@ ${inhalt}
 
 <div class="app">
   <p><strong>Mit diesen Werten rechnet die App.</strong>In Exelery trägst du ein Lebensmittel per Suche, Foto oder Barcode ein. Kalorien und Makros kommen aus genau diesen Zahlen.</p>
-  <a class="knopf" href="/#warteliste">Auf die Warteliste</a>
+  <a class="knopf" href="/#warteliste" data-warteliste>Auf die Warteliste</a>
 </div>
 
 <p class="klein" style="margin-top:28px">Alle Werte je 100&nbsp;g, Getränke je 100&nbsp;ml. Fleisch und Fisch roh, so wie auf der Packung; gegarte Fassungen stehen als eigene Zeile. Bei Markenware gilt die Nährwerttabelle auf der Packung.</p>
@@ -306,6 +321,7 @@ const kzKlein = (l) => `<div class="kz"><div class="wert">${zahl(l.eiweiss)}<sma
 
 schreiben('ratgeber/eiweissreiche-lebensmittel', seite({
   pfad: 'ratgeber/eiweissreiche-lebensmittel/',
+  bild: 'eiweiss.webp',
   titel: 'Eiweißreiche Lebensmittel: Tabelle je 100 g – Exelery',
   beschreibung: `Die eiweißreichsten Lebensmittel je 100 g und je 100 kcal, dazu die besten pflanzlichen Quellen. ${natur.length} Grundnahrungsmittel aus der Exelery-Datenbank.`,
   h1: 'Eiweißreiche Lebensmittel',
@@ -347,6 +363,7 @@ const kat = reihenfolge.map((a) => {
 });
 schreiben('ratgeber/kalorientabelle', seite({
   pfad: 'ratgeber/kalorientabelle/',
+  bild: 'kalorien.webp',
   titel: `Kalorientabelle: ${lebensmittel.length} Lebensmittel mit Makros – Exelery`,
   beschreibung: `Kalorien, Eiweiß, Kohlenhydrate, Fett und Ballaststoffe je 100 g für ${lebensmittel.length} Grundnahrungsmittel, nach Abteilung sortiert und durchsuchbar.`,
   h1: 'Kalorientabelle mit Makros',
@@ -383,17 +400,109 @@ ${tabelle(['Lebensmittel', 'kcal', 'Eiweiß', 'Kohlenhydrate', 'Fett', 'Ballasts
 <p style="margin-top:32px">Die eiweißreichsten davon stehen sortiert unter <a href="/ratgeber/eiweissreiche-lebensmittel/">Eiweißreiche Lebensmittel</a>.</p>`,
 }));
 
-// ── 5 · Übersicht ─────────────────────────────────────────────────────────
+// ── 5 · Wie viel Eiweiß brauche ich? ──────────────────────────────────────
+// ⚠️ Gesundheitsaussagen NUR mit Quelle (Kevin). Belegt am 25.11.2026:
+//   DGE-Referenzwert Protein (Stand 2017), dge.de/wissenschaft/referenzwerte/protein/:
+//     Erwachsene 19 bis unter 65: 0,8 g/kg; ab 65: 1,0 g/kg (Schätzwert);
+//     Breitensport (4–5 × 30 min mittlere Intensität) braucht nicht mehr.
+//   Nunes et al. 2022, J Cachexia Sarcopenia Muscle 13(2):795–810,
+//     doi:10.1002/jcsm.12922 (74 RCT, Scholar Gateway): mit Krafttraining
+//     kleiner Zusatzgewinn an Muskelmasse unter 65 ab ≥ 1,6 g/kg/Tag,
+//     ab 65 bei 1,2–1,59 g/kg/Tag.
+//   Tarnopolsky 2008, Eur J Sport Sci 8(2):67–76, doi:10.1080/17461390801919128:
+//     Leistungssport höchstens etwa 1,7 g/kg/Tag, mit ausreichender
+//     Energiezufuhr leicht zu erreichen.
+//   Khazrai et al. 2014, Diabetes Metab Res Rev 30(S1):24–33,
+//     doi:10.1002/dmrr.2515: bei chronischer Nierenerkrankung empfiehlt die
+//     ADA weniger Eiweiß (0,8–1,0 g/kg).
+const nach = (n) => lebensmittel.find((l) => l.name === n);
+const BEISPIELE = ['Hähnchenbrust', 'Magerquark', 'Linsen, roh', 'Ei', 'Tofu', 'Haferflocken']
+  .map(nach).filter(Boolean);
+if (BEISPIELE.length < 5) throw new Error('Beispiel-Lebensmittel fehlen im Bestand');
+schreiben('ratgeber/eiweissbedarf', seite({
+  pfad: 'ratgeber/eiweissbedarf/',
+  bild: 'bedarf.webp',
+  titel: 'Wie viel Eiweiß brauche ich am Tag? Rechner mit Quellen – Exelery',
+  beschreibung: 'Eiweißbedarf pro Kilogramm Körpergewicht: DGE-Referenzwert für Erwachsene, was Studien für Krafttraining zeigen, mit Rechner und Beispielen aus der Exelery-Datenbank.',
+  h1: 'Wie viel Eiweiß brauche ich?',
+  lead: 'Für Erwachsene empfiehlt die Deutsche Gesellschaft für Ernährung 0,8&nbsp;g Eiweiß je Kilogramm Körpergewicht am Tag. Wer gezielt Kraft trainiert, kann laut Studien von mehr profitieren.',
+  krumen: [['Exelery', ''], ['Ratgeber', 'ratgeber/'], ['Eiweißbedarf', 'ratgeber/eiweissbedarf/']],
+  inhalt: `<h2 id="kurz">Kurz gesagt</h2>
+<div class="kennzahl">
+  <div class="kz"><div class="wert">0,8<small>g je kg</small></div><div class="was">Erwachsene bis 64 Jahre</div><div class="wozu">Referenzwert der DGE, am Tag. Ab 65 Jahren: 1,0&nbsp;g je kg.</div></div>
+  <div class="kz-liste">
+    <div class="kz"><div class="wert">1,6<small>g</small></div><div class="was">mit Krafttraining, unter 65</div></div>
+    <div class="kz"><div class="wert">1,7<small>g</small></div><div class="was">obere Grenze im Leistungssport</div></div>
+  </div>
+</div>
+
+<h2 id="rechner">Dein Bedarf in Gramm</h2>
+<p>Trag dein Körpergewicht ein. Bei Übergewicht rechnet die DGE mit dem Normalgewicht.</p>
+<div class="rechner">
+  <label class="klein" for="gewicht">Körpergewicht in kg</label>
+  <input class="suche" id="gewicht" type="number" inputmode="decimal" min="30" max="250" step="1" value="75">
+  <div class="rechner-ergebnis" aria-live="polite">
+    <div class="kz"><div class="wert" data-faktor="0.8">60<small>g</small></div><div class="was">Grundbedarf (0,8&nbsp;g je kg)</div></div>
+    <div class="kz"><div class="wert" data-faktor="1.6">120<small>g</small></div><div class="was">mit Krafttraining (1,6&nbsp;g je kg)</div></div>
+  </div>
+</div>
+
+<h2 id="beispiele">Was das auf dem Teller heißt</h2>
+<p>So viel von einem Lebensmittel liefert <strong data-ziel>60</strong>&nbsp;g Eiweiß. Gerechnet mit den Werten der App, je 100&nbsp;g roh.</p>
+${tabelle(['Lebensmittel', 'Eiweiß je 100 g', 'Menge für dein Ziel'],
+    BEISPIELE.map((l) => [esc(l.name), `${zahl(l.eiweiss)} g`, `<span data-eiweiss="${l.eiweiss}">–</span>`]), { hl: 2 })}
+<p class="klein">Niemand isst das an einem Tag von nur einem Lebensmittel. Die Tabelle zeigt nur, wie groß die Unterschiede sind. Mehr Lebensmittel stehen unter <a href="/ratgeber/eiweissreiche-lebensmittel/">Eiweißreiche Lebensmittel</a>.</p>
+
+<h2 id="studien">Was die Studien sagen</h2>
+<p><strong>Ohne Krafttraining:</strong> Die DGE hält 0,8&nbsp;g je kg für Erwachsene bis 64 Jahre für ausreichend. Auch Breitensport, also vier- bis fünfmal pro Woche 30 Minuten bei mittlerer Intensität, erhöht den Bedarf laut DGE nicht.</p>
+<p><strong>Mit Krafttraining:</strong> Eine Auswertung von 74 Studien fand einen kleinen zusätzlichen Gewinn an Muskelmasse, wenn Menschen unter 65 Jahren mindestens 1,6&nbsp;g je kg am Tag aßen. Bei Menschen ab 65 zeigte er sich schon bei 1,2 bis 1,59&nbsp;g. Der Effekt war klein, und auf die Griffkraft wirkte mehr Eiweiß kaum.</p>
+<p><strong>Leistungssport:</strong> Eine Übersichtsarbeit nennt etwa 1,7&nbsp;g je kg als Obergrenze des Bedarfs. Wer genug Energie zu sich nimmt, erreicht das meist schon über das normale Essen.</p>
+<p><strong>Bei Nierenerkrankungen</strong> gelten andere Werte. Die Amerikanische Diabetes-Gesellschaft empfiehlt dann weniger Eiweiß. Sprich in dem Fall vorher mit deiner Ärztin oder deinem Arzt.</p>
+
+<h2 id="quellen">Quellen</h2>
+<ul class="quellen">
+  <li>Deutsche Gesellschaft für Ernährung: <a href="https://www.dge.de/wissenschaft/referenzwerte/protein/" rel="noopener">Referenzwert Protein</a> (Stand der Ableitung 2017).</li>
+  <li>Nunes E. A. et al. (2022): Systematic review and meta-analysis of protein intake to support muscle mass and function in healthy adults. Journal of Cachexia, Sarcopenia and Muscle 13(2), 795–810. <a href="https://doi.org/10.1002/jcsm.12922" rel="noopener">doi:10.1002/jcsm.12922</a></li>
+  <li>Tarnopolsky M. A. (2008): Building muscle: nutrition to maximize bulk and strength adaptations to resistance exercise training. European Journal of Sport Science 8(2), 67–76. <a href="https://doi.org/10.1080/17461390801919128" rel="noopener">doi:10.1080/17461390801919128</a></li>
+  <li>Khazrai Y. M., Defeudis G., Pozzilli P. (2014): Effect of diet on type 2 diabetes mellitus: a review. Diabetes/Metabolism Research and Reviews 30(S1), 24–33. <a href="https://doi.org/10.1002/dmrr.2515" rel="noopener">doi:10.1002/dmrr.2515</a></li>
+</ul>
+<p class="klein">Diese Seite ersetzt keine ärztliche oder ernährungsfachliche Beratung.</p>
+<script>
+(function(){
+  var feld=document.getElementById('gewicht');
+  function rechne(){
+    var kg=parseFloat(String(feld.value).replace(',','.'));
+    if(!(kg>=30&&kg<=250)) return;
+    document.querySelectorAll('[data-faktor]').forEach(function(el){
+      el.firstChild.nodeValue=String(Math.round(kg*parseFloat(el.getAttribute('data-faktor'))));
+    });
+    var ziel=Math.round(kg*0.8);
+    document.querySelector('[data-ziel]').textContent=ziel;
+    document.querySelectorAll('[data-eiweiss]').forEach(function(el){
+      var g=Math.round(ziel/parseFloat(el.getAttribute('data-eiweiss'))*100/10)*10;
+      el.textContent=g.toLocaleString('de-DE')+' g';
+    });
+  }
+  feld.addEventListener('input',rechne); rechne();
+})();
+</script>`,
+}));
+
+// ── 6 · Übersicht ─────────────────────────────────────────────────────────
+// Jede Karte hat ein eigenes Bild und KEINES davon wiederholt sich auf der
+// Seite dahinter (Kevin 25.11.2026).
 schreiben('ratgeber', seite({
   pfad: 'ratgeber/',
+  bild: 'uebersicht.webp',
   titel: 'Ratgeber Ernährung: Tabellen mit echten Zahlen – Exelery',
-  beschreibung: 'Kalorientabelle und eiweißreiche Lebensmittel mit Werten je 100 g, aus derselben Datenbank, mit der die Exelery-App rechnet.',
+  beschreibung: 'Kalorientabelle, eiweißreiche Lebensmittel und Eiweißbedarf mit Werten je 100 g, aus derselben Datenbank, mit der die Exelery-App rechnet.',
   h1: 'Nährwerte zum Nachschlagen',
   lead: 'Jede Zahl stammt aus der Lebensmittel-Datenbank der Exelery-App. Dieselben Werte, mit denen die App deine Mahlzeiten rechnet.',
   krumen: [['Exelery', ''], ['Ratgeber', 'ratgeber/']],
   inhalt: `<div class="karten" style="margin-top:40px">
-<a class="karte gross" href="/ratgeber/kalorientabelle/"><span class="pfeil" aria-hidden="true">→</span><strong>Kalorientabelle mit Makros</strong><span>${lebensmittel.length} Lebensmittel mit Kalorien, Eiweiß, Kohlenhydraten, Fett und Ballaststoffen. Durchsuchbar.</span></a>
-<a class="karte" href="/ratgeber/eiweissreiche-lebensmittel/"><span class="pfeil" aria-hidden="true">→</span><strong>Eiweißreiche Lebensmittel</strong><span>Die Top 25 je 100&nbsp;g, die besten je 100&nbsp;kcal und pflanzliche Quellen.</span></a>
+<a class="karte bild" style="--kulisse:url(/media/ratgeber/karte-kalorien.webp);--pos:center 72%" href="/ratgeber/kalorientabelle/"><span class="pfeil" aria-hidden="true">→</span><strong>Kalorientabelle mit Makros</strong><span>${lebensmittel.length} Lebensmittel mit Kalorien, Eiweiß, Kohlenhydraten, Fett und Ballaststoffen. Durchsuchbar.</span></a>
+<a class="karte bild" style="--kulisse:url(/media/ratgeber/karte-eiweiss.webp);--pos:right -60px center;--groesse:auto 170%" href="/ratgeber/eiweissreiche-lebensmittel/"><span class="pfeil" aria-hidden="true">→</span><strong>Eiweißreiche Lebensmittel</strong><span>Die Top 25 je 100&nbsp;g, die besten je 100&nbsp;kcal und pflanzliche Quellen.</span></a>
+<a class="karte bild" style="--kulisse:url(/media/ratgeber/karte-bedarf.webp);--pos:right -40px center;--groesse:auto 160%" href="/ratgeber/eiweissbedarf/"><span class="pfeil" aria-hidden="true">→</span><strong>Wie viel Eiweiß brauche ich?</strong><span>Referenzwert, was Studien zum Krafttraining zeigen, und ein Rechner.</span></a>
 </div>`,
 }));
 
