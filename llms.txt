@@ -1,0 +1,22 @@
+# Exelery
+
+> Exelery ist eine Fitness-App für iPhone und Android, die Ernährung, Training und Motivation in einer Anwendung zusammenbringt. Mahlzeiten werden per Foto, per Text, per Spracheingabe oder über den Barcode erfasst. Der Trainingsplan liegt auf den Wochentagen, das Logbuch kennt jedes Gewicht. Serien, Ziele und Abzeichen helfen beim Dranbleiben. Die App ist auf Deutsch und Englisch verfügbar und wird von der Exelery GbR aus Deutschland entwickelt.
+
+Exelery ist zurzeit in der geschlossenen Testphase. Wer sich auf der Warteliste einträgt, bekommt zum Start eine Nachricht. Die ersten 30 bestätigten Anmeldungen erhalten Exelery Pro dauerhaft, alle weiteren zwei Monate.
+
+Kostenlos bleibt alles, was die Gewohnheit baut: Mahlzeiten eintragen, Gewicht verfolgen, Trainings-Logbuch, Serien und Abzeichen. Kostenpflichtig (Exelery Pro) ist, was bei jeder Nutzung Rechenkosten verursacht: die Kalorien-Schätzung per Foto, KI-erstellte Ernährungs- und Trainingspläne, Rezepte, die Einkaufsliste und der Wochen-Coach. Der Preis steht noch nicht fest.
+
+Gesundheitsdaten liegen auf Servern in der Europäischen Union, werden nicht verkauft und nur mit ausdrücklicher Einwilligung verarbeitet. Das Konto lässt sich direkt in der App löschen.
+
+## Seiten
+
+- [Startseite](https://exelery.de/): Überblick über Ernährung, Training, Motivation und den KI-Coach, Warteliste
+- [Häufige Fragen](https://exelery.de/faq/): Start, Preise, Gründerplätze, Geräte, Genauigkeit der Foto-Schätzung, Datenschutz
+- [Datenschutzerklärung](https://exelery.de/datenschutz/): welche Daten wofür verarbeitet werden, inklusive Foto-, Text- und Spracheingabe
+- [Konto löschen](https://exelery.de/konto-loeschen/): wie Nutzer ihr Konto und ihre Daten löschen
+
+## Unternehmen
+
+- [Impressum](https://exelery.de/impressum/): Exelery GbR, Kontakt support@exelery.de
+- [Nutzungsbedingungen](https://exelery.de/nutzungsbedingungen/)
+- Profile: [Instagram](https://www.instagram.com/exelery_app/), [TikTok](https://www.tiktok.com/@exelery_app), [X](https://x.com/Exelery_App), [Facebook](https://www.facebook.com/App.Exelery/)

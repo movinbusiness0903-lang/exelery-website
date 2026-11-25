@@ -11,6 +11,7 @@
 // Aufruf:  node pruefe-seo.mjs
 // Beendet sich mit 1, wenn etwas fehlt.
 
+import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -151,6 +152,43 @@ const robots = readFileSync(join(HIER, 'robots.txt'), 'utf8');
 if (!robots.includes('Sitemap:')) meckern('robots.txt nennt die Sitemap nicht');
 if (/Disallow:\s*\/\s*$/m.test(robots)) meckern('robots.txt sperrt die ganze Seite aus');
 console.log('  in Ordnung');
+
+// ─── llms.txt (KI-Suche, 25.11.2026) ─────────────────────────────────────────
+// Aus Kevins Vorlesung „SEM und SEO" (Folien 34/35, 48): KI-Suchen wie
+// ChatGPT, Perplexity und Gemini lesen Seiten anders als Google. `llms.txt` ist
+// die kurze, faktische Zusammenfassung fuer sie -- Answer-First, mit Links.
+// Jeder Link darin muss auf eine Seite zeigen, die es wirklich gibt.
+console.log('\nllms.txt');
+try {
+  const llms = readFileSync(join(HIER, 'llms.txt'), 'utf8');
+  if (!/^# Exelery\s*$/.test(llms.split('\n')[0])) meckern('llms.txt beginnt nicht mit „# Exelery"');
+  if (!/^> .{80,}/m.test(llms)) meckern('llms.txt hat keine Zusammenfassung („> …")');
+  const sitemapTxt = readFileSync(join(HIER, 'sitemap.xml'), 'utf8');
+  for (const [, url] of llms.matchAll(/\]\((https:\/\/exelery\.de\/[^)]*)\)/g)) {
+    if (!sitemapTxt.includes(`<loc>${url}</loc>`)) meckern(`llms.txt verlinkt ${url}, das nicht in der Sitemap steht`);
+  }
+  if (/fonts\.googleapis|localhost/.test(llms)) meckern('llms.txt enthaelt eine fremde oder lokale Adresse');
+  console.log('  in Ordnung');
+} catch {
+  meckern('llms.txt fehlt');
+}
+
+// ─── Sitemap: lastmod nicht aelter als die letzte Aenderung ──────────────────
+// Ein veraltetes Datum sagt der Suchmaschine „hier hat sich nichts getan".
+// Am 25.11.2026 stand bei Startseite und Datenschutz noch der 09.09.
+console.log('\nSitemap-Daten');
+{
+  const sitemapTxt = readFileSync(join(HIER, 'sitemap.xml'), 'utf8');
+  for (const [, loc, lastmod] of sitemapTxt.matchAll(/<loc>https:\/\/exelery\.de\/([^<]*)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g)) {
+    const datei = join(HIER, loc, 'index.html');
+    let geaendert = '';
+    try {
+      geaendert = execFileSync('git', ['log', '-1', '--format=%cs', '--', datei], { cwd: HIER, encoding: 'utf8' }).trim();
+    } catch { /* ohne git keine Aussage */ }
+    if (geaendert && lastmod < geaendert) meckern(`Sitemap: /${loc} lastmod ${lastmod}, geaendert ${geaendert}`);
+  }
+  console.log('  in Ordnung');
+}
 
 console.log(fehler === 0 ? '\nAlles gruen.' : `\n${fehler} Fehler.`);
 process.exit(fehler === 0 ? 0 : 1);
